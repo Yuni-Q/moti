@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="icon_writer" width="33.266" height="33.266" viewBox="0 0 33.266 33.266">
+    <defs>
+        <style>
+            .cls-1{fill:#fff}.cls-2{fill:none;stroke:#4b9efd;stroke-miterlimit:10;stroke-width:.9px}
+        </style>
+    </defs>
+    <path id="사각형_408" d="M0 0h33.266v33.266H0z" class="cls-1" data-name="사각형 408"/>
+    <g id="아트웍_76" data-name="아트웍 76" transform="translate(8.317 8.316)">
+        <g id="그룹_739" data-name="그룹 739">
+            <ellipse id="타원_41" cx="4.349" cy="4.349" class="cls-2" data-name="타원 41" rx="4.349" ry="4.349" transform="translate(3.326)"/>
+            <path id="패스_1302" d="M.3 14.676a7.675 7.675 0 1 1 15.351 0z" class="cls-2" data-name="패스 1302" transform="translate(-.3 1.699)"/>
+        </g>
+    </g>
+</svg>

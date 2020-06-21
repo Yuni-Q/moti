@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="27.061" height="27.061" viewBox="0 0 27.061 27.061">
+    <defs>
+        <style>
+            .cls-1{fill:none;stroke:#ddd;stroke-width:1.5px}
+        </style>
+    </defs>
+    <g id="icon_delete" transform="translate(.53 .53)">
+        <path id="선_3" d="M0 0v36.769" class="cls-1" data-name="선 3" transform="rotate(45 13 31.385)"/>
+        <path id="패스_1330" d="M0 0v36.77" class="cls-1" data-name="패스 1330" transform="rotate(135 7.615 18.385)"/>
+    </g>
+</svg>

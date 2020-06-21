@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="33.266" height="33.266" viewBox="0 0 33.266 33.266">
+    <defs>
+        <style>
+            .cls-1,.cls-5{fill:#fff}.cls-1{stroke:#707070}.cls-2{clip-path:url(#clip-path)}.cls-3,.cls-4{fill:none}.cls-3,.cls-4,.cls-5{stroke:#262626;stroke-miterlimit:10;stroke-width:.722px}.cls-6{fill:#262626}
+        </style>
+        <clipPath id="clip-path">
+            <path id="사각형_480" d="M0 0h33.266v33.266H0z" class="cls-1" data-name="사각형 480"/>
+        </clipPath>
+    </defs>
+    <g id="icon_date" class="cls-2">
+        <g id="아트웍_84" data-name="아트웍 84" transform="translate(6.93 6.931)">
+            <g id="그룹_777" data-name="그룹 777">
+                <path id="패스_1340" d="M19.289 19.688H.3V1.1h18.989z" class="cls-3" data-name="패스 1340" transform="translate(-.3 .501)"/>
+                <path id="선_84" d="M18.989 0H0" class="cls-4" data-name="선 84" transform="translate(0 6.197)"/>
+                <path id="사각형_472" d="M0 0h2.401v2.861H0z" class="cls-5" data-name="사각형 472" transform="translate(3.597)"/>
+                <path id="사각형_473" d="M0 0h2.401v2.861H0z" class="cls-5" data-name="사각형 473" transform="translate(13.191)"/>
+                <path id="사각형_474" d="M0 0h2.801v2.541H0z" class="cls-6" data-name="사각형 474" transform="translate(3.398 9.793)"/>
+                <path id="사각형_475" d="M0 0h2.801v2.541H0z" class="cls-6" data-name="사각형 475" transform="translate(7.994 9.793)"/>
+                <path id="사각형_476" d="M0 0h2.801v2.541H0z" class="cls-6" data-name="사각형 476" transform="translate(12.99 9.793)"/>
+                <path id="사각형_477" d="M0 0h2.801v2.541H0z" class="cls-6" data-name="사각형 477" transform="translate(3.398 14.19)"/>
+                <path id="사각형_478" d="M0 0h2.801v2.541H0z" class="cls-6" data-name="사각형 478" transform="translate(7.994 14.19)"/>
+                <path id="사각형_479" d="M0 0h2.801v2.541H0z" class="cls-6" data-name="사각형 479" transform="translate(12.99 14.19)"/>
+            </g>
+        </g>
+    </g>
+</svg>

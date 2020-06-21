@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="icon_place" width="33.266" height="33.266" viewBox="0 0 33.266 33.266">
+    <defs>
+        <style>
+            .cls-1{fill:#fff}.cls-2{clip-path:url(#clip-path)}.cls-3{fill:none;stroke:#262626;stroke-miterlimit:10;stroke-width:.6px}
+        </style>
+        <clipPath id="clip-path">
+            <path id="사각형_345" d="M0 0h23.602v23.602H0z" class="cls-1" data-name="사각형 345"/>
+        </clipPath>
+    </defs>
+    <g id="그룹_617" data-name="그룹 617">
+        <path id="사각형_358" d="M0 0h33.266v33.266H0z" class="cls-1" data-name="사각형 358"/>
+        <g id="아트웍_72" data-name="아트웍 72" transform="translate(9.703 5.544)">
+            <g id="아트웍_72-2" data-name="아트웍 72">
+                <ellipse id="타원_26" cx="2.807" cy="2.807" class="cls-3" data-name="타원 26" rx="2.807" ry="2.807" transform="translate(4.171 3.79)"/>
+                <path id="패스_997" d="M15 7.948c0 3.85-6.3 15.8-6.978 15.8S1 11.8 1 7.948a7 7 0 0 1 14 0z" class="cls-3" data-name="패스 997" transform="translate(-1 -.95)"/>
+            </g>
+        </g>
+    </g>
+</svg>

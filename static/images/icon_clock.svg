@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="icon_clock" width="33.266" height="33.266" viewBox="0 0 33.266 33.266">
+    <defs>
+        <style>
+            .cls-1{fill:#fff}.cls-2,.cls-3,.cls-4{fill:none;stroke:#262626}.cls-2{stroke-miterlimit:10}.cls-2,.cls-4{stroke-width:.6px}.cls-3,.cls-4{stroke-linecap:round;stroke-linejoin:round}.cls-3{stroke-width:.56px}
+        </style>
+    </defs>
+    <path id="사각형_357" d="M0 0h33.266v33.266H0z" class="cls-1" data-name="사각형 357"/>
+    <g id="아트웍_71" data-name="아트웍 71" transform="translate(6.93 6.93)">
+        <g id="그룹_574" data-name="그룹 574">
+            <circle id="타원_23" cx="9.703" cy="9.703" r="9.703" class="cls-2" data-name="타원 23"/>
+            <circle id="타원_24" cx="1.057" cy="1.057" r="1.057" class="cls-2" data-name="타원 24" transform="translate(8.646 8.646)"/>
+            <path id="선_31" d="M0 0v3.5" class="cls-3" data-name="선 31" transform="translate(9.703 5.142)"/>
+            <path id="선_32" d="M0 0h2.22" class="cls-4" data-name="선 32" transform="translate(10.817 9.703)"/>
+            <path id="선_33" d="M0 0h.493" class="cls-4" data-name="선 33" transform="translate(16.586 9.703)"/>
+            <path id="선_34" d="M0 .317L.317 0" class="cls-4" data-name="선 34" transform="translate(14.825 4.263)"/>
+            <path id="선_35" d="M0 .493V0" class="cls-4" data-name="선 35" transform="translate(9.703 2.326)"/>
+            <path id="선_36" d="M.317.317L0 0" class="cls-4" data-name="선 36" transform="translate(4.263 4.263)"/>
+            <path id="선_37" d="M.493 0H0" class="cls-4" data-name="선 37" transform="translate(2.326 9.703)"/>
+            <path id="선_38" d="M.317 0L0 .317" class="cls-4" data-name="선 38" transform="translate(4.263 14.825)"/>
+            <path id="선_39" d="M0 0v.493" class="cls-4" data-name="선 39" transform="translate(9.703 16.586)"/>
+            <path id="선_40" d="M0 0l.317.317" class="cls-4" data-name="선 40" transform="translate(14.825 14.825)"/>
+        </g>
+    </g>
+</svg>

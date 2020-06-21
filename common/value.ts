@@ -1,0 +1,1 @@
+export const YUNI_Q = 'YINI_Q';

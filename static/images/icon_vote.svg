@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style>
+            .cls-1{fill:#757575}.cls-2{fill:#fff}.cls-3{clip-path:url(#clip-path)}.cls-4{fill:none;stroke:#757575;stroke-miterlimit:10;stroke-width:.75px}
+        </style>
+        <clipPath id="clip-path">
+            <path id="사각형_426" d="M0 0h20v20H0z" class="cls-1" data-name="사각형 426"/>
+        </clipPath>
+    </defs>
+    <g id="icon_vote" transform="translate(-1.979 -.957)">
+        <path id="사각형_429" d="M0 0h24v24H0z" class="cls-2" data-name="사각형 429" transform="translate(1.979 .957)"/>
+        <g id="마스크_그룹_9" class="cls-3" data-name="마스크 그룹 9" transform="translate(3.979 2.957)">
+            <g id="아트웍_80" data-name="아트웍 80" transform="translate(2.248 .543)">
+                <g id="아트웍_80-2" data-name="아트웍 80">
+                    <path id="패스_1320" d="M11.314 5.468L8.4 8.386H6.1l-4-3.993L6.246.4z" class="cls-4" data-name="패스 1320" transform="translate(.664 -.4)"/>
+                    <path id="패스_1321" d="M3 9.543l2.764 2.611L9.911 7.7" class="cls-4" data-name="패스 1321" transform="translate(1.146 3.511)"/>
+                    <path id="사각형_427" d="M0 0h15.357v10.75H0z" class="cls-4" data-name="사각형 427" transform="translate(0 8.139)"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
