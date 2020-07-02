@@ -4,6 +4,4 @@
 //
 // import User from 'path/to/interfaces';
 
-export type YuniQ = {
-  [key: string]: string
-}
+export type YuniQ = { [key: string]: string };

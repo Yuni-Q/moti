@@ -1,24 +1,20 @@
+import Axios from 'axios';
 import { NextPage } from 'next';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Store } from 'redux';
 import { END } from 'redux-saga';
-import wrapper from '../../store/configureStore';
-import Axios from 'axios';
 import { loadUser } from '../../actions';
-import { useSelector } from 'react-redux';
+import wrapper from '../../store/configureStore';
 
 interface SageStore extends Store {
 	sagaTask: {
 		toPromise: () => void;
-	}
+	};
 }
 
-
-interface Props {
-}
-
-const Main: NextPage<Props> = () => {
-	const user = useSelector((state: any) => state.user)
+const Main: NextPage = () => {
+	const user = useSelector((state: any) => state.user);
 	return (
 		<>
 			<div>{user.me.name}</div>
@@ -33,8 +29,10 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
 		Axios.defaults.headers.Cookie = cookie;
 	}
 
-	context.store.dispatch(loadUser(1))
+	context.store.dispatch(loadUser(1));
 	context.store.dispatch(END);
-	await (context.store as SageStore).sagaTask.toPromise()
-})
+	/* eslint-disable */
+	await (context.store as SageStore).sagaTask.toPromise();
+	/* eslint-enable */
+});
 export default Main;

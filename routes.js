@@ -1,7 +1,9 @@
+/* eslint-disable */
 const routes = require('next-routes');
+/* eslint-disable */
 
 // routes.add(name, pattern = /name, page = name)
-const router = routes()
+const router = routes();
 exports.Link = router.Link;
 
 module.exports = router;

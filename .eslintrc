@@ -1,5 +1,5 @@
 {
-	"parser": "babel-eslint",
+	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"ecmaVersion": 2020,
 		"sourceType": "module",
@@ -12,17 +12,29 @@
 		"node": true,
 		"es6": true
 	},
-	"extends": ["airbnb", "prettier"],
-	"plugins": ["import", "react-hooks"],
-	"rules": {
-		"jsx-a11y/label-has-associated-control": "off",
-		"jsx-a11y/anchor-is-valid": "off",
-		"no-console": "off",
-		"no-underscore-dangle": "off",
-		"react/forbid-prop-types": "off",
-		"react/jsx-filename-extension": "off",
-		"react/jsx-one-expression-per-line": "off",
-		"object-curly-newline": "off",
-		"linebreak-style": "off"
+	"extends": [
+    "prettier",
+    "airbnb",
+    "airbnb/hooks",
+    "prettier/react",
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
+  ],
+	"plugins": ["@typescript-eslint", "react-hooks"],
+	"rules": {  
+		"react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
+		"prettier/prettier": ["error", {"singleQuote": true, "parser": "flow"}],
+		"react/jsx-props-no-spreading": "off",
+		"import/extensions": [ "error", "ignorePackages", { "js": "never", "jsx": "never", "ts": "never", "tsx": "never", "json": "never", "d.ts": "never" } ],
+		"no-param-reassign": 0
+
+	},
+	"settings": {
+		"import/resolver": {
+      "node": {
+				"extensions": [".js", ".jsx", ".ts", ".tsx"]
+			}
+		}
 	}
 }

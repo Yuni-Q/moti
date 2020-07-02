@@ -9,14 +9,14 @@ interface ReducersAction extends Action {
 const rootReducer = (state: any, action: ReducersAction) => {
 	switch (action.type) {
 		case HYDRATE:
-			console.log('HYDRATE', action)
+			console.log('HYDRATE', action);
 			return action.payload;
 		default: {
 			const combineReducer = combineReducers({
 				user,
 			});
-			return combineReducer(state, action)
+			return combineReducer(state, action);
 		}
 	}
-}
+};
 export default rootReducer;
