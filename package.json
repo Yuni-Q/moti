@@ -28,7 +28,6 @@
 		"moment": "^2.24.0",
 		"morgan": "^1.9.1",
 		"next": "^9.4.4",
-		"next-redux-saga": "^4.1.2",
 		"next-redux-wrapper": "^6.0.1",
 		"next-routes": "^1.4.2",
 		"nodemon": "^2.0.2",
@@ -48,8 +47,9 @@
 		"@types/node": "^12.7.8",
 		"@types/react": "^16.9.3",
 		"@types/react-dom": "^16.9.1",
-		"typescript": "3.6.3",
 		"babel-eslint": "^10.1.0",
+		"babel-plugin-styled-components": "^1.10.7",
+		"compression-webpack-plugin": "^4.0.0",
 		"eslint": "^7.1.0",
 		"eslint-config-airbnb": "^18.1.0",
 		"eslint-plugin-import": "^2.20.2",
@@ -57,6 +57,7 @@
 		"eslint-plugin-react": "^7.20.0",
 		"eslint-plugin-react-hooks": "^4.0.4",
 		"nodemon": "^2.0.4",
+		"typescript": "3.6.3",
 		"webpack": "^4.43.0"
 	},
 	"license": "ISC"

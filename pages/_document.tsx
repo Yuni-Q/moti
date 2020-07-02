@@ -1,23 +1,39 @@
-import Document, { Main, NextScript } from 'next/document';
+import Document, { Main, NextScript, Html } from 'next/document';
 import Helmet from 'react-helmet';
 import React from 'react';
 import { ServerStyleSheet } from 'styled-components';
+import Head from 'next/head';
 
 export default class CustomDocument extends Document<any> {
   static async getInitialProps(context: any) {
-    const initialProps = await Document.getInitialProps(context);
     const sheet = new ServerStyleSheet();
-    const page = context.renderPage((App: any) => (props: any) =>
-      sheet.collectStyles(<App {...props} />),
-    );
-    const styleTags = sheet.getStyleElement();
+    const originalRenderPage = context.renderPage;
+    try {
+      context.renderPage = () => originalRenderPage({
+        enhanceApp: (App: any) => (props: any) => sheet.collectStyles(<App {...props} />),
+      })
+      const initialProps = await Document.getInitialProps(context);
+      const page = context.renderPage((App: any) => (props: any) =>
+        sheet.collectStyles(<App {...props} />),
+      );
+      const styles = (
+        <>
+          {initialProps.styles}
+          {sheet.getStyleElement()}
+        </>
+      );
+      return {
+        ...initialProps,
+        ...page,
+        styles,
+        helmet: Helmet.renderStatic(),
+      };
+    } catch (error) {
+      console.error(error);
+    } finally {
+      sheet.seal();
+    }
 
-    return {
-      ...initialProps,
-      ...page,
-      styleTags,
-      helmet: Helmet.renderStatic(),
-    };
   }
 
   render() {
@@ -26,8 +42,8 @@ export default class CustomDocument extends Document<any> {
     const htmlAttrs = htmlAttributes.toComponent();
     const bodyAttrs = bodyAttributes.toComponent();
     return (
-      <html lang="ko" dir="ltr" {...htmlAttrs}>
-        <head>
+      <Html lang="ko" dir="ltr" {...htmlAttrs}>
+        <Head>
           <link href="/static/reset.css" rel="stylesheet" />
           {this.props.styleTags}
           <meta charSet="utf-8" />
@@ -58,7 +74,7 @@ export default class CustomDocument extends Document<any> {
           <link rel="manifest" href="/static/manifest.json" />
           <link rel="shorcut icon" href="/static/favicon.png" />
           <meta name="theme-color" content="black" />
-        </head>
+        </Head>
         <body {...bodyAttrs}>
           <Main />
           {process.env.NODE_ENV === 'production' && (
@@ -66,7 +82,7 @@ export default class CustomDocument extends Document<any> {
           )}
           <NextScript />
         </body>
-      </html>
+      </Html>
     );
   }
 }

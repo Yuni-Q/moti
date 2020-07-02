@@ -1,4 +1,3 @@
-import withReduxSaga from 'next-redux-saga';
 import App from 'next/app';
 import React from 'react';
 import Helmet from 'react-helmet';
@@ -79,4 +78,4 @@ interface Props {
   pageProps: any;
 };
 
-export default wrapper.withRedux(withReduxSaga(MyApp));
+export default wrapper.withRedux((MyApp));

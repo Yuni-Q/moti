@@ -1,14 +1,13 @@
-import Router from 'next/router';
 import { all, delay, fork, put, takeLatest } from 'redux-saga/effects';
-import { LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_IN_REQUEST } from '../actions/types';
+import { LOAD_USER_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS } from '../actions/types';
 import { UserAction } from '../reducers/user';
 
-// LOG_IN
-//function logInAPI({ email, password }: any) {
+// LOAD_USER
+//function loadUserAPI({ userId }: any) {
 //	return
 //}
 
-function* logIn(action: UserAction) {
+function* loadUser(action: UserAction) {
 	try {
 		//const { email, password } = action.payload;
 		//const result = yield call(logInAPI, { email, password });
@@ -16,27 +15,30 @@ function* logIn(action: UserAction) {
 		//document.cookie = `token=${key}; path=/`;
 		//document.cookie = `pk=${user.pk}; path=/`;
 		yield delay(2000);
+		console.log(action.payload.userId)
 		yield put({
-			type: LOG_IN_SUCCESS,
-			payload: action.payload,
+			type: LOAD_USER_SUCCESS,
+			payload: {
+				id: action.payload.userId,
+				name: 'yuni-q'
+			},
 		});
-		Router.replace('/');
-	} catch (e) {
-		console.error(e.response);
-		alert('입력하신 아이디/비밀번호에 해당하는 계정이 없습니다.');
+	} catch (error) {
 		yield put({
-			type: LOG_IN_FAILURE,
+			type: LOAD_USER_FAILURE,
+			playload: error,
+
 		});
 	}
 }
 
-function* watchLogIn() {
-	yield takeLatest(LOG_IN_REQUEST, logIn);
+function* watchLoadUser() {
+	yield takeLatest(LOAD_USER_REQUEST, loadUser);
 }
 
 
 export default function* userSaga() {
 	yield all([
-		fork(watchLogIn),
+		fork(watchLoadUser),
 	]);
 }

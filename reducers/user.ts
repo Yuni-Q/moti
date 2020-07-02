@@ -1,18 +1,23 @@
-import { LOG_IN_FAILURE, LOG_IN_REQUEST, LOG_IN_SUCCESS } from "../actions/types";
+import { LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE } from "../actions/types";
 import produce from 'immer';
 import { Action } from "redux-actions";
 
-export const initialState = {
-  pk: '',
-  email: '',
-  isLoggingIn: false, // 로그인 시도중
-  logInErrorReason: '', // 로그인 실패 사유
+export const initialState: {
+  me: any;
+  loadUserLoading: boolean;
+  loadUserDone: boolean;
+  loadUserError: any;
+} = {
+  me: null,
+  loadUserLoading: false,
+  loadUserDone: false,
+  loadUserError: null,
 };
 
 interface payload {
-  error?: string
-  pk?: string;
-  email: string
+  error?: string;
+  user: any;
+  [key: string]: any;
 }
 
 export type UserAction = Action<payload>;
@@ -20,19 +25,21 @@ export type UserAction = Action<payload>;
 export default (state = initialState, action: UserAction) => {
   return produce(state, (draft) => {
     switch (action.type) {
-      case LOG_IN_REQUEST:
-        draft.isLoggingIn = true;
-        draft.logInErrorReason = '';
+      case LOAD_USER_REQUEST:
+        draft.loadUserLoading = true;
+        draft.loadUserDone = false;
+        draft.loadUserError = null;
         break;
-      case LOG_IN_SUCCESS:
-        const { pk, email } = action.payload;
-        draft.email = email;
-        draft.pk = pk || email;
-        draft.isLoggingIn = false;
+      case LOAD_USER_SUCCESS:
+        draft.me = action.payload;
+        draft.loadUserLoading = false;
+        draft.loadUserDone = true;
+        draft.loadUserError = null;
         break;
-      case LOG_IN_FAILURE:
-        draft.isLoggingIn = false;
-        draft.logInErrorReason = action.payload.error || JSON.stringify(action.error)
+      case LOAD_USER_FAILURE:
+        draft.loadUserLoading = false;
+        draft.loadUserDone = true;
+        draft.loadUserError = action.error;
         break;
       default: {
         break;
