@@ -6,15 +6,17 @@ const dotenv = require('dotenv');
 const http = require('http');
 const { parse } = require('url');
 const { resolve } = require('path');
-/* eslint-disable */
-
+const { log } = require('./utils/log');
+/* eslint-enable */
 
 // setInterval(function() {
 //   http.get('http://study-watson.herokuapp.com');
 // }, 300000);
 
-const port = process.env.PORT || 8080;
+/* eslint-disable */
 const router = require('./routes');
+/* eslint-enable */
+const port = process.env.PORT || 8080;
 
 const dev = process.env.NODE_ENV !== 'production';
 
@@ -44,6 +46,6 @@ app.prepare().then(() => {
 		})
 		.listen(port, (err) => {
 			if (err) throw err;
-			console.log(`> Ready on http://localhost:${port}`);
+			log(`> Ready on http://localhost:${port}`);
 		});
 });

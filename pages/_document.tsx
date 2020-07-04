@@ -1,8 +1,9 @@
-import Document, { Main, NextScript, Html } from 'next/document';
-import Helmet from 'react-helmet';
-import React from 'react';
-import { ServerStyleSheet } from 'styled-components';
+import Document, { Html, Main, NextScript } from 'next/document';
 import Head from 'next/head';
+import React from 'react';
+import Helmet from 'react-helmet';
+import { ServerStyleSheet } from 'styled-components';
+import { consoleError } from '../utils/log';
 
 export default class CustomDocument extends Document<any> {
 	static async getInitialProps(context: any): Promise<any> {
@@ -28,14 +29,14 @@ export default class CustomDocument extends Document<any> {
 				helmet: Helmet.renderStatic(),
 			};
 		} catch (error) {
-			console.error(error);
+			consoleError(error);
 			return null;
 		} finally {
 			sheet.seal();
 		}
 	}
 
-	render() {
+	render(): JSX.Element {
 		// const { publicRuntimeConfig } = getConfig();
 		const { htmlAttributes, bodyAttributes, ...helmet } = this.props.helmet;
 		const htmlAttrs = htmlAttributes.toComponent();

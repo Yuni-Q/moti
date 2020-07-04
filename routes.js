@@ -1,6 +1,6 @@
 /* eslint-disable */
 const routes = require('next-routes');
-/* eslint-disable */
+/* eslint-enable */
 
 // routes.add(name, pattern = /name, page = name)
 const router = routes();

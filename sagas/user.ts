@@ -1,6 +1,7 @@
-import { all, delay, fork, put, takeLatest } from 'redux-saga/effects';
+import { all, AllEffect, delay, fork, ForkEffect, put, takeLatest } from 'redux-saga/effects';
 import { LOAD_USER_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS } from '../actions/types';
 import { UserAction } from '../reducers/user';
+import { log } from '../utils/log';
 
 // LOAD_USER
 // function loadUserAPI({ userId }: any) {
@@ -15,7 +16,7 @@ function* loadUser(action: UserAction) {
 		// document.cookie = `token=${key}; path=/`;
 		// document.cookie = `pk=${user.pk}; path=/`;
 		yield delay(2000);
-		console.log(action.payload.userId);
+		log(action.payload.userId);
 		yield put({
 			type: LOAD_USER_SUCCESS,
 			payload: {
@@ -35,6 +36,6 @@ function* watchLoadUser() {
 	yield takeLatest(LOAD_USER_REQUEST, loadUser);
 }
 
-export default function* userSaga() {
+export default function* userSaga(): Generator<AllEffect<ForkEffect<void>>, void, unknown> {
 	yield all([fork(watchLoadUser)]);
 }

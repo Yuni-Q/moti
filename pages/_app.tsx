@@ -2,6 +2,7 @@ import App from 'next/app';
 import React from 'react';
 import Helmet from 'react-helmet';
 import wrapper from '../store/configureStore';
+import { log } from '../utils/log';
 
 class MyApp extends App<Props, any> {
 	componentDidMount() {
@@ -9,10 +10,10 @@ class MyApp extends App<Props, any> {
 			navigator.serviceWorker
 				.register('/service-worker.js')
 				.then((result) => {
-					console.log('service worker registration successful', result);
+					log('service worker registration successful', result);
 				})
 				.catch((err) => {
-					console.log('service worker registration failed', err.message);
+					log('service worker registration failed', err.message);
 				});
 		}
 	}
@@ -60,9 +61,9 @@ MyApp.getInitialProps = async (context) => {
 	const { res } = context.ctx;
 	const isServer = !!context.ctx.req;
 	if (isServer) {
-		console.log(isServer);
+		log(isServer);
 	} else {
-		console.log(isServer);
+		log(isServer);
 	}
 	let pageProps: any = {};
 	if (context.Component.getInitialProps) {

@@ -5,9 +5,10 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import reducer from '../reducers';
 import rootSaga from '../sagas';
+import { log } from '../utils/log';
 
 const configureStore = (context: any) => {
-	console.log(context);
+	log(context);
 	const sagaMiddleware = createSagaMiddleware();
 	const middlewares = [sagaMiddleware];
 	const enhancer =

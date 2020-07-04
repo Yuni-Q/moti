@@ -1,5 +1,6 @@
 import { HYDRATE } from 'next-redux-wrapper';
-import { combineReducers, Action } from 'redux';
+import { Action, combineReducers } from 'redux';
+import { log } from '../utils/log';
 import user from './user';
 
 interface ReducersAction extends Action {
@@ -9,7 +10,7 @@ interface ReducersAction extends Action {
 const rootReducer = (state: any, action: ReducersAction) => {
 	switch (action.type) {
 		case HYDRATE:
-			console.log('HYDRATE', action);
+			log('HYDRATE', action);
 			return action.payload;
 		default: {
 			const combineReducer = combineReducers({
