@@ -27,8 +27,8 @@
 		"prettier/prettier": ["error", {"singleQuote": true, "parser": "flow"}],
 		"react/jsx-props-no-spreading": "off",
 		"import/extensions": [ "error", "ignorePackages", { "js": "never", "jsx": "never", "ts": "never", "tsx": "never", "json": "never", "d.ts": "never" } ],
-		"no-param-reassign": 0
-
+		"no-param-reassign": 0,
+		"react/prop-types": 0
 	},
 	"settings": {
 		"import/resolver": {

@@ -13,11 +13,15 @@ interface SageStore extends Store {
 	};
 }
 
-const Main: NextPage = () => {
+interface Props {
+	data: number;
+}
+
+const Main: NextPage<Props> = ({ data }) => {
 	const user = useSelector((state: any) => state.user);
 	return (
 		<>
-			<div>{user.me.name}</div>
+			<div>{user.me.name} {data}</div>
 		</>
 	);
 };
@@ -34,5 +38,6 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
 	/* eslint-disable */
 	await (context.store as SageStore).sagaTask.toPromise();
 	/* eslint-enable */
+	return { props: { data: 123 } }
 });
 export default Main;
