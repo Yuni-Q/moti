@@ -1,6 +1,6 @@
-import produce from 'immer';
 import { Action } from 'redux-actions';
 import { LOAD_USER_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS } from '../actions/types';
+import produce from '../utils/poduce';
 
 interface State {
 	me: any;
@@ -25,7 +25,7 @@ interface payload {
 export type UserAction = Action<payload>;
 
 export default (state = initialState, action: UserAction) => {
-	return produce(state, (draft) => {
+	return produce(state, (draft: any) => {
 		switch (action.type) {
 			case LOAD_USER_REQUEST:
 				draft.loadUserLoading = true;
