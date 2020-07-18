@@ -23,7 +23,7 @@ class MyApp extends App<Props, any> {
 		return (
 			<>
 				<Helmet
-					title="yuni-q"
+					title='yuni-q'
 					htmlAttributes={{ lang: 'ko' }}
 					meta={[
 						{

@@ -13,26 +13,31 @@
 		"es6": true
 	},
 	"extends": [
-    "prettier",
-    "airbnb",
-    "airbnb/hooks",
-    "prettier/react",
-    "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint",
-    "plugin:prettier/recommended"
-  ],
+		"prettier",
+		"airbnb",
+		"airbnb/hooks",
+		"prettier/react",
+		"plugin:@typescript-eslint/recommended",
+		"prettier/@typescript-eslint",
+		"plugin:prettier/recommended"
+	],
 	"plugins": ["@typescript-eslint", "react-hooks"],
-	"rules": {  
+	"rules": {
 		"react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
-		"prettier/prettier": ["error", {"singleQuote": true, "parser": "flow"}],
+		"prettier/prettier": ["error", { "singleQuote": true, "parser": "flow" }],
 		"react/jsx-props-no-spreading": "off",
-		"import/extensions": [ "error", "ignorePackages", { "js": "never", "jsx": "never", "ts": "never", "tsx": "never", "json": "never", "d.ts": "never" } ],
+		"import/extensions": [
+			"error",
+			"ignorePackages",
+			{ "js": "never", "jsx": "never", "ts": "never", "tsx": "never", "json": "never", "d.ts": "never" }
+		],
 		"no-param-reassign": 0,
-		"react/prop-types": 0
+		"react/prop-types": 0,
+		"indent": [2, "tab"]
 	},
 	"settings": {
 		"import/resolver": {
-      "node": {
+			"node": {
 				"extensions": [".js", ".jsx", ".ts", ".tsx"]
 			}
 		}
