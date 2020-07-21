@@ -17,28 +17,28 @@ interface Props {
 	data: number;
 }
 
-const Main: NextPage<Props> = ( { data } ) => {
-	const user = useSelector( ( state: any ) => state.user );
+const Main: NextPage<Props> = ({ data }) => {
+	const user = useSelector((state: any) => state.user);
 	return (
 		<>
-			<div className='m-1'>{ user.me.name } { data }</div>
-			<div className='m-sm-2'>{ user.me.name } { data }</div>
+			<div className='m-1'>{user.me.name} {data}</div>
+			<div className='m-sm-2'>{user.me.name} {data}</div>
 		</>
 	);
 };
 
-export const getServerSideProps = wrapper.getServerSideProps( async ( context ) => {
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
 	const cookie = context.req ? context.req.headers.cookie : '';
 	Axios.defaults.headers.Cookie = '';
-	if ( context.req && cookie ) {
+	if (context.req && cookie) {
 		Axios.defaults.headers.Cookie = cookie;
 	}
 
-	context.store.dispatch( loadUser( 1 ) );
-	context.store.dispatch( END );
+	context.store.dispatch(loadUser(1));
+	context.store.dispatch(END);
 	/* eslint-disable */
-	await ( context.store as SageStore ).sagaTask.toPromise();
+	await (context.store as SageStore).sagaTask.toPromise();
 	/* eslint-enable */
 	return { props: { data: 123 } }
-} );
+});
 export default Main;
