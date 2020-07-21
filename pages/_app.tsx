@@ -1,6 +1,7 @@
 import App from 'next/app';
 import React from 'react';
 import Helmet from 'react-helmet';
+import GlobalStyle from '../components/GlobalStyle';
 import wrapper from '../store/configureStore';
 import { log } from '../utils/log';
 
@@ -24,7 +25,7 @@ class MyApp extends App<Props, any> {
 			<>
 				<Helmet
 					title='yuni-q'
-					htmlAttributes={{ lang: 'ko' }}
+					htmlAttributes={{ lang: 'ko-KO' }}
 					meta={[
 						{
 							name: 'viewport',
@@ -51,6 +52,7 @@ class MyApp extends App<Props, any> {
 						},
 					]}
 				/>
+				<GlobalStyle />
 				<Component {...pageProps} />
 			</>
 		);

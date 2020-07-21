@@ -1,5 +1,4 @@
-import Document, { Html, Main, NextScript } from 'next/document';
-import Head from 'next/head';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
 import Helmet from 'react-helmet';
 import { ServerStyleSheet } from 'styled-components';
@@ -18,6 +17,7 @@ export default class CustomDocument extends Document<any> {
 			const page = context.renderPage((App: any) => (props: any) => sheet.collectStyles(<App {...props} />));
 			const styles = (
 				<>
+					<link href='/static/reset.css' rel='stylesheet' />
 					{initialProps.styles}
 					{sheet.getStyleElement()}
 				</>
@@ -42,10 +42,9 @@ export default class CustomDocument extends Document<any> {
 		const htmlAttrs = htmlAttributes.toComponent();
 		const bodyAttrs = bodyAttributes.toComponent();
 		return (
-			<Html lang='ko' dir='ltr' {...htmlAttrs}>
+			<Html lang='en' dir='ltr' {...htmlAttrs}>
 				<Head>
-					<link href='/static/reset.css' rel='stylesheet' />
-					{this.props.styleTags}
+					{this.props.styles}
 					<meta charSet='utf-8' />
 					<meta httpEquiv='x-ua-compatible' content='ie=edge' />
 					<meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover' />
@@ -57,7 +56,7 @@ export default class CustomDocument extends Document<any> {
 					<meta property='og:image' content='/static/favicon.png' />
 					<meta property='og:description' content='yuni-q' />
 					<meta property='og:site_name' content='yuni-q' />
-					<meta property='og:locale' content='ko' />
+					<meta property='og:locale' content='ko-KO' />
 					{Object.values(helmet).map((el: any) => el.toComponent())}
 					<link rel='manifest' href='/static/manifest.json' />
 					<link rel='shorcut icon' href='/static/favicon.png' />
