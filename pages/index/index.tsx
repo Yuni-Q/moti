@@ -1,10 +1,11 @@
 import Axios from 'axios';
-import { NextPage } from 'next';
+import {NextPage} from 'next';
+import Link from 'next/link';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { Store } from 'redux';
-import { END } from 'redux-saga';
-import { loadUser } from '../../actions';
+import {useSelector} from 'react-redux';
+import {Store} from 'redux';
+import {END} from 'redux-saga';
+import {loadUser} from '../../actions';
 import wrapper from '../../store/configureStore';
 
 interface SageStore extends Store {
@@ -23,6 +24,13 @@ const Main: NextPage<Props> = ({ data }) => {
 		<>
 			<div className='m-1'>{user.me.name} {data}</div>
 			<div className='m-sm-2'>{user.me.name} {data}</div>
+			<div>
+				<Link href="/posts/[id]" as="/posts/1">
+					<a>
+						posts로 이동
+					</a>
+				</Link>
+			</div>
 		</>
 	);
 };
