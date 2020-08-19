@@ -1,9 +1,17 @@
 import App from 'next/app';
+import Router from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
 import GlobalStyle from '../components/GlobalStyle';
 import wrapper from '../store/configureStore';
 import { log } from '../utils/log';
+
+Router.events.on('routeChangeStart', () => {
+	console.log('routeChangeStart');
+});
+Router.events.on('routeChangeComplete', () => {
+	console.log('routeChangeComplete');
+});
 
 class MyApp extends App<Props, any> {
 	componentDidMount() {
