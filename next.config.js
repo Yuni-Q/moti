@@ -1,5 +1,6 @@
 /* eslint-disable */
 const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
 	enabled: process.env.ANALYZE === 'true',
 });
@@ -50,6 +51,7 @@ module.exports = withBundleAnalyzer({
 				new webpack.DefinePlugin({
 					'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
 				}),
+				new Dotenv({ silent: true }),
 			],
 		};
 	},

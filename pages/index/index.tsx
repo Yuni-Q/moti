@@ -22,6 +22,7 @@ const Main: NextPage<Props> = ({ data }) => {
 	const user = useSelector((state: any) => state.user);
 	return (
 		<>
+			<h1>{process.env.APP_NAME || ".env 파일을 만들고 APP_NAME을 설정하세요"}</h1>
 			<div className='m-1'>{user.me.name} {data}</div>
 			<div className='m-sm-2'>{user.me.name} {data}</div>
 			<div>
