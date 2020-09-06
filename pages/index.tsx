@@ -29,7 +29,12 @@ const Main: NextPage<Props> = ({ onboard }) => {
 			>
 				{[1, 2, 3, 4, 5, 6].map((num) => {
 					return (
-						<div key={num}>
+						<div
+							key={num}
+							style={{
+								margin: '16px 0',
+							}}
+						>
 							<span style={{ color: '#d4a17d' }}>{num}th</span>
 							<div
 								style={{
