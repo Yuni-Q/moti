@@ -62,8 +62,10 @@ const Login: React.FC = () => {
 						</button>
 					)}
 					buttonText="Login"
-					onSuccess={(result: GoogleLoginResponse | any) => {
-						const { accessToken } = result;
+					onSuccess={(result) => {
+            /* eslint-disable */
+            const { accessToken } = result as GoogleLoginResponse;
+            /* eslint-enable */
 						axios
 							.post(
 								'https://moti.company/api/v1/signin',
