@@ -36,7 +36,7 @@ module.exports = withBundleAnalyzer({
 						loader: 'url-loader',
 						options: {
 							name: '[hash].[ext]',
-							limit: 20000,
+							//limit: 20000,
 						},
 					},
 					{

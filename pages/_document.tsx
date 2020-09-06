@@ -47,8 +47,6 @@ export default class CustomDocument extends Document<any> {
 					{this.props.styles}
 					<meta charSet="utf-8" />
 					<meta httpEquiv="x-ua-compatible" content="ie=edge" />
-					<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-					<title>yuni-q</title>
 					<meta name="description" content="yuni-q" />
 					<meta property="og:type" content="website" />
 					<meta property="og:url" content="http://localhost:8080/" />

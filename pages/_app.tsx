@@ -3,7 +3,6 @@ import Router from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
 import GlobalStyle from '../components/GlobalStyle';
-import wrapper from '../store/configureStore';
 import { log } from '../utils/log';
 
 Router.events.on('routeChangeStart', () => {
@@ -92,4 +91,4 @@ interface Props {
 	pageProps: any;
 }
 
-export default wrapper.withRedux(MyApp);
+export default MyApp;

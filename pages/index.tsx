@@ -1,19 +1,21 @@
-// import Axios from 'axios';
 import { NextPage } from 'next';
-// import Link from 'next/link';
-import React from 'react';
-import Error from '../../components/Error';
+import Cookies from 'universal-cookie';
 
-import normal from '../../static/assets/images/normal.png';
-import Onboard from '../../components/Onboard';
+import React, { useState } from 'react';
+import Error from '../components/Error';
+
+import normal from '../static/assets/images/normal.png';
+import Onboard from '../components/Onboard';
 
 interface Props {
-	data: number;
+	onboard: boolean;
 }
 
-const Main: NextPage<Props> = () => {
-	if (true) {
-		return <Onboard />;
+const Main: NextPage<Props> = ({ onboard }) => {
+	const [step, setStep] = useState(1);
+
+	if (!onboard && step <= 4) {
+		return <Onboard step={step} setStep={setStep} />;
 	}
 	return (
 		<>
@@ -66,6 +68,19 @@ const Main: NextPage<Props> = () => {
 			</div>
 		</>
 	);
+};
+
+export const getServerSideProps = async (context: any) => {
+	const cookies = context.req ? new Cookies(context.req.headers.cookie) : new Cookies();
+	console.log('cookie', cookies);
+	console.log(cookies.get('_ga')); // Pacman
+
+	// Axios.defaults.headers.Cookie = '';
+	// if (context.req && cookie) {
+	//	Axios.defaults.headers.Cookie = cookie;
+	// }
+
+	return { props: { onboard: !!cookies.get('onboard') } };
 };
 
 export default Main;

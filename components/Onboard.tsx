@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
-
+import React from 'react';
+import Cookies from 'universal-cookie';
 import onbording1 from '../static/assets/images/onbording1.png';
 import onbording2 from '../static/assets/images/onbording2.png';
 import onbording3 from '../static/assets/images/onbording3.png';
 import onbording4 from '../static/assets/images/onbording4.png';
-
-interface Props {
-	setFirst(): void;
-}
 
 const getImage = (step: number) => {
 	if (step === 1) {
@@ -22,17 +18,19 @@ const getImage = (step: number) => {
 	return onbording4;
 };
 
-const Onboard: React.FC<any> = () => {
-	const [step, setStep] = useState(1);
-	// var { width, height } = Dimensions.get("window");
+interface Props {
+	step: number;
+	setStep: React.Dispatch<React.SetStateAction<number>>;
+}
 
+const Onboard: React.FC<Props> = ({ step, setStep }) => {
 	return (
 		<button
 			type="button"
 			onClick={() => {
 				if (step >= 4) {
-					// AsyncStorage.setItem("first", "No");
-					// setFirst("No");
+					const cookies = new Cookies();
+					cookies.set('onboard', 'true');
 				}
 				setStep((oldStep) => oldStep + 1);
 			}}
