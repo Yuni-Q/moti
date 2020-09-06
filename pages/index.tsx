@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import Cookies from 'universal-cookie';
 import axios from 'axios';
+import React from 'react';
+import Cookies from 'universal-cookie';
 import Login from '../components/Login';
 import Main from '../components/Main';
 
@@ -8,7 +8,7 @@ interface Props {
 	user: any;
 }
 
-const App: React.FC<any> = ({ user }) => {
+const App: React.FC<Props> = ({ user }) => {
 	if (!user) {
 		return <Login />;
 	}
