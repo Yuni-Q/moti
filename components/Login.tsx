@@ -62,7 +62,7 @@ const Login: React.FC = () => {
 						</button>
 					)}
 					buttonText="Login"
-					onSuccess={(result) => {
+					onSuccess={(result: GoogleLoginResponse | any) => {
 						const { accessToken } = result;
 						axios
 							.post(
