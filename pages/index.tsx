@@ -58,7 +58,7 @@ const Main: NextPage<Props> = ({ onboard }) => {
 					flexDirection: 'row',
 					justifyContent: 'space-around',
 					width: '100%',
-					height: 36,
+					height: 60,
 				}}
 			>
 				<div>

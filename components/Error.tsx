@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import InternetPng from '../static/assets/images/internet.png';
 import unknownError from '../static/assets/images/unknownError.png';
 
@@ -7,8 +8,18 @@ interface Props {
 }
 
 const Error: React.FC<Props> = ({ internet }) => {
+	const router = useRouter();
+
 	return (
-		<div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+		<div
+			style={{
+				display: 'flex',
+				alignItems: 'center',
+				flexDirection: 'column',
+				height: 'calc(100vh - 75px - 60px)',
+				justifyContent: 'center',
+			}}
+		>
 			<div>
 				<img
 					src={internet ? InternetPng : unknownError}
@@ -17,32 +28,43 @@ const Error: React.FC<Props> = ({ internet }) => {
 				/>
 			</div>
 			<div>
-				<span
+				<div
 					style={{
+						margin: '16px 0 32px 0',
 						color: '#f1dbcd',
 						marginTop: 16,
 						fontSize: 14,
-						lineHeight: 26,
 						textAlign: 'center',
 					}}
 				>
-					{internet ? '인터넷이 불안정해요.\n확인 후 재접속 해주세요.' : '알 수 없는 오류가 발생했습니다.'}
-				</span>
+					{internet ? (
+						<>
+							인터넷이 불안정해요.
+							<br />
+							확인 후 재접속 해주세요.
+						</>
+					) : (
+						'알 수 없는 오류가 발생했습니다.'
+					)}
+				</div>
 			</div>
-			<div
+			<button
+				type="button"
 				style={{
-					backgroundColor: '#fff',
 					width: 112,
 					height: 40,
 					display: 'flex',
 					justifyContent: 'center',
 					alignItems: 'center',
 					borderRadius: 20,
-					marginTop: 32,
+					backgroundColor: '#fff',
+					color: 'rgb(212, 161, 125)',
+					boxShadow: '0 0 10px 0 rgb(252, 222, 227)',
 				}}
+				onClick={() => router.reload()}
 			>
-				<span style={{ color: '#d4a17d' }}>재접속</span>
-			</div>
+				재접속
+			</button>
 		</div>
 	);
 };
