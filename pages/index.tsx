@@ -1,91 +1,46 @@
-import { NextPage } from 'next';
+import React, { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
-
-import React, { useState } from 'react';
-import Error from '../components/Error';
-
-import normal from '../static/assets/images/normal.png';
-import Onboard from '../components/Onboard';
+import axios from 'axios';
+import Login from '../components/Login';
+import Main from '../components/Main';
 
 interface Props {
-	onboard: boolean;
+	user: any;
 }
 
-const Main: NextPage<Props> = ({ onboard }) => {
-	const [step, setStep] = useState(1);
-
-	if (!onboard && step <= 4) {
-		return <Onboard step={step} setStep={setStep} />;
+const App: React.FC<any> = ({ user }) => {
+	if (!user) {
+		return <Login />;
 	}
 	return (
-		<>
-			<div
-				style={{
-					display: 'flex',
-					flexDirection: 'row',
-					justifyContent: 'space-around',
-					width: '100%',
-				}}
-			>
-				{[1, 2, 3, 4, 5, 6].map((num) => {
-					return (
-						<div
-							key={num}
-							style={{
-								margin: '16px 0',
-							}}
-						>
-							<span style={{ color: '#d4a17d' }}>{num}th</span>
-							<div
-								style={{
-									width: 16,
-									height: 16,
-									borderRadius: 16,
-									backgroundColor: '#d4a17d',
-									marginTop: 8,
-								}}
-							/>
-						</div>
-					);
-				})}
-			</div>
-			<Error internet={false} />
-			<div
-				style={{
-					position: 'fixed',
-					bottom: 0,
-					display: 'flex',
-					flexDirection: 'row',
-					justifyContent: 'space-around',
-					width: '100%',
-					height: 60,
-				}}
-			>
-				<div>
-					<img src={normal} style={{ width: 24, height: 24 }} alt="normal" />
-				</div>
-				<div>
-					<span style={{ color: '#d4a17d', fontSize: 20 }}>Nov. 2nd week</span>
-				</div>
-				<div>
-					<img src={normal} style={{ width: 24, height: 24 }} alt="normal" />
-				</div>
-			</div>
-		</>
+		<div style={{ flex: 1, backgroundColor: 'black', alignItems: 'center', justifyContent: 'space-between' }}>
+			<Main />
+		</div>
 	);
 };
 
 export const getServerSideProps = async (context: any) => {
-	const cookies = context.req ? new Cookies(context.req.headers.cookie) : new Cookies();
-	console.log('cookie', cookies);
-	console.log(cookies.get('_ga')); // Pacman
-
-	// Axios.defaults.headers.Cookie = '';
-	// if (context.req && cookie) {
-	//	Axios.defaults.headers.Cookie = cookie;
-	// }
-
-	return { props: { onboard: !!cookies.get('onboard') } };
+	try {
+		const cookies = context.req ? new Cookies(context.req.headers.cookie) : new Cookies();
+		if (!cookies.get('token')) {
+			return {
+				props: { user: null },
+			};
+		}
+		const token = cookies.get('token');
+		const result = await axios.get('https://moti.company/api/v1/users/my', {
+			headers: { Authorization: token },
+		});
+		const user = result.data.data;
+		return {
+			props: { user },
+		};
+	} catch (error) {
+		console.log(error.message);
+		return {
+			props: { user: null },
+		};
+	}
 };
 
-export default Main;
+export default App;
