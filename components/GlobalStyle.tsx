@@ -9,6 +9,10 @@ const GlobalStyle = createGlobalStyle`
   ${Typo}
   ${Half}
 
+  * {
+    background-color: rgb(26, 22, 22)
+  }
+
   ${MarginAndPadding()}
   ${BoxModel()}
   @media (max-width: ${frameMaxWidthSmall}) {
