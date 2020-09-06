@@ -1,10 +1,7 @@
 import React from 'react';
+import GoogleLogin from 'react-google-login';
 import motiLogo from '../static/assets/images/motiLogo.png';
 import icApple from '../static/assets/images/icApple.png';
-
-const config = {
-	clientId: '507319569465-14q3dk7kdjuedhahq8adjb4l8ifbsvt8.apps.googleusercontent.com',
-};
 
 interface Props {
 	setToken: (token: string) => void;
@@ -35,10 +32,7 @@ const Login: React.FC<any> = () => {
 	};
 
 	return (
-		<button
-			type="button"
-			style={{ display: 'flex', alignItems: 'center', width: '100vw', height: '100vh', flexDirection: 'column' }}
-		>
+		<div style={{ display: 'flex', alignItems: 'center', width: '100vw', height: '100vh', flexDirection: 'column' }}>
 			<img
 				src={motiLogo}
 				alt="motiLogo"
@@ -54,8 +48,7 @@ const Login: React.FC<any> = () => {
 			>
 				Make Own True Identity
 			</div>
-			<button
-				type="button"
+			<div
 				style={{ position: 'absolute', bottom: 100, display: 'flex', alignItems: 'center', flexDirection: 'column' }}
 			>
 				<button
@@ -95,8 +88,8 @@ const Login: React.FC<any> = () => {
 						MOTI&apos;s User Agreement
 					</div>
 				</a>
-			</button>
-		</button>
+			</div>
+		</div>
 	);
 };
 
