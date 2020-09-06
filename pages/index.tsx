@@ -49,7 +49,7 @@ const Main: NextPage<Props> = ({ onboard }) => {
 					);
 				})}
 			</div>
-			<Error internet />
+			<Error internet={false} />
 			<div
 				style={{
 					position: 'fixed',

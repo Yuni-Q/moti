@@ -30,9 +30,8 @@ const Error: React.FC<Props> = ({ internet }) => {
 			<div>
 				<div
 					style={{
-						margin: '16px 0 32px 0',
+						margin: internet ? '16px 0 32px 0' : '26px 0 32px 0',
 						color: '#f1dbcd',
-						marginTop: 16,
 						fontSize: 14,
 						textAlign: 'center',
 					}}
