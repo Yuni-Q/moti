@@ -1,53 +1,71 @@
-import Axios from 'axios';
-import {NextPage} from 'next';
-import Link from 'next/link';
+// import Axios from 'axios';
+import { NextPage } from 'next';
+// import Link from 'next/link';
 import React from 'react';
-import {useSelector} from 'react-redux';
-import {Store} from 'redux';
-import {END} from 'redux-saga';
-import {loadUser} from '../../actions';
-import wrapper from '../../store/configureStore';
+import Error from '../../components/Error';
 
-interface SageStore extends Store {
-	sagaTask: {
-		toPromise: () => void;
-	};
-}
+import normal from '../../static/assets/images/normal.png';
+import Onboard from '../../components/Onboard';
 
 interface Props {
 	data: number;
 }
 
-const Main: NextPage<Props> = ({ data }) => {
-	const user = useSelector((state: any) => state.user);
+const Main: NextPage<Props> = () => {
+	if (true) {
+		return <Onboard />;
+	}
 	return (
 		<>
-			<h1>{process.env.APP_NAME || ".env 파일을 만들고 APP_NAME을 설정하세요"}</h1>
-			<div className='m-1'>{user.me.name} {data}</div>
-			<div className='m-sm-2'>{user.me.name} {data}</div>
-			<div>
-				<Link href="/posts/[id]" as="/posts/1">
-					<a>
-						posts로 이동
-					</a>
-				</Link>
+			<div
+				style={{
+					display: 'flex',
+					flexDirection: 'row',
+					justifyContent: 'space-around',
+					width: '100%',
+				}}
+			>
+				{[1, 2, 3, 4, 5, 6].map((num) => {
+					return (
+						<div key={num}>
+							<span style={{ color: '#d4a17d' }}>{num}th</span>
+							<div
+								style={{
+									width: 16,
+									height: 16,
+									borderRadius: 16,
+									backgroundColor: '#d4a17d',
+									marginTop: 8,
+								}}
+							/>
+						</div>
+					);
+				})}
+			</div>
+			<Error internet />
+			<div
+				style={{
+					position: 'fixed',
+					bottom: 0,
+					display: 'flex',
+					flexDirection: 'row',
+					justifyContent: 'space-around',
+					width: '100%',
+					height: 36,
+				}}
+			>
+				<div>
+					<img src={normal} style={{ width: 24, height: 24 }} alt="normal" />
+				</div>
+				<div>
+					<span style={{ color: '#d4a17d', fontSize: 20 }}>Nov. 2nd week</span>
+				</div>
+				<div>
+					<img src={normal} style={{ width: 24, height: 24 }} alt="normal" />
+				</div>
 			</div>
 		</>
 	);
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
-	const cookie = context.req ? context.req.headers.cookie : '';
-	Axios.defaults.headers.Cookie = '';
-	if (context.req && cookie) {
-		Axios.defaults.headers.Cookie = cookie;
-	}
-
-	context.store.dispatch(loadUser(1));
-	context.store.dispatch(END);
-	/* eslint-disable */
-	await (context.store as SageStore).sagaTask.toPromise();
-	/* eslint-enable */
-	return { props: { data: 123 } }
-});
 export default Main;
