@@ -8,19 +8,29 @@ import Error from './Error';
 import normal from '../static/assets/images/normal.png';
 import icProfileToucharea from '../static/assets/images/icProfileToucharea.png';
 import Onboard from './Onboard';
+import Motivation from './Motivation';
+import Question from './Question';
 
 interface Props {
 	isOnboard?: boolean;
+	answers: any[];
+	missions: any[];
+	refresh: boolean;
 }
 
-const Main: NextPage<Props> = ({ isOnboard }) => {
-	console.log('on', isOnboard);
+const Main: NextPage<Props> = ({ isOnboard, answers, missions, refresh }) => {
 	const [step, setStep] = useState(1);
-	const [errorMessage, setErrorMessage] = useState('5555');
+	const [isQuestion, setIsQuestion] = useState(false);
+	const [errorMessage, setErrorMessage] = useState('');
+	const [cardArray, setCardArray] = useState(answers);
 
 	if (!isOnboard && step <= 4) {
 		return <Onboard step={step} setStep={setStep} />;
 	}
+	if (isQuestion) {
+		return <Question setIsQuestion={setIsQuestion} missions={missions} refresh={refresh} />;
+	}
+
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column', width: '100vw', height: '100vh' }}>
 			<div
@@ -31,7 +41,7 @@ const Main: NextPage<Props> = ({ isOnboard }) => {
 					width: '100%',
 				}}
 			>
-				{[1, 2, 3, 4, 5, 6].map((num) => {
+				{[1, 2, 3, 4, 5, 6].map((num, index) => {
 					return (
 						<div
 							key={num}
@@ -45,7 +55,7 @@ const Main: NextPage<Props> = ({ isOnboard }) => {
 									width: 16,
 									height: 16,
 									borderRadius: 16,
-									backgroundColor: '#d4a17d',
+									backgroundColor: cardArray[index] ? '#d4a17d' : 'rgb(68, 68, 68)',
 									marginTop: 8,
 								}}
 							/>
@@ -54,6 +64,7 @@ const Main: NextPage<Props> = ({ isOnboard }) => {
 				})}
 			</div>
 			{errorMessage && <Error errorMessage={errorMessage} />}
+			{!errorMessage && !isQuestion && <Motivation setIsQuestion={setIsQuestion} />}
 			<div
 				style={{
 					display: 'flex',
