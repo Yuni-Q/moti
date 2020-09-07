@@ -13,10 +13,10 @@ const Error: React.FC<Props> = ({ errorMessage }) => {
 	return (
 		<div
 			style={{
+				flex: 1,
 				display: 'flex',
 				alignItems: 'center',
 				flexDirection: 'column',
-				height: 'calc(100vh - 75px - 60px)',
 				justifyContent: 'center',
 			}}
 		>

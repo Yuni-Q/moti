@@ -290,6 +290,13 @@ export const getServerSideProps = async (context: any) => {
 	try {
 		const cookies = context.req ? new Cookies(context.req.headers.cookie) : new Cookies();
 		props.token = cookies.get('token');
+		if (!props.token) {
+			const { res } = context;
+			res.setHeader('location', '/');
+			res.statusCode = 302;
+			res.end();
+			return;
+		}
 		return {
 			props,
 		};

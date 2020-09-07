@@ -22,7 +22,7 @@ const Main: NextPage<Props> = ({ isOnboard }) => {
 		return <Onboard step={step} setStep={setStep} />;
 	}
 	return (
-		<>
+		<div style={{ display: 'flex', flexDirection: 'column', width: '100vw', height: '100vh' }}>
 			<div
 				style={{
 					display: 'flex',
@@ -53,11 +53,9 @@ const Main: NextPage<Props> = ({ isOnboard }) => {
 					);
 				})}
 			</div>
-			<Error errorMessage={errorMessage} />
+			{errorMessage && <Error errorMessage={errorMessage} />}
 			<div
 				style={{
-					position: 'fixed',
-					bottom: 0,
 					display: 'flex',
 					flexDirection: 'row',
 					justifyContent: 'space-around',
@@ -75,7 +73,7 @@ const Main: NextPage<Props> = ({ isOnboard }) => {
 					<img src={icProfileToucharea} style={{ width: 24, height: 24 }} alt="icProfileToucharea" />
 				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 
