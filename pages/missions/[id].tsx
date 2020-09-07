@@ -10,6 +10,7 @@ interface Props {
 }
 
 const Mission: React.FC<Props> = ({ mission }) => {
+	console.log('mission', mission);
 	const [content, setContent] = useState('');
 	const [isSubmit, setIsSubmit] = useState(false);
 	console.log('mission', mission);

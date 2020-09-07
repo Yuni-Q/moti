@@ -1,8 +1,9 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 import Cookies from 'universal-cookie';
 import Login from '../components/Login';
 import Main from '../components/Main';
+import AnswerDetail from '../components/AnswerDetail';
 
 interface Props {
 	user: any;
@@ -14,10 +15,24 @@ interface Props {
 }
 
 const App: React.FC<Props> = ({ user, isOnboard, answers, missions, refresh, check }) => {
+	const [isDetail, setIsDetail] = useState(false);
+	if (isDetail) {
+		return <AnswerDetail cardArray={answers} setIsDetail={setIsDetail} />;
+	}
+
 	if (!user) {
 		return <Login />;
 	}
-	return <Main isOnboard={isOnboard} answers={answers} missions={missions} refresh={refresh} check={check} />;
+	return (
+		<Main
+			isOnboard={isOnboard}
+			answers={answers}
+			missions={missions}
+			refresh={refresh}
+			check={check}
+			setIsDetail={setIsDetail}
+		/>
+	);
 };
 
 export const getServerSideProps = async (context: any) => {

@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { NextPage } from 'next';
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import icProfileToucharea from '../static/assets/images/icProfileToucharea.png';
 import normal from '../static/assets/images/normal.png';
 import Answer from './Answer';
@@ -15,10 +16,13 @@ interface Props {
 	missions: any[];
 	refresh: boolean;
 	check: boolean;
+
+	setIsDetail: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Main: NextPage<Props> = ({ isOnboard, answers, missions, refresh, check }) => {
+const Main: NextPage<Props> = ({ isOnboard, answers, missions, refresh, check, setIsDetail }) => {
 	console.log('check', check);
+	const router = useRouter();
 	const [step, setStep] = useState(1);
 	const [isQuestion, setIsQuestion] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
@@ -65,7 +69,7 @@ const Main: NextPage<Props> = ({ isOnboard, answers, missions, refresh, check })
 			</div>
 			{errorMessage && <Error errorMessage={errorMessage} />}
 			{!errorMessage && !isQuestion && !check && <Motivation setIsQuestion={setIsQuestion} />}
-			{!!check && <Answer cardArray={cardArray} />}
+			{!!check && <Answer cardArray={cardArray} setIsDetail={setIsDetail} />}
 			<div
 				style={{
 					display: 'flex',
@@ -76,13 +80,17 @@ const Main: NextPage<Props> = ({ isOnboard, answers, missions, refresh, check })
 				}}
 			>
 				<div>
-					<img src={normal} style={{ width: 24, height: 24 }} alt="normal" />
+					<button type="button" onClick={() => router.push('/my')}>
+						<img src={normal} style={{ width: 24, height: 24 }} alt="normal" />
+					</button>
 				</div>
 				<div>
 					<span style={{ color: '#d4a17d', fontSize: 20 }}>{moment().format('YYYY. MM. DD')}</span>
 				</div>
 				<div>
-					<img src={icProfileToucharea} style={{ width: 24, height: 24 }} alt="icProfileToucharea" />
+					<button type="button" onClick={() => router.push('/my')}>
+						<img src={icProfileToucharea} style={{ width: 24, height: 24 }} alt="icProfileToucharea" />
+					</button>
 				</div>
 			</div>
 		</div>

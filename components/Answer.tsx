@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import imgCardframe from '../static/assets/images/imgCardframe.png';
+import AnswerDetail from './AnswerDetail';
 
 interface Props {
 	cardArray: any[];
+	setIsDetail: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Answer: React.FC<Props> = ({ cardArray }) => {
-	const router = useRouter();
-
+const Answer: React.FC<Props> = ({ cardArray, setIsDetail }) => {
 	return (
 		<div style={{ flex: 1, width: '100vw', display: 'flex', alignItems: 'center' }}>
-			<div
+			<button
+				type="button"
+				onClick={() => setIsDetail(true)}
 				style={{
 					margin: '0 auto',
 					width: 311,
@@ -35,19 +37,7 @@ const Answer: React.FC<Props> = ({ cardArray }) => {
 						/>
 					);
 				})}
-				<div
-					style={{
-						textAlign: 'center',
-						zIndex: 10,
-						width: 255,
-						margin: '28px auto 32px',
-						display: 'flex',
-						justifyContent: 'space-between',
-						flexDirection: 'column',
-						flex: 1,
-					}}
-				/>
-			</div>
+			</button>
 		</div>
 	);
 };
