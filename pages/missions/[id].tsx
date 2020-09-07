@@ -133,6 +133,18 @@ export const getServerSideProps = async (context: any) => {
 		});
 		props.user = result.data.data;
 		if (props.user) {
+			const answers = await axios.get('https://moti.company/api/v1/answers/week', {
+				headers: { Authorization: token },
+			});
+			const check = answers.data.data.answers.filter((answer: any) => {
+				return answer.date === answers.data.data.today;
+			});
+			if (check.length > 0) {
+				const { res } = context;
+				res.setHeader('location', '/');
+				res.statusCode = 302;
+				return res.end();
+			}
 			const mission = await axios.get(`https://moti.company/api/v1/missions/${context.params.id}`, {
 				headers: { Authorization: token },
 			});
@@ -143,6 +155,10 @@ export const getServerSideProps = async (context: any) => {
 		};
 	} catch (error) {
 		console.log(error.message);
+		const { res } = context;
+		res.setHeader('location', '/');
+		res.statusCode = 302;
+		res.end();
 		return {
 			props,
 		};
