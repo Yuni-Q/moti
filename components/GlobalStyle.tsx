@@ -10,7 +10,8 @@ const GlobalStyle = createGlobalStyle`
   ${Half}
 
   * {
-    background-color: rgb(26, 22, 22)
+    background-color: rgb(26, 22, 22);
+    color: rgb(241, 219, 205);
   }
 
   ${MarginAndPadding()}

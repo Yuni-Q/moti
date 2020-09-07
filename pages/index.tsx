@@ -6,39 +6,41 @@ import Main from '../components/Main';
 
 interface Props {
 	user: any;
+	isOnboard: boolean;
 }
 
-const App: React.FC<Props> = ({ user }) => {
+const App: React.FC<Props> = ({ user, isOnboard }) => {
 	if (!user) {
 		return <Login />;
 	}
-	return (
-		<div style={{ flex: 1, backgroundColor: 'black', alignItems: 'center', justifyContent: 'space-between' }}>
-			<Main />
-		</div>
-	);
+	return <Main isOnboard={isOnboard} />;
 };
 
 export const getServerSideProps = async (context: any) => {
+	const props = {
+		user: null,
+		isOnboard: false,
+	};
 	try {
 		const cookies = context.req ? new Cookies(context.req.headers.cookie) : new Cookies();
+		props.isOnboard = !!cookies.get('onboard');
 		if (!cookies.get('token')) {
 			return {
-				props: { user: null },
+				props,
 			};
 		}
 		const token = cookies.get('token');
 		const result = await axios.get('https://moti.company/api/v1/users/my', {
 			headers: { Authorization: token },
 		});
-		const user = result.data.data;
+		props.user = result.data.data;
 		return {
-			props: { user },
+			props,
 		};
 	} catch (error) {
 		console.log(error.message);
 		return {
-			props: { user: null },
+			props,
 		};
 	}
 };

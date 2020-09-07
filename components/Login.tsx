@@ -73,10 +73,13 @@ const Login: React.FC = () => {
 								{ headers: { Authorization: accessToken } },
 							)
 							.then((apiResult) => {
-								const cookies = new Cookies();
-								const token = apiResult.data.data.accessToken;
-								cookies.set('token', token);
-								router.push('/');
+                const cookies = new Cookies();
+                const { accessToken: token, signUp } = apiResult.data.data;
+                cookies.set('token', token);
+                if(signUp) {
+                  return router.push('/');
+                }
+                return router.push('/signUp');
 							})
 							.catch((error) => {
 								console.error('error', error);

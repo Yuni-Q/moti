@@ -10,13 +10,15 @@ import icProfileToucharea from '../static/assets/images/icProfileToucharea.png';
 import Onboard from './Onboard';
 
 interface Props {
-	onboard?: boolean;
+	isOnboard?: boolean;
 }
 
-const Main: NextPage<Props> = ({ onboard }) => {
+const Main: NextPage<Props> = ({ isOnboard }) => {
+	console.log('on', isOnboard);
 	const [step, setStep] = useState(1);
+	const [errorMessage, setErrorMessage] = useState('5555');
 
-	if (!onboard && step <= 4) {
+	if (!isOnboard && step <= 4) {
 		return <Onboard step={step} setStep={setStep} />;
 	}
 	return (
@@ -51,7 +53,7 @@ const Main: NextPage<Props> = ({ onboard }) => {
 					);
 				})}
 			</div>
-			<Error internet={false} />
+			<Error errorMessage={errorMessage} />
 			<div
 				style={{
 					position: 'fixed',
@@ -75,12 +77,6 @@ const Main: NextPage<Props> = ({ onboard }) => {
 			</div>
 		</>
 	);
-};
-
-export const getServerSideProps = async (context: any) => {
-	const cookies = context.req ? new Cookies(context.req.headers.cookie) : new Cookies();
-
-	return { props: { onboard: !!cookies.get('onboard') } };
 };
 
 export default Main;
