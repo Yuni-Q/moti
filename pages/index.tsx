@@ -10,13 +10,14 @@ interface Props {
 	answers: any[];
 	missions: any[];
 	refresh: boolean;
+	check: boolean;
 }
 
-const App: React.FC<Props> = ({ user, isOnboard, answers, missions, refresh }) => {
+const App: React.FC<Props> = ({ user, isOnboard, answers, missions, refresh, check }) => {
 	if (!user) {
 		return <Login />;
 	}
-	return <Main isOnboard={isOnboard} answers={answers} missions={missions} refresh={refresh} />;
+	return <Main isOnboard={isOnboard} answers={answers} missions={missions} refresh={refresh} check={check} />;
 };
 
 export const getServerSideProps = async (context: any) => {
@@ -26,6 +27,7 @@ export const getServerSideProps = async (context: any) => {
 		answers: [],
 		refresh: false,
 		missions: [],
+		check: false,
 	};
 	try {
 		const cookies = context.req ? new Cookies(context.req.headers.cookie) : new Cookies();
@@ -45,6 +47,11 @@ export const getServerSideProps = async (context: any) => {
 				headers: { Authorization: token },
 			});
 			props.answers = answers.data.data.answers;
+
+			const check = answers.data.data.answers.filter((answer: any) => {
+				return answer.date === answers.data.data.today;
+			});
+			props.check = check.length > 0;
 
 			const missions = await axios.get('https://moti.company/api/v1/missions', {
 				headers: { Authorization: token },

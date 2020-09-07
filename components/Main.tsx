@@ -1,14 +1,12 @@
-import { NextPage } from 'next';
-import Cookies from 'universal-cookie';
-
-import React, { useState } from 'react';
 import moment from 'moment';
-import Error from './Error';
-
-import normal from '../static/assets/images/normal.png';
+import { NextPage } from 'next';
+import React, { useState } from 'react';
 import icProfileToucharea from '../static/assets/images/icProfileToucharea.png';
-import Onboard from './Onboard';
+import normal from '../static/assets/images/normal.png';
+import Answer from './Answer';
+import Error from './Error';
 import Motivation from './Motivation';
+import Onboard from './Onboard';
 import Question from './Question';
 
 interface Props {
@@ -16,9 +14,11 @@ interface Props {
 	answers: any[];
 	missions: any[];
 	refresh: boolean;
+	check: boolean;
 }
 
-const Main: NextPage<Props> = ({ isOnboard, answers, missions, refresh }) => {
+const Main: NextPage<Props> = ({ isOnboard, answers, missions, refresh, check }) => {
+	console.log('check', check);
 	const [step, setStep] = useState(1);
 	const [isQuestion, setIsQuestion] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
@@ -64,7 +64,8 @@ const Main: NextPage<Props> = ({ isOnboard, answers, missions, refresh }) => {
 				})}
 			</div>
 			{errorMessage && <Error errorMessage={errorMessage} />}
-			{!errorMessage && !isQuestion && <Motivation setIsQuestion={setIsQuestion} />}
+			{!errorMessage && !isQuestion && !check && <Motivation setIsQuestion={setIsQuestion} />}
+			{!!check && <Answer cardArray={cardArray} />}
 			<div
 				style={{
 					display: 'flex',
