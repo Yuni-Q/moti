@@ -23,18 +23,15 @@ const Answer: React.FC<Props> = ({ cardArray }) => {
 					flexDirection: 'column',
 				}}
 			>
-				{/* <img src={imgCardframe} width="287" alt="imgCardframe" style={{ margin: 12, position: 'absolute' }} /> */}
+				<img src={imgCardframe} width="287" alt="imgCardframe" style={{ margin: 12, position: 'absolute' }} />
 				{cardArray.map((value) => {
-					console.log('111', value.file.cardUrl);
 					return (
-						<iframe
-							key={value.file.cardUrl}
-							title="img"
-							src={`https://drive.google.com/viewerng/viewer?embedded=true&url=${value.file.cardUrl}#toolbar=0&scrollbar=0`}
-							frameBorder="0"
-							scrolling="auto"
-							height="100%"
-							width="100%"
+						<img
+							width="186"
+							height="316"
+							src={value.file.cardPngUrl}
+							alt="cardImg"
+							style={{ background: 'initial', zIndex: 100, position: 'absolute', top: 80, left: 62 }}
 						/>
 					);
 				})}
