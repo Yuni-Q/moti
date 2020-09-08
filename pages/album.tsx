@@ -48,7 +48,7 @@ const Album: React.FC<Props> = ({ user, answers }) => {
 						const cookies = new Cookies();
 						const token = cookies.get('token');
 						const newAnswerList = await axios.get(
-							`http://localhost:8000/api/v1/answers/list?answerId=${
+							`https://moti.company/api/v1/answers/list?answerId=${
 								answerList[answerList.length - 1][answerList[answerList.length - 1].length - 1].id
 							}`,
 							{
