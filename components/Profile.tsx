@@ -100,7 +100,17 @@ const Profile: React.FC<Props> = ({ user, setIsEdit }) => {
 					alignContent: 'center',
 				}}
 			>
-				<div style={{ display: 'flex', alignItems: 'center' }}>로그아웃</div>
+				<button
+					type="button"
+					style={{ display: 'flex', alignItems: 'center' }}
+					onClick={() => {
+						const cookies = new Cookies();
+						cookies.remove('token');
+						router.push('/');
+					}}
+				>
+					로그아웃
+				</button>
 			</div>
 			<div
 				style={{
