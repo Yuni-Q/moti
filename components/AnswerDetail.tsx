@@ -132,6 +132,9 @@ const AnswerDetail: React.FC<Props> = ({ cardArray, setIsDetail }) => {
 								}}
 							>
 								<img src={imgCardframe} width="287" alt="imgCardframe" style={{ margin: 12, position: 'absolute' }} />
+								{answer.imageUrl && (
+									<img src={answer.imageUrl} alt="imgaeUrl" width="80%" style={{ zIndex: 10, margin: '25px auto 0' }} />
+								)}
 								<div
 									style={{
 										height: '100%',
@@ -140,6 +143,7 @@ const AnswerDetail: React.FC<Props> = ({ cardArray, setIsDetail }) => {
 										alignItems: 'center',
 										zIndex: 10,
 										background: 'initial',
+										overflow: 'scroll',
 									}}
 								>
 									{answer.content}
