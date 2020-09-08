@@ -15,6 +15,7 @@ const Answer: React.FC<Props> = ({ answer }) => {
 	console.log('answer', answer);
 	const router = useRouter();
 	const [content, setContent] = useState(answer.content);
+	// const [file, setFile] = useState(answer.imageUrl);
 	const [isSubmit, setIsSubmit] = useState(false);
 	if (isSubmit) {
 		return <Submit />;
@@ -76,43 +77,46 @@ const Answer: React.FC<Props> = ({ answer }) => {
 						flex: 1,
 					}}
 				>
-					<textarea
-						value={content}
-						onChange={(e) => setContent(e.target.value)}
-						style={{ flex: 1, width: '100%', border: 'none', textAlign: 'center', padding: '50% 0', resize: 'none' }}
-						placeholder="여기를 눌러 질문에 대한 답을 적어주세요"
-					/>
-					<div style={{ textAlign: 'center', margin: '24px 0 0' }}>
-						<button
-							type="button"
-							onClick={async () => {
-								try {
-									const cookies = new Cookies();
-									const formData = new FormData();
-									if (answer.mission.isContent) {
-										formData.append('content', content);
-									}
-									// formData.append('missionId', answer.mission.id);
-									const result = await axios.put(`https://moti.company/api/v1/answers/${answer.id}`, formData, {
-										headers: { Authorization: cookies.get('token'), 'Content-Type': 'multipart/form-data' },
-									});
-									setIsSubmit(true);
-								} catch (error) {
-									console.log('error', JSON.stringify(error));
-								}
-							}}
-							style={{
-								width: 240,
-								height: 40,
-								backgroundColor: 'rgb(222, 226, 230)',
-								color: 'rgb(212, 161, 125)',
-								borderRadius: 30,
-							}}
-						>
-							답변하기
-						</button>
-					</div>
+					{answer.mission.isContent && (
+						<textarea
+							value={content}
+							onChange={(e) => setContent(e.target.value)}
+							style={{ flex: 1, width: '100%', border: 'none', textAlign: 'center', padding: '50% 0', resize: 'none' }}
+							placeholder="여기를 눌러 질문에 대한 답을 적어주세요"
+						/>
+					)}
 				</div>
+			</div>
+			<div style={{ textAlign: 'center', margin: '24px 0 0' }}>
+				<button
+					type="button"
+					onClick={async () => {
+						try {
+							const cookies = new Cookies();
+							const formData = new FormData();
+							if (answer.mission.isContent) {
+								formData.append('content', content);
+							} else {
+								setIsSubmit(true);
+							}
+							const result = await axios.put(`https://moti.company/api/v1/answers/${answer.id}`, formData, {
+								headers: { Authorization: cookies.get('token'), 'Content-Type': 'multipart/form-data' },
+							});
+							setIsSubmit(true);
+						} catch (error) {
+							console.log('error', JSON.stringify(error));
+						}
+					}}
+					style={{
+						width: 240,
+						height: 40,
+						backgroundColor: 'rgb(222, 226, 230)',
+						color: 'rgb(212, 161, 125)',
+						borderRadius: 30,
+					}}
+				>
+					답변하기
+				</button>
 			</div>
 		</div>
 	);
