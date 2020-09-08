@@ -122,7 +122,23 @@ const Profile: React.FC<Props> = ({ user, setIsEdit }) => {
 					alignContent: 'center',
 				}}
 			>
-				<div style={{ display: 'flex', alignItems: 'center' }}>탈퇴하기</div>
+				<button
+					type="button"
+					style={{ display: 'flex', alignItems: 'center' }}
+					onClick={async () => {
+						try {
+							const cookies = new Cookies();
+							const result = await axios.delete('https://moti.company/api/v1/users', {
+								headers: { Authorization: cookies.get('token') },
+							});
+							router.push('/');
+						} catch (error) {
+							console.log('error', JSON.stringify(error));
+						}
+					}}
+				>
+					탈퇴하기
+				</button>
 			</div>
 			<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
 				<button
