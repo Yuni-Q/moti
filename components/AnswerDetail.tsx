@@ -109,7 +109,7 @@ const AnswerDetail: React.FC<Props> = ({ cardArray, setIsDetail }) => {
 						<div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
 							<div style={{ padding: '16px 60px 0 24px ', fontSize: 24, position: 'relative' }}>
 								<div>{answer.mission.title}</div>
-								<button type="button" onClick={() => setIsDetail(false)}>
+								<button type="button" onClick={() => router.push(`/answers/${answer.id}`)}>
 									<img
 										style={{ position: 'absolute', margin: '0 12px', top: 20, right: 0 }}
 										width={24}

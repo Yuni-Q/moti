@@ -3,8 +3,6 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Cookies from 'universal-cookie';
 import icArrowLeft from '../static/assets/images/icArrowLeft.png';
-import icRewriteNormal from '../static/assets/images/icRewriteNormal.png';
-import imgMypage from '../static/assets/images/imgMypage.png';
 
 interface Props {
 	user: any;

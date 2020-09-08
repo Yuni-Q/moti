@@ -127,9 +127,9 @@ const SignUp: React.FC<Props> = ({ token }) => {
 											backgroundColor: 'rgba(25,25,25,0.7)',
 											fontSize: 0,
 										}}
-										onClick={() => setGender('male')}
+										onClick={() => setGender('남')}
 									>
-										male
+										남
 									</button>
 								)}
 								<img style={{ margin: '20px 6px 18px' }} src={imgMale} alt="imgMale" width={101} height={115} />
@@ -156,9 +156,9 @@ const SignUp: React.FC<Props> = ({ token }) => {
 											backgroundColor: 'rgba(25,25,25,0.7)',
 											fontSize: 0,
 										}}
-										onClick={() => setGender('female')}
+										onClick={() => setGender('여')}
 									>
-										female
+										여
 									</button>
 								)}
 								<img style={{ margin: '16px 25px 14px' }} src={imgFemale} alt="imgFemale" width={63} height={124} />
