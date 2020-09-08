@@ -59,6 +59,9 @@ const Album: React.FC<Props> = ({ user, answers }) => {
 			}
 		};
 		const fn = _.throttle(getItem, 5000);
+		if (document.documentElement.clientHeight === document.documentElement.scrollHeight) {
+			fn();
+		}
 		window.addEventListener('scroll', fn);
 		return () => {
 			window.removeEventListener('scroll', fn);
@@ -99,7 +102,10 @@ const Album: React.FC<Props> = ({ user, answers }) => {
 				<div style={{ display: 'flex', flexWrap: 'wrap' }}>
 					{answerList.map((answer: any) => {
 						return (
-							<div style={{ width: '34%', flexShrink: 0, flexGrow: 1, textAlign: 'center', margin: '0 0 32px' }}>
+							<div
+								key={answer[0].no}
+								style={{ width: '34%', flexShrink: 0, flexGrow: 1, textAlign: 'center', margin: '0 0 32px' }}
+							>
 								<StyleTitle>No. {answer[0].no}</StyleTitle>
 								<button
 									type="button"
@@ -117,6 +123,7 @@ const Album: React.FC<Props> = ({ user, answers }) => {
 									{answer.map((value: any) => {
 										return (
 											<img
+												key={value.id}
 												width="70%"
 												src={value.file.cardPngUrl}
 												alt="cardImg"
