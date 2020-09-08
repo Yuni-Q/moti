@@ -82,7 +82,7 @@ const Main: NextPage<Props> = ({ isOnboard, answers, missions, refresh, check, s
 				}}
 			>
 				<div>
-					<button type="button" onClick={() => router.push('/my')}>
+					<button type="button" onClick={() => router.push('/album')}>
 						<img src={normal} style={{ width: 24, height: 24 }} alt="normal" />
 					</button>
 				</div>

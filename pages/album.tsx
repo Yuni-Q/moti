@@ -7,6 +7,7 @@ import Cookies from 'universal-cookie';
 import icArrowLeft from '../static/assets/images/icArrowLeft.png';
 import icRewriteNormal from '../static/assets/images/icRewriteNormal.png';
 import imgCardframe from '../static/assets/images/imgCardframe.png';
+import AnswerDetail from '../components/AnswerDetail';
 
 const StyleTitle = styled.div`
 	display: flex;
@@ -35,7 +36,10 @@ interface Props {
 
 const Album: React.FC<Props> = ({ user, answers }) => {
 	const [answerList, setAnswerList] = useState(answers);
+	const [detailAnswer, setDetailAnswer] = useState([]);
+	const [idDetail, setIsDetail] = useState(false);
 	const router = useRouter();
+
 	useEffect(() => {
 		const getItem = async () => {
 			if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
@@ -67,6 +71,9 @@ const Album: React.FC<Props> = ({ user, answers }) => {
 			window.removeEventListener('scroll', fn);
 		};
 	}, [answerList]);
+	if (idDetail) {
+		return <AnswerDetail cardArray={detailAnswer} setIsDetail={setIsDetail} />;
+	}
 	return (
 		<div
 			style={{
@@ -87,22 +94,18 @@ const Album: React.FC<Props> = ({ user, answers }) => {
 					/>
 				</button>
 				<div style={{ flex: 1, color: 'rgb(241, 219, 205)', textAlign: 'center' }}>앨범</div>
-				<button type="button">
-					<img
-						style={{ position: 'absolute', margin: '0 12px', top: 24, right: 0 }}
-						width={24}
-						height={24}
-						src={icRewriteNormal}
-						alt="icRewriteNormal"
-					/>
-				</button>
 			</div>
 			{/* <div style={{ display: 'flex', margin: '24px 24px 16px', justifyContent: 'center' }} /> */}
 			<div style={{ margin: '16px 0 0' }}>
 				<div style={{ display: 'flex', flexWrap: 'wrap' }}>
 					{answerList.map((answer: any) => {
 						return (
-							<div
+							<button
+								type="button"
+								onClick={() => {
+									setDetailAnswer(answer);
+									setIsDetail(true);
+								}}
 								key={answer[0].no}
 								style={{ width: '34%', flexShrink: 0, flexGrow: 1, textAlign: 'center', margin: '0 0 32px' }}
 							>
@@ -132,7 +135,7 @@ const Album: React.FC<Props> = ({ user, answers }) => {
 										);
 									})}
 								</button>
-							</div>
+							</button>
 						);
 					})}
 				</div>
