@@ -10,7 +10,7 @@ interface Props {
 
 const Answer: React.FC<Props> = ({ cardArray, setIsDetail }) => {
 	return (
-		<div style={{ flex: 1, width: '100vw', display: 'flex', alignItems: 'center' }}>
+		<div style={{ flex: 1, width: '100vw', display: 'flex', alignItems: 'center', margin: '24px 0' }}>
 			<button
 				type="button"
 				onClick={() => setIsDetail(true)}

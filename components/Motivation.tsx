@@ -17,6 +17,7 @@ const Motivation: React.FC<Props> = ({ setIsQuestion }) => {
 				alignItems: 'center',
 				flexDirection: 'column',
 				justifyContent: 'center',
+				margin: '24px 0',
 			}}
 		>
 			<button
