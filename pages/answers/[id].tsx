@@ -1,19 +1,21 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import Cookies from 'universal-cookie';
+import { useRouter } from 'next/router';
 import Submit from '../../components/Submit';
 import icArrowLeft from '../../static/assets/images/icArrowLeft.png';
 import imgCardframe from '../../static/assets/images/imgCardframe.png';
 
 interface Props {
-	mission: any;
+	user: any;
+	answer: any;
 }
 
-const Answer: React.FC<Props> = ({ mission }) => {
-	console.log('mission', mission);
-	const [content, setContent] = useState('');
+const Answer: React.FC<Props> = ({ answer }) => {
+	console.log('answer', answer);
+	const router = useRouter();
+	const [content, setContent] = useState(answer.content);
 	const [isSubmit, setIsSubmit] = useState(false);
-	console.log('mission', mission);
 	if (isSubmit) {
 		return <Submit />;
 	}
@@ -38,10 +40,7 @@ const Answer: React.FC<Props> = ({ mission }) => {
 					flexShrink: 0,
 				}}
 			>
-				<button
-					type="button"
-					// onClick={() => setIsQuestion(false)}
-				>
+				<button type="button" onClick={() => router.back()}>
 					<img
 						style={{ position: 'absolute', margin: '0 12px', top: 24, left: 0 }}
 						width={24}
@@ -50,9 +49,9 @@ const Answer: React.FC<Props> = ({ mission }) => {
 						alt="icArrowLeft"
 					/>
 				</button>
-				<div style={{ flex: 1, color: 'rgb(241, 219, 205)', textAlign: 'center' }}>답변 하기</div>
+				<div style={{ flex: 1, color: 'rgb(241, 219, 205)', textAlign: 'center' }}>답변 수정하기</div>
 			</div>
-			<div style={{ fontSize: 24, margin: '8px 24px 56px' }}>{mission.title}</div>
+			<div style={{ fontSize: 24, margin: '8px 24px 56px' }}>{answer.mission.title}</div>
 			<div
 				style={{
 					width: 311,
@@ -90,12 +89,11 @@ const Answer: React.FC<Props> = ({ mission }) => {
 								try {
 									const cookies = new Cookies();
 									const formData = new FormData();
-									if (mission.isContent) {
+									if (answer.mission.isContent) {
 										formData.append('content', content);
 									}
-									formData.append('missionId', mission.id);
-
-									const result = await axios.post('https://moti.company/api/v1/answers', formData, {
+									// formData.append('missionId', answer.mission.id);
+									const result = await axios.put(`https://moti.company/api/v1/answers/${answer.id}`, formData, {
 										headers: { Authorization: cookies.get('token'), 'Content-Type': 'multipart/form-data' },
 									});
 									setIsSubmit(true);
@@ -123,7 +121,7 @@ const Answer: React.FC<Props> = ({ mission }) => {
 export const getServerSideProps = async (context: any) => {
 	const props = {
 		user: null,
-		mission: {},
+		answer: {},
 	};
 	try {
 		const cookies = context.req ? new Cookies(context.req.headers.cookie) : new Cookies();
@@ -134,22 +132,10 @@ export const getServerSideProps = async (context: any) => {
 		});
 		props.user = result.data.data;
 		if (props.user) {
-			const answers = await axios.get('https://moti.company/api/v1/answers/week', {
+			const answer = await axios.get(`https://moti.company/api/v1/answers/${context.params.id}`, {
 				headers: { Authorization: token },
 			});
-			const check = answers.data.data.answers.filter((answer: any) => {
-				return answer.date === answers.data.data.today;
-			});
-			if (check.length > 0) {
-				const { res } = context;
-				res.setHeader('location', '/');
-				res.statusCode = 302;
-				return res.end();
-			}
-			const mission = await axios.get(`https://moti.company/api/v1/missions/${context.params.id}`, {
-				headers: { Authorization: token },
-			});
-			props.mission = mission.data.data;
+			props.answer = answer.data.data;
 		}
 		return {
 			props,
