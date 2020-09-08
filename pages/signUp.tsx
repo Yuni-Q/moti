@@ -115,7 +115,7 @@ const SignUp: React.FC<Props> = ({ token }) => {
 									borderRadius: 11,
 								}}
 							>
-								{gender !== 'male' && (
+								{gender !== '남' && (
 									<button
 										type="button"
 										style={{
@@ -144,7 +144,7 @@ const SignUp: React.FC<Props> = ({ token }) => {
 									borderRadius: 11,
 								}}
 							>
-								{gender !== 'female' && (
+								{gender !== '여' && (
 									<button
 										type="button"
 										style={{
