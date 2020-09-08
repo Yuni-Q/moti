@@ -5,19 +5,17 @@ import Cookies from 'universal-cookie';
 import icArrowLeft from '../static/assets/images/icArrowLeft.png';
 import icRewriteNormal from '../static/assets/images/icRewriteNormal.png';
 import imgMypage from '../static/assets/images/imgMypage.png';
-import Profile from '../components/Profile';
 
 interface Props {
 	user: any;
+	setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const My: React.FC<Props> = ({ user }) => {
-	const [isEdit, setIsEdit] = useState(false);
+const Profile: React.FC<Props> = ({ user, setIsEdit }) => {
+	const [name, setName] = useState(user.name);
+	const [birthday, setBirthday] = useState(user.birthday);
+	const [gender, setGender] = useState(user.gender);
 	const router = useRouter();
-
-	if (isEdit) {
-		return <Profile user={user} setIsEdit={setIsEdit} />;
-	}
 	return (
 		<div
 			style={{
@@ -37,26 +35,14 @@ const My: React.FC<Props> = ({ user }) => {
 						alt="icArrowLeft"
 					/>
 				</button>
-				<div style={{ flex: 1, color: 'rgb(241, 219, 205)', textAlign: 'center' }}>마이페이지</div>
-				<button type="button" onClick={() => setIsEdit(true)}>
-					<img
-						style={{ position: 'absolute', margin: '0 12px', top: 24, right: 0 }}
-						width={24}
-						height={24}
-						src={icRewriteNormal}
-						alt="icRewriteNormal"
-					/>
-				</button>
+				<div style={{ flex: 1, color: 'rgb(241, 219, 205)', textAlign: 'center' }}>수정하기</div>
 			</div>
 			<div style={{ display: 'flex', margin: '24px 24px 16px', justifyContent: 'center' }} />
-			<div style={{ textAlign: 'center', margin: '8px 0 0' }}>
-				<img src={imgMypage} alt="imgMypage" width="108" height="108" />
-			</div>
-			<div style={{ textAlign: 'center', margin: '16px 0 0' }}>{user.name} 님</div>
+
 			<div
 				style={{
 					textAlign: 'center',
-					margin: '26px 16px 0',
+					margin: '8px 16px 0',
 					borderTop: '1px solid rgb(255, 223, 223)',
 					display: 'flex',
 					justifyContent: 'space-between',
@@ -65,7 +51,11 @@ const My: React.FC<Props> = ({ user }) => {
 				}}
 			>
 				<div style={{ display: 'flex', alignItems: 'center' }}>닉네임</div>
-				<div style={{ display: 'flex', alignItems: 'center' }}>{user.name}</div>
+				<input
+					value={name}
+					onChange={(e) => setName(e.target.value)}
+					style={{ display: 'flex', alignItems: 'center', border: 'none' }}
+				/>
 			</div>
 			<div
 				style={{
@@ -78,7 +68,11 @@ const My: React.FC<Props> = ({ user }) => {
 				}}
 			>
 				<div style={{ display: 'flex', alignItems: 'center' }}>생년월일</div>
-				<div style={{ display: 'flex', alignItems: 'center' }}>{user.birthday}</div>
+				<input
+					value={birthday}
+					onChange={(e) => setBirthday(e.target.value)}
+					style={{ display: 'flex', alignItems: 'center', border: 'none' }}
+				/>
 			</div>
 			<div
 				style={{
@@ -91,7 +85,11 @@ const My: React.FC<Props> = ({ user }) => {
 				}}
 			>
 				<div style={{ display: 'flex', alignItems: 'center' }}>성별</div>
-				<div style={{ display: 'flex', alignItems: 'center' }}>{user.gender ? user.gender : '미입력'}</div>
+				<input
+					value={gender}
+					onChange={(e) => setGender(e.target.value)}
+					style={{ display: 'flex', alignItems: 'center', border: 'none' }}
+				/>
 			</div>
 			<div
 				style={{
@@ -104,7 +102,7 @@ const My: React.FC<Props> = ({ user }) => {
 					alignContent: 'center',
 				}}
 			>
-				<div style={{ display: 'flex', alignItems: 'center' }}>문의하기</div>
+				<div style={{ display: 'flex', alignItems: 'center' }}>로그아웃</div>
 			</div>
 			<div
 				style={{
@@ -116,41 +114,46 @@ const My: React.FC<Props> = ({ user }) => {
 					alignContent: 'center',
 				}}
 			>
-				<div style={{ display: 'flex', alignItems: 'center' }}>
-					<a href="https://www.notion.so/MOTI-35d01dd331bb4aa0915c33d28d60b63c" target="_blank" rel="noreferrer">
-						개인정보취급방침 및 이용약관
-					</a>
-				</div>
+				<div style={{ display: 'flex', alignItems: 'center' }}>탈퇴하기</div>
+			</div>
+			<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+				<button
+					type="button"
+					style={{
+						width: 136,
+						height: 40,
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+						borderRadius: 20,
+						backgroundColor: '#fff',
+						color: 'rgb(212, 161, 125)',
+						boxShadow: '0 0 10px 0 rgb(252, 222, 227)',
+					}}
+					onClick={async () => {
+						try {
+							const cookies = new Cookies();
+							const token = cookies.get('token');
+							await axios.put(
+								'https://moti.company/api/v1/users',
+								{
+									name,
+									gender,
+									birthday,
+								},
+								{ headers: { Authorization: token } },
+							);
+							setIsEdit(false);
+						} catch (error) {
+							console.log('error', error);
+						}
+					}}
+				>
+					저장하기
+				</button>
 			</div>
 		</div>
 	);
 };
 
-export const getServerSideProps = async (context: any) => {
-	const props = {
-		user: null,
-	};
-	try {
-		const cookies = context.req ? new Cookies(context.req.headers.cookie) : new Cookies();
-		if (!cookies.get('token')) {
-			return {
-				props,
-			};
-		}
-		const token = cookies.get('token');
-		const result = await axios.get('https://moti.company/api/v1/users/my', {
-			headers: { Authorization: token },
-		});
-		props.user = result.data.data;
-		return {
-			props,
-		};
-	} catch (error) {
-		console.log(error.message);
-		return {
-			props,
-		};
-	}
-};
-
-export default My;
+export default Profile;
