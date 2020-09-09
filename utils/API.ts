@@ -1,4 +1,8 @@
-import axios, { AxiosError, AxiosResponse, AxiosInstance, AxiosInterceptorManager, AxiosRequestConfig } from 'axios';
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable no-shadow */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable max-classes-per-file */
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import moment from 'moment';
 import QueryString from 'querystring';
 import { LocalCacheWithTTL } from './LocalCache';
@@ -27,7 +31,7 @@ class MemoryCache {
 	public get(cacheKey: string) {
 		if (!cacheKey) return null;
 		if ((this._cache[cacheKey]?.ttl || 0) > Date.now()) return this._cache[cacheKey].data;
-		else delete this._cache[cacheKey];
+		delete this._cache[cacheKey];
 	}
 
 	public set(cacheKey: string, data: any, ttl?: number) {
@@ -49,9 +53,13 @@ export interface APIGatewayResponse<T> {
 
 export default class API<EXTRA = {}> {
 	public static SERVER_TIME_GAP = 0;
-	public static HOSTNAME = '';
+
+	public static HOSTNAME = 'https://moti.company/api/v1';
+
 	public static HEADERS: { [key: string]: any } = {};
+
 	private headers: { [key: string]: any } = {};
+
 	private axiosInstance = axios.create();
 
 	constructor(
@@ -79,7 +87,7 @@ export default class API<EXTRA = {}> {
 		let cacheKey: string | undefined;
 		if (method === 'GET' && opt.cacheId) {
 			// API.getCache()를 통해 요청되었다면
-			cacheKey = 'API.Cache:' + url;
+			cacheKey = `API.Cache:${  url}`;
 			// QueryString
 			if (data && typeof data !== 'string') cacheKey += (url.match(/\?/) ? '&' : '?') + QueryString.stringify(data);
 
@@ -113,14 +121,14 @@ export default class API<EXTRA = {}> {
 		opt: APIOptionWithCache<EXTRA>,
 		cacheKey?: string,
 	): Promise<T> {
-		opt.headers = Object.assign({}, API.HEADERS, this.headers, opt.headers || {});
+		opt.headers = { ...API.HEADERS, ...this.headers, ...opt.headers || {}};
 
 		const tsType = url.includes('?') ? '&' : '?';
 
 		if ((await this.options?.onRequest?.(method, url, data, opt)) === false) return Promise.reject();
 
 		return this.axiosInstance({
-			url: API.HOSTNAME + this.prefix + url + `${tsType}__ts=${new Date().getTime()}`,
+			url: `${API.HOSTNAME + this.prefix + url  }${tsType}__ts=${new Date().getTime()}`,
 			method,
 			headers: opt.headers,
 			data: method !== 'GET' ? data : undefined,
@@ -153,7 +161,7 @@ export default class API<EXTRA = {}> {
 							if (opt.cacheType !== 'MEMORY') LocalCacheWithTTL.set(cacheKey, data, opt.cacheTTL);
 						}
 						return Promise.resolve(data);
-					} else if (result.status === 401 || result.status === 403) {
+					} if (result.status === 401 || result.status === 403) {
 						API.redirectToLoginPage();
 						return Promise.reject(result);
 					}
@@ -191,7 +199,7 @@ export default class API<EXTRA = {}> {
 		opt?: APIOptionWithCache<EXTRA>,
 	): Promise<T> {
 		opt = opt || {};
-		opt.cacheId = 'API:' + cacheId;
+		opt.cacheId = `API:${  cacheId}`;
 		return this.call('GET', url, data, opt);
 	}
 

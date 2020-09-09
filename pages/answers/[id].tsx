@@ -1,152 +1,97 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Cookies from 'universal-cookie';
-import { useRouter } from 'next/router';
+import Header from '../../components/Header';
+import { StyeldForm, StyledBottomButton, StyledCardFrame, StyledCardFrameWrapper, StyledSubTitle, StyledTextAreaWrapper } from '../../components/StyledComponent';
 import Submit from '../../components/Submit';
-import icArrowLeft from '../../static/assets/images/icArrowLeft.png';
-import imgCardframe from '../../static/assets/images/imgCardframe.png';
-import User from '../../models/User';
 import Answer from '../../models/Answer';
+import imgCardframe from '../../static/assets/images/imgCardframe.png';
 
 interface Props {
-	user: User;
 	answer: Answer;
 }
 
 const AnswerPage: React.FC<Props> = ({ answer }) => {
-	const router = useRouter();
-	const [content, setContent] = useState(answer.content);
+	const [content, setContent] = useState(answer.content || '');
 	const [isSubmit, setIsSubmit] = useState(false);
+	const onSubmit = useCallback(async () => {
+		try {
+			const formData = new FormData();
+			if (answer.mission?.isContent) {
+				if (!content) {
+					return alert('답을 입력해 주세요.')
+				}
+				formData.append('content', content);
+				const cookies = new Cookies();
+				const token = cookies.get('token');
+				await Answer.editAnswer({ formData, answer,token });
+			}
+			setIsSubmit(true);
+		} catch (error) {
+			console.log('error', error);
+		}
+	}, [answer, content])
 	if (isSubmit) {
 		return <Submit />;
 	}
 	return (
-		<div
-			style={{
-				minWidth: '100vw',
-				minHeight: '100vh',
-				display: 'flex',
-				alignItems: 'center',
-				flexDirection: 'column',
-				justifyContent: 'flex-start',
-			}}
-		>
-			<div
-				style={{
-					display: 'flex',
-					height: 72,
-					alignItems: 'center',
-					position: 'relative',
-					width: '100vw',
-					flexShrink: 0,
-				}}
-			>
-				<button type="button" onClick={() => router.back()}>
-					<img
-						style={{ position: 'absolute', margin: '0 12px', top: 24, left: 0 }}
-						width={24}
-						height={24}
-						src={icArrowLeft}
-						alt="icArrowLeft"
-					/>
-				</button>
-				<div style={{ flex: 1, color: 'rgb(241, 219, 205)', textAlign: 'center' }}>답변 수정하기</div>
-			</div>
-			<div style={{ fontSize: 24, margin: '8px 24px 56px' }}>{answer.mission?.title}</div>
-			<div
-				style={{
-					width: 311,
-					height: 482,
-					boxShadow: '0 0 10px 0 rgb(231, 188, 158)',
-					borderRadius: 11,
-					position: 'relative',
-					display: 'flex',
-					flexDirection: 'column',
-				}}
-			>
-				<img src={imgCardframe} width="287" alt="imgCardframe" style={{ margin: 12, position: 'absolute' }} />
-				<div
-					style={{
-						textAlign: 'center',
-						zIndex: 10,
-						width: 255,
-						margin: '28px auto 32px',
-						display: 'flex',
-						justifyContent: 'space-between',
-						flexDirection: 'column',
-						flex: 1,
-					}}
-				>
-					{answer.mission?.isContent && (
-						<textarea
-							value={content}
-							onChange={(e) => setContent(e.target.value)}
-							style={{ flex: 1, width: '100%', border: 'none', textAlign: 'center', padding: '50% 0', resize: 'none' }}
-							placeholder="여기를 눌러 질문에 대한 답을 적어주세요"
-						/>
-					)}
-				</div>
-			</div>
-			<div style={{ textAlign: 'center', margin: '24px 0 0' }}>
-				<button
-					type="button"
-					onClick={async () => {
-						try {
-							const cookies = new Cookies();
-							const formData = new FormData();
-							if (answer.mission?.isContent) {
-								//formData.append('content', content);
-							} else {
-								setIsSubmit(true);
-							}
-							const result = await axios.put(`https://moti.company/api/v1/answers/${answer.id}`, formData, {
-								headers: { Authorization: cookies.get('token'), 'Content-Type': 'multipart/form-data' },
-							});
-							setIsSubmit(true);
-						} catch (error) {
-							console.log('error', JSON.stringify(error));
-						}
-					}}
-					style={{
-						width: 240,
-						height: 40,
-						backgroundColor: 'rgb(222, 226, 230)',
-						color: 'rgb(212, 161, 125)',
-						borderRadius: 30,
-					}}
-				>
-					답변하기
-				</button>
-			</div>
-		</div>
+		<StyeldForm onSubmit={onSubmit}>
+			<Header title='답변 수정하기' />
+			<StyledSubTitle>{answer.mission?.title}</StyledSubTitle>
+			<StyledCardFrameWrapper>
+				<StyledCardFrame src={imgCardframe} alt="imgCardframe" />
+				<ContentComponent answer={answer} content={content} setContent={setContent} />
+			</StyledCardFrameWrapper>
+			<StyledBottomButton type="submit" width={240}>
+				답변하기
+			</StyledBottomButton>
+		</StyeldForm>
 	);
 };
 
+interface ContentComponentProps {
+	answer: Answer;
+	content: string;
+	setContent: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const ContentComponent: React.FC<ContentComponentProps> = ({ answer, content, setContent }) => {
+	if (!answer.mission?.isContent) {
+		return null;
+	}
+	return (
+		<StyledTextAreaWrapper
+			value={content}
+			onChange={(e) => setContent(e.target.value)}
+			placeholder="여기를 눌러 질문에 대한 답을 적어주세요"
+		/>
+	)
+}
+
 export const getServerSideProps = async (context: any) => {
 	const props = {
-		user: null,
 		answer: {},
 	};
+	const { res } = context;
 	try {
 		const cookies = context.req ? new Cookies(context.req.headers.cookie) : new Cookies();
-		console.log('contextcontext', context.params);
 		const token = cookies.get('token');
-		const result = await axios.get('https://moti.company/api/v1/users/my', {
-			headers: { Authorization: token },
-		});
-		props.user = result.data.data;
-		if (props.user) {
-			const answer = await axios.get(`https://moti.company/api/v1/answers/${context.params.id}`, {
-				headers: { Authorization: token },
-			});
-			props.answer = answer.data.data;
+		if(!token) {
+			res.setHeader('location', '/');
+			res.statusCode = 302;
+			res.end();
+			return {
+				props,
+			};	
 		}
+		const {id} = context.params;
+		const answer = await Answer.getAnswer({id, token});
+		props.answer = answer.data.data;
 		return {
 			props,
 		};
 	} catch (error) {
-		console.log(error.message);
-		const { res } = context;
+		console.log(error);
 		res.setHeader('location', '/');
 		res.statusCode = 302;
 		res.end();
