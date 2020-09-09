@@ -5,17 +5,17 @@ import { useRouter } from 'next/router';
 import Submit from '../../components/Submit';
 import icArrowLeft from '../../static/assets/images/icArrowLeft.png';
 import imgCardframe from '../../static/assets/images/imgCardframe.png';
+import User from '../../models/User';
+import Answer from '../../models/Answer';
 
 interface Props {
-	user: any;
-	answer: any;
+	user: User;
+	answer: Answer;
 }
 
-const Answer: React.FC<Props> = ({ answer }) => {
-	console.log('answer', answer);
+const AnswerPage: React.FC<Props> = ({ answer }) => {
 	const router = useRouter();
 	const [content, setContent] = useState(answer.content);
-	// const [file, setFile] = useState(answer.imageUrl);
 	const [isSubmit, setIsSubmit] = useState(false);
 	if (isSubmit) {
 		return <Submit />;
@@ -23,8 +23,8 @@ const Answer: React.FC<Props> = ({ answer }) => {
 	return (
 		<div
 			style={{
-				width: '100vw',
-				height: '100vh',
+				minWidth: '100vw',
+				minHeight: '100vh',
 				display: 'flex',
 				alignItems: 'center',
 				flexDirection: 'column',
@@ -52,7 +52,7 @@ const Answer: React.FC<Props> = ({ answer }) => {
 				</button>
 				<div style={{ flex: 1, color: 'rgb(241, 219, 205)', textAlign: 'center' }}>답변 수정하기</div>
 			</div>
-			<div style={{ fontSize: 24, margin: '8px 24px 56px' }}>{answer.mission.title}</div>
+			<div style={{ fontSize: 24, margin: '8px 24px 56px' }}>{answer.mission?.title}</div>
 			<div
 				style={{
 					width: 311,
@@ -77,7 +77,7 @@ const Answer: React.FC<Props> = ({ answer }) => {
 						flex: 1,
 					}}
 				>
-					{answer.mission.isContent && (
+					{answer.mission?.isContent && (
 						<textarea
 							value={content}
 							onChange={(e) => setContent(e.target.value)}
@@ -94,8 +94,8 @@ const Answer: React.FC<Props> = ({ answer }) => {
 						try {
 							const cookies = new Cookies();
 							const formData = new FormData();
-							if (answer.mission.isContent) {
-								formData.append('content', content);
+							if (answer.mission?.isContent) {
+								//formData.append('content', content);
 							} else {
 								setIsSubmit(true);
 							}
@@ -156,4 +156,4 @@ export const getServerSideProps = async (context: any) => {
 	}
 };
 
-export default Answer;
+export default AnswerPage;

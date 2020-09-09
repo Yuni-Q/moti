@@ -53,7 +53,7 @@ const AnswerDetail: React.FC<Props> = ({ cardArray, setIsDetail }) => {
 				<div style={{ flex: 1, color: 'rgb(241, 219, 205)', textAlign: 'center' }}>
 					{moment(cardArray[slideIndex].date).format('YYYY. MM. DD')}
 				</div>
-				<button type="button" onClick={() => router.push('/my')}>
+				<button type="button" onClick={() => router.push('/album')}>
 					<img
 						style={{ position: 'absolute', margin: '0 12px', top: 24, right: 0 }}
 						width={24}
@@ -74,7 +74,7 @@ const AnswerDetail: React.FC<Props> = ({ cardArray, setIsDetail }) => {
 						>
 							<button
 								type="button"
-								// onClick={() => setSlideIndex(num)}
+								 onClick={() => setSlideIndex(index)}
 								style={{
 									width: 8,
 									height: 8,
