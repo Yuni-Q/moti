@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useCallback, useState } from 'react';
 import Cookies from 'universal-cookie';
 import Header from '../../components/Header';
@@ -14,7 +13,8 @@ interface Props {
 const AnswerPage: React.FC<Props> = ({ answer }) => {
 	const [content, setContent] = useState(answer.content || '');
 	const [isSubmit, setIsSubmit] = useState(false);
-	const onSubmit = useCallback(async () => {
+	const onSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
 		try {
 			const formData = new FormData();
 			if (answer.mission?.isContent) {
@@ -36,7 +36,7 @@ const AnswerPage: React.FC<Props> = ({ answer }) => {
 	}
 	return (
 		<StyeldForm onSubmit={onSubmit}>
-			<Header title='답변 수정하기' />
+			<Header title='답변 수정하기' isLeftButton />
 			<StyledSubTitle>{answer.mission?.title}</StyledSubTitle>
 			<StyledCardFrameWrapper>
 				<StyledCardFrame src={imgCardframe} alt="imgCardframe" />
@@ -86,7 +86,7 @@ export const getServerSideProps = async (context: any) => {
 		}
 		const {id} = context.params;
 		const answer = await Answer.getAnswer({id, token});
-		props.answer = answer.data.data;
+		props.answer = answer;
 		return {
 			props,
 		};

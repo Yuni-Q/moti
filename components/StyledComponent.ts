@@ -81,3 +81,17 @@ export const StyledBottomButton = styled.button<{width: number}>`
     color: rgb(212, 161, 125);
     border-radius: 30px;
 `;
+
+export const StyledBody = styled.div`
+    text-align: center;
+    flex: 1;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between;
+    align-items: center;
+`
+
+export const StyledImg = styled.img`
+    display: block;
+    margin: 0 auto;
+`;

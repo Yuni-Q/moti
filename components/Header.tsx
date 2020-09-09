@@ -4,15 +4,16 @@ import icArrowLeft from '../static/assets/images/icArrowLeft.png';
 import { StyldHeader, StyledIcon, StyledTitle } from "./StyledComponent";
 
 interface Props {
+    isLeftButton?: boolean;
     onClickLeftButton?: () => void;
     title: string;
 }
 
-const Header: React.FC<Props> = ({onClickLeftButton}) => {
+const Header: React.FC<Props> = ({title, isLeftButton, onClickLeftButton}) => {
     const router = useRouter();
     return (
         <StyldHeader>
-                <button type="button" onClick={() =>{ 
+                {isLeftButton && <button type="button" onClick={() =>{ 
                     if(!onClickLeftButton) {
                         return router.back();
                     }
@@ -24,8 +25,8 @@ const Header: React.FC<Props> = ({onClickLeftButton}) => {
 						src={icArrowLeft}
 						alt="icArrowLeft"
 					/>
-				</button>
-				<StyledTitle>답변 수정하기</StyledTitle>
+				</button>}
+				<StyledTitle>{title}</StyledTitle>
             
         </StyldHeader>
     )
