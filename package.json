@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "nodemon",
 		"build": "ANALYZE=false NODE_ENV=production next build",
-		"start": "NODE_ENV=production node server.js",
+		"start": "ANALYZE=false NODE_ENV=production node server.js",
 		"predeloy": "npm run build",
 		"deploy": "git pull && npm install && pm2 start ecosystem.config.js --env production",
 		"export": "npm run build && next export",
