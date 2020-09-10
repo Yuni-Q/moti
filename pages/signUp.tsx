@@ -124,7 +124,7 @@ const SignUp: React.FC<Props> = ({ token }) => {
 											height: '120%',
 											top: -10,
 											left: -10,
-											backgroundColor: 'rgba(25,25,25,0.7)',
+											backgroundColor: 'rgba(26, 22, 22, 0.9)',
 											fontSize: 0,
 										}}
 										onClick={() => setGender('남')}
@@ -153,7 +153,7 @@ const SignUp: React.FC<Props> = ({ token }) => {
 											height: '120%',
 											top: -10,
 											left: -10,
-											backgroundColor: 'rgba(25,25,25,0.7)',
+											backgroundColor: 'rgba(26, 22, 22, 0.9)',
 											fontSize: 0,
 										}}
 										onClick={() => setGender('여')}
