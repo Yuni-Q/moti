@@ -1,12 +1,9 @@
 /* eslint-disable */
 const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-	enabled: process.env.ANALYZE === 'true',
-});
 /* eslint-enable */
 
-module.exports = withBundleAnalyzer({
+module.exports = {
 	compress: true,
 	distDir: 'build',
 	webpack(config) {
@@ -36,7 +33,6 @@ module.exports = withBundleAnalyzer({
 						loader: 'url-loader',
 						options: {
 							name: '[hash].[ext]',
-							//limit: 20000,
 						},
 					},
 					{
@@ -55,4 +51,4 @@ module.exports = withBundleAnalyzer({
 			],
 		};
 	},
-});
+};
