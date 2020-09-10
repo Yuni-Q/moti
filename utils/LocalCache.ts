@@ -1,3 +1,6 @@
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable max-classes-per-file */
 // localStorage 사용
 export class LocalCache {
 	static get(k: string): any {
@@ -29,7 +32,9 @@ export class LocalCacheWithTTL {
 			if (val && val.ttl > new Date().getTime()) {
 				return val.value;
 			}
-		} catch (e) {}
+		} catch (e) {
+			console.log('e', e);
+		}
 		return undefined;
 	}
 
@@ -38,7 +43,9 @@ export class LocalCacheWithTTL {
 			// 현재 시간에 캐시 시간 더하기
 			ttl += new Date().getTime();
 			return await this.DB().put('entities', { key, value, ttl });
-		} catch (e) {}
+		} catch (e) {
+			console.log('e', e);
+		}
 	}
 }
 
@@ -63,7 +70,9 @@ export interface LocalDBOptions {
 // indexedDB 사용
 export class LocalDB<T = LocalDBRow> {
 	config: LocalDBOptions;
+
 	db?: IDBDatabase;
+
 	ready = false;
 
 	queue: (() => void)[] = [];
@@ -80,7 +89,9 @@ export class LocalDB<T = LocalDBRow> {
 						const param: IDBObjectStoreParameters = { keyPath: table.keyPath, autoIncrement: table.autoIncrement };
 						const tb: IDBObjectStore = this.db!.createObjectStore(table.name, param);
 						if (table.index) table.index.map((idx) => tb.createIndex(idx.name, idx.field, { unique: idx.unique }));
-					} catch (e) {}
+					} catch (error) {
+						console.log('error',error);
+					}
 				});
 			};
 
@@ -93,6 +104,7 @@ export class LocalDB<T = LocalDBRow> {
 
 			// 첫번째 함수 실행
 			request.onerror = (e: any) => {
+				console.log('e', e);
 				this.db = undefined;
 				this.ready = true;
 				this.drainQueue();
@@ -105,7 +117,9 @@ export class LocalDB<T = LocalDBRow> {
 			this.queue.splice(0, 1).forEach((f) => {
 				try {
 					f();
-				} catch (e) {}
+				} catch (e) {
+					console.log('e', e);
+				}
 			});
 		}
 	}
@@ -165,6 +179,7 @@ export class LocalDB<T = LocalDBRow> {
 
 	// getAll
 	async list(table: string, opt?: { page: number; size: number }): Promise<T[]> {
+		console.log('opt', opt);
 		// indexedDB 없으면 reject
 		if (!window.indexedDB) return Promise.reject();
 		return new Promise<T[]>((resolved, rejected) => {

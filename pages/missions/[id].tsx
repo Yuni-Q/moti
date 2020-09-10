@@ -108,7 +108,7 @@ const Mission: React.FC<Props> = ({ mission }) => {
 							if (mission.isImage) {
 								formData.append('file', new Blob([image], { type: 'application/octet-stream' }));
 							}
-							const result = await axios.post('https://moti.company/api/v1/answers', formData, {
+							await axios.post('https://moti.company/api/v1/answers', formData, {
 								headers: { Authorization: cookies.get('token'), 'Content-Type': 'multipart/form-data' },
 							});
 							setIsSubmit(true);

@@ -128,7 +128,7 @@ const Profile: React.FC<Props> = ({ user, setIsEdit }) => {
 					onClick={async () => {
 						try {
 							const cookies = new Cookies();
-							const result = await axios.delete('https://moti.company/api/v1/users', {
+							await axios.delete('https://moti.company/api/v1/users', {
 								headers: { Authorization: cookies.get('token') },
 							});
 							router.push('/');

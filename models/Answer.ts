@@ -1,10 +1,7 @@
-import axios from 'axios';
-import Cookies from "universal-cookie";
 import API from "../utils/API";
 import File from './File';
 import Mission from "./Mission";
 import User from "./User";
-import Cookie from '../utils/Cookie';
 
 export default class Answer  {
   static api: API = new API();

@@ -4,10 +4,9 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Cookies from 'universal-cookie';
-import icArrowLeft from '../static/assets/images/icArrowLeft.png';
-import icRewriteNormal from '../static/assets/images/icRewriteNormal.png';
-import imgCardframe from '../static/assets/images/imgCardframe.png';
 import AnswerDetail from '../components/AnswerDetail';
+import icArrowLeft from '../static/assets/images/icArrowLeft.png';
+import imgCardframe from '../static/assets/images/imgCardframe.png';
 
 const StyleTitle = styled.div`
 	display: flex;
@@ -34,7 +33,7 @@ interface Props {
 	answers: any;
 }
 
-const Album: React.FC<Props> = ({ user, answers }) => {
+const Album: React.FC<Props> = ({ answers }) => {
 	const [answerList, setAnswerList] = useState(answers);
 	const [detailAnswer, setDetailAnswer] = useState([]);
 	const [idDetail, setIsDetail] = useState(false);

@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
-import { useRouter } from 'next/router';
+import React from 'react';
 import imgCardframe from '../static/assets/images/imgCardframe.png';
-import AnswerDetail from './AnswerDetail';
 
 interface Props {
 	cardArray: any[];

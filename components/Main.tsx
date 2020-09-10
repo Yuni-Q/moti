@@ -25,8 +25,8 @@ const Main: NextPage<Props> = ({ isOnboard, answers, missions, refresh, check, s
 	const router = useRouter();
 	const [step, setStep] = useState(1);
 	const [isQuestion, setIsQuestion] = useState(false);
-	const [errorMessage, setErrorMessage] = useState('');
-	const [cardArray, setCardArray] = useState(answers);
+	const [errorMessage] = useState('');
+	const [cardArray] = useState(answers);
 
 	if (!isOnboard && step <= 4) {
 		return <Onboard step={step} setStep={setStep} />;

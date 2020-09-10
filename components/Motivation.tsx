@@ -1,5 +1,4 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import imgQuestion from '../static/assets/images/imgQuestion.png';
 
 interface Props {
@@ -7,8 +6,6 @@ interface Props {
 }
 
 const Motivation: React.FC<Props> = ({ setIsQuestion }) => {
-	const router = useRouter();
-
 	return (
 		<div
 			style={{

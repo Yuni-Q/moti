@@ -104,9 +104,9 @@ const AnswerDetail: React.FC<Props> = ({ cardArray, setIsDetail }) => {
 				slideIndex={slideIndex}
 				afterSlide={(newSlideIndex) => setSlideIndex(newSlideIndex)}
 			>
-				{cardArray.map((answer, index) => {
+				{cardArray.map((answer) => {
 					return (
-						<div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+						<div key={answer.id} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
 							<div style={{ padding: '16px 60px 0 24px ', fontSize: 24, position: 'relative' }}>
 								<div>{answer.mission.title}</div>
 								<button type="button" onClick={() => router.push(`/answers/${answer.id}`)}>
