@@ -4,6 +4,15 @@ const StyledDiv = styled.div``;
 
 export default StyledDiv;
 
+export const StyeldWrapper = styled.div`
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+`;
+
 export const StyeldForm = styled.form`
     min-width: 100vw;
     min-height: 100vh;
@@ -80,6 +89,7 @@ export const StyledBottomButton = styled.button<{width: number}>`
     background-color: rgb(222, 226, 230);
     color: rgb(212, 161, 125);
     border-radius: 30px;
+    box-shadow: 0 0 10px 0 rgb(252, 222, 227);
 `;
 
 export const StyledBody = styled.div`
@@ -94,4 +104,22 @@ export const StyledBody = styled.div`
 export const StyledImg = styled.img`
     display: block;
     margin: 0 auto;
+`;
+
+export const StyledFileInputButton = styled.div`
+& > label {
+    margin: 0 0 148px 0;
+    width: 168px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background-color: #fff;
+    color: rgb(212, 161, 125);
+    box-shadow: 0 0 10px 0 rgb(252, 222, 227);
+}
+& > input {
+    display: none;
+}
 `;

@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import Cookies from 'universal-cookie';
+import ContentComponent from '../../components/ContentComponent';
 import Header from '../../components/Header';
-import { StyeldForm, StyledBottomButton, StyledCardFrame, StyledCardFrameWrapper, StyledSubTitle, StyledTextAreaWrapper } from '../../components/StyledComponent';
+import { StyeldForm, StyledBottomButton, StyledCardFrame, StyledCardFrameWrapper, StyledSubTitle } from '../../components/StyledComponent';
 import Submit from '../../components/Submit';
 import Answer from '../../models/Answer';
-import imgCardframe from '../../static/assets/images/imgCardframe.png';
 
 interface Props {
 	answer: Answer;
@@ -39,8 +39,8 @@ const AnswerPage: React.FC<Props> = ({ answer }) => {
 			<Header title='답변 수정하기' isLeftButton />
 			<StyledSubTitle>{answer.mission?.title}</StyledSubTitle>
 			<StyledCardFrameWrapper>
-				<StyledCardFrame src={imgCardframe} alt="imgCardframe" />
-				<ContentComponent answer={answer} content={content} setContent={setContent} />
+				<StyledCardFrame src="/static/assets/images/imgCardframe.png" alt="imgCardframe" />
+				<ContentComponent isContent={answer.mission?.isContent} content={content} setContent={setContent} />
 			</StyledCardFrameWrapper>
 			<StyledBottomButton type="submit" width={240}>
 				답변하기
@@ -48,25 +48,6 @@ const AnswerPage: React.FC<Props> = ({ answer }) => {
 		</StyeldForm>
 	);
 };
-
-interface ContentComponentProps {
-	answer: Answer;
-	content: string;
-	setContent: React.Dispatch<React.SetStateAction<string>>;
-}
-
-const ContentComponent: React.FC<ContentComponentProps> = ({ answer, content, setContent }) => {
-	if (!answer.mission?.isContent) {
-		return null;
-	}
-	return (
-		<StyledTextAreaWrapper
-			value={content}
-			onChange={(e) => setContent(e.target.value)}
-			placeholder="여기를 눌러 질문에 대한 답을 적어주세요"
-		/>
-	)
-}
 
 export const getServerSideProps = async (context: any) => {
 	const props = {

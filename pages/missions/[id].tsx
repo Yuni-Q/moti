@@ -1,62 +1,39 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import Cookies from 'universal-cookie';
+import ContentComponent from '../../components/ContentComponent';
+import FileInput from '../../components/FileInput';
+import Header from '../../components/Header';
+import { StyeldForm, StyledBottomButton, StyledCardFrame, StyledCardFrameWrapper, StyledSubTitle } from '../../components/StyledComponent';
 import Submit from '../../components/Submit';
-import Image from '../../components/Image';
-import icArrowLeft from '../../static/assets/images/icArrowLeft.png';
-import imgCardframe from '../../static/assets/images/imgCardframe.png';
+import Mission from '../../models/Mission';
 
 interface Props {
-	mission: any;
+	mission: Mission;
 }
 
-const Mission: React.FC<Props> = ({ mission }) => {
-	console.log('mission', mission);
+const MissionPage: React.FC<Props> = ({ mission }) => {
 	const [content, setContent] = useState('');
-	const [image, setImage] = useState<any>({});
+	const [file, setFile] = useState<File>({} as File);
 	const [isSubmit, setIsSubmit] = useState(false);
-	if (mission.isImage && !image.name) {
-		return <Image mission={mission} setImage={setImage} />;
+	if (mission.isImage && !file.name) {
+		return <FileInput mission={mission} setFile={setFile} />;
 	}
 	if (isSubmit) {
 		return <Submit />;
 	}
 	return (
-		<div
-			style={{
-				width: '100vw',
-				height: '100vh',
-				display: 'flex',
-				alignItems: 'center',
-				flexDirection: 'column',
-				justifyContent: 'flex-start',
-			}}
-		>
-			<div
-				style={{
-					display: 'flex',
-					height: 72,
-					alignItems: 'center',
-					position: 'relative',
-					width: '100vw',
-					flexShrink: 0,
-				}}
-			>
-				<button
-					type="button"
-					// onClick={() => setIsQuestion(false)}
-				>
-					<img
-						style={{ position: 'absolute', margin: '0 12px', top: 24, left: 0 }}
-						width={24}
-						height={24}
-						src={icArrowLeft}
-						alt="icArrowLeft"
-					/>
-				</button>
-				<div style={{ flex: 1, color: 'rgb(241, 219, 205)', textAlign: 'center' }}>답변 하기</div>
-			</div>
-			<div style={{ fontSize: 24, margin: '8px 24px 56px' }}>{mission.title}</div>
+		<StyeldForm>
+			<Header isLeftButton title="답변 하기" />
+			<StyledSubTitle>{mission.title}</StyledSubTitle>
+			<StyledCardFrameWrapper>
+				<StyledCardFrame src="/static/assets/images/imgCardframe.png" alt="imgCardframe" />
+				<ContentComponent imgSrc={URL.createObjectURL(file)} isContent={mission?.isContent} content={content} setContent={setContent} />
+			</StyledCardFrameWrapper>
+			<StyledBottomButton type="submit" width={240}>
+				답변하기
+			</StyledBottomButton>
+			{/* </StyledBottomButton>
 			<div
 				style={{
 					width: 311,
@@ -81,7 +58,7 @@ const Mission: React.FC<Props> = ({ mission }) => {
 						flex: 1,
 					}}
 				>
-					{image.name && <img src={URL.createObjectURL(image)} alt="imageAsBase64" width="100%" />}
+					{file.name && <img src={URL.createObjectURL(file)} alt="imageAsBase64" width="100%" />}
 					{mission.isContent && (
 						<textarea
 							value={content}
@@ -101,19 +78,18 @@ const Mission: React.FC<Props> = ({ mission }) => {
 							const formData = new FormData();
 							if (mission.isContent) {
 								formData.append('content', content);
-								console.log(55, formData, content);
 							}
 
-							formData.append('missionId', mission.id);
+							formData.append('missionId', String(mission.id));
 							if (mission.isImage) {
-								formData.append('file', new Blob([image], { type: 'application/octet-stream' }));
+								formData.append('file', new Blob([file], { type: 'application/octet-stream' }));
 							}
 							await axios.post('https://moti.company/api/v1/answers', formData, {
 								headers: { Authorization: cookies.get('token'), 'Content-Type': 'multipart/form-data' },
 							});
 							setIsSubmit(true);
 						} catch (error) {
-							console.log('error', JSON.stringify(error));
+							console.log('error', error);
 						}
 					}}
 					style={{
@@ -126,8 +102,8 @@ const Mission: React.FC<Props> = ({ mission }) => {
 				>
 					답변하기
 				</button>
-			</div>
-		</div>
+			</div> */}
+		</StyeldForm>
 	);
 };
 
@@ -177,4 +153,4 @@ export const getServerSideProps = async (context: any) => {
 	}
 };
 
-export default Mission;
+export default MissionPage;
