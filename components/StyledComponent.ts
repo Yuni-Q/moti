@@ -50,6 +50,7 @@ export const StyledSubTitle = styled.div`
 `;
 
 export const StyledCardFrameWrapper = styled.div`
+    max-width: 287px;
     width: calc(100% - 64px);
     box-shadow: 0 0 10px 0 rgb(231, 188, 158);
     border-radius: 11px;
