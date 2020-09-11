@@ -135,7 +135,7 @@ const AnswerDetail: React.FC<Props> = ({ cardArray, setIsDetail }) => {
 								{answer.imageUrl && (
 									<img src={answer.imageUrl} alt="imgaeUrl" width="80%" style={{ zIndex: 10, margin: '25px auto 0' }} />
 								)}
-								<div
+								<pre
 									style={{
 										height: '100%',
 										display: 'flex',
@@ -147,7 +147,7 @@ const AnswerDetail: React.FC<Props> = ({ cardArray, setIsDetail }) => {
 									}}
 								>
 									{answer.content}
-								</div>
+								</pre>
 							</div>
 						</div>
 					);

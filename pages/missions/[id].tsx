@@ -16,93 +16,48 @@ const MissionPage: React.FC<Props> = ({ mission }) => {
 	const [content, setContent] = useState('');
 	const [file, setFile] = useState<File>({} as File);
 	const [isSubmit, setIsSubmit] = useState(false);
-	if (mission.isImage && !file.name) {
+	const onSubmit = async () => {
+		try {
+			const cookies = new Cookies();
+			const formData = new FormData();
+			if (mission.isContent) {
+				formData.append('content', content);
+				if(!content) {
+					alert('내용을 입력해 주세요.')
+				}
+			}
+			formData.append('missionId', String(mission.id));
+			if (mission.isImage) {
+				if(!file.type) {
+					alert('이미지를 첨부해주세요.')
+				}
+				formData.append('file', new Blob([file], { type: 'application/octet-stream' }));
+			}
+			await axios.post('https://moti.company/api/v1/answers', formData, {
+				headers: { Authorization: cookies.get('token'), 'Content-Type': 'multipart/form-data' },
+			});
+			setIsSubmit(true);
+		} catch (error) {
+			console.log('error', error);
+		}
+	};
+	if (mission.isImage && !file.type) {
 		return <FileInput mission={mission} setFile={setFile} />;
 	}
 	if (isSubmit) {
 		return <Submit />;
 	}
 	return (
-		<StyeldForm>
+		<StyeldForm onSubmit={onSubmit}>
 			<Header isLeftButton title="답변 하기" />
 			<StyledSubTitle>{mission.title}</StyledSubTitle>
 			<StyledCardFrameWrapper>
 				<StyledCardFrame src="/static/assets/images/imgCardframe.png" alt="imgCardframe" />
-				<ContentComponent imgSrc={URL.createObjectURL(file)} isContent={mission?.isContent} content={content} setContent={setContent} />
+				<ContentComponent imgSrc={file.type ? URL.createObjectURL(file) : ''} setFile={setFile} isContent={mission?.isContent} content={content} setContent={setContent} />
 			</StyledCardFrameWrapper>
 			<StyledBottomButton type="submit" width={240}>
 				답변하기
 			</StyledBottomButton>
-			{/* </StyledBottomButton>
-			<div
-				style={{
-					width: 311,
-					height: 482,
-					boxShadow: '0 0 10px 0 rgb(231, 188, 158)',
-					borderRadius: 11,
-					position: 'relative',
-					display: 'flex',
-					flexDirection: 'column',
-				}}
-			>
-				<img src={imgCardframe} width="287" alt="imgCardframe" style={{ margin: 12, position: 'absolute' }} />
-				<div
-					style={{
-						textAlign: 'center',
-						zIndex: 10,
-						width: 255,
-						margin: '28px auto 32px',
-						display: 'flex',
-						justifyContent: 'space-between',
-						flexDirection: 'column',
-						flex: 1,
-					}}
-				>
-					{file.name && <img src={URL.createObjectURL(file)} alt="imageAsBase64" width="100%" />}
-					{mission.isContent && (
-						<textarea
-							value={content}
-							onChange={(e) => setContent(e.target.value)}
-							style={{ flex: 1, width: '100%', border: 'none', textAlign: 'center', padding: '50% 0', resize: 'none' }}
-							placeholder="여기를 눌러 질문에 대한 답을 적어주세요"
-						/>
-					)}
-				</div>
-			</div>
-			<div style={{ textAlign: 'center', margin: '24px 0 0' }}>
-				<button
-					type="button"
-					onClick={async () => {
-						try {
-							const cookies = new Cookies();
-							const formData = new FormData();
-							if (mission.isContent) {
-								formData.append('content', content);
-							}
-
-							formData.append('missionId', String(mission.id));
-							if (mission.isImage) {
-								formData.append('file', new Blob([file], { type: 'application/octet-stream' }));
-							}
-							await axios.post('https://moti.company/api/v1/answers', formData, {
-								headers: { Authorization: cookies.get('token'), 'Content-Type': 'multipart/form-data' },
-							});
-							setIsSubmit(true);
-						} catch (error) {
-							console.log('error', error);
-						}
-					}}
-					style={{
-						width: 240,
-						height: 40,
-						backgroundColor: 'rgb(222, 226, 230)',
-						color: 'rgb(212, 161, 125)',
-						borderRadius: 30,
-					}}
-				>
-					답변하기
-				</button>
-			</div> */}
 		</StyeldForm>
 	);
 };

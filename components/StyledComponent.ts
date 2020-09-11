@@ -65,19 +65,14 @@ export const StyledCardFrame = styled.img`
     margin: 12px;
 `;
 
-export const StyledTextAreaWrapper = styled.textarea`
+export const StyledTextAreaWrapper = styled.textarea<{imgSrc: string;}>`
     text-align: center;
-    z-index: 10;
-    width: calc(100% - 64px);
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    margin: ${({imgSrc}) => imgSrc ? '8px 0 36px 0' : ' 36px 0;'};
     flex: 1;
-    position: absolute;
     border: none;
-    text-align: center;
-    padding: 60% 0;
+    padding: ${({imgSrc}) => imgSrc ? '0' : '60% 0'};
     resize: none;
 `;
 
@@ -118,6 +113,30 @@ export const StyledFileInputButton = styled.div`
     background-color: #fff;
     color: rgb(212, 161, 125);
     box-shadow: 0 0 10px 0 rgb(252, 222, 227);
+}
+& > input {
+    display: none;
+}
+`;
+
+export const StyldContentComponent = styled.div`
+    background: initial;
+    z-index: 10;
+    width: calc(100% - 64px);
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex: 1;
+    position: absolute;
+    text-align: center;
+    height: 100%;
+`;
+export const StyledFileInputImage = styled.div`
+background: initial;
+& > label {
+    background: initial;
 }
 & > input {
     display: none;

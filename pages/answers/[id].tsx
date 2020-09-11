@@ -13,6 +13,7 @@ interface Props {
 const AnswerPage: React.FC<Props> = ({ answer }) => {
 	const [content, setContent] = useState(answer.content || '');
 	const [isSubmit, setIsSubmit] = useState(false);
+	const [file, setFile] = useState<File>({name: answer.imageUrl || ''} as File);
 	const onSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		try {
@@ -21,16 +22,19 @@ const AnswerPage: React.FC<Props> = ({ answer }) => {
 				if (!content) {
 					return alert('답을 입력해 주세요.')
 				}
-				formData.append('content', content);
-				const cookies = new Cookies();
-				const token = cookies.get('token');
-				await Answer.editAnswer({ formData, answer,token });
 			}
+			formData.append('content', content);
+			if (answer.mission?.isImage && !!file.type) {
+				formData.append('file', new Blob([file], { type: 'application/octet-stream' }));
+			}
+			const cookies = new Cookies();
+			const token = cookies.get('token');
+			await Answer.editAnswer({ formData, answer,token });
 			setIsSubmit(true);
 		} catch (error) {
 			console.log('error', error);
 		}
-	}, [answer, content])
+	}, [answer, content, file])
 	if (isSubmit) {
 		return <Submit />;
 	}
@@ -40,7 +44,7 @@ const AnswerPage: React.FC<Props> = ({ answer }) => {
 			<StyledSubTitle>{answer.mission?.title}</StyledSubTitle>
 			<StyledCardFrameWrapper>
 				<StyledCardFrame src="/static/assets/images/imgCardframe.png" alt="imgCardframe" />
-				<ContentComponent isContent={answer.mission?.isContent} content={content} setContent={setContent} />
+				<ContentComponent imgSrc={file.type?  URL.createObjectURL(file) : file.name}  setFile={setFile} isContent={answer.mission?.isContent} content={content} setContent={setContent} />
 			</StyledCardFrameWrapper>
 			<StyledBottomButton type="submit" width={240}>
 				답변하기
