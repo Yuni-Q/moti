@@ -5,6 +5,8 @@ import Header from '../../components/Header';
 import { StyeldForm, StyledBottomButton, StyledCardFrame, StyledCardFrameWrapper, StyledSubTitle } from '../../components/StyledComponent';
 import Submit from '../../components/Submit';
 import Answer from '../../models/Answer';
+import { redirectRoot, checkUser } from '../../utils/redirect';
+import Cookie from '../../utils/Cookie';
 
 interface Props {
 	answer: Answer;
@@ -27,9 +29,8 @@ const AnswerPage: React.FC<Props> = ({ answer }) => {
 			if (answer.mission?.isImage && !!file.type) {
 				formData.append('file', new Blob([file], { type: 'application/octet-stream' }));
 			}
-			const cookies = new Cookies();
-			const token = cookies.get('token');
-			await Answer.editAnswer({ formData, answer,token });
+			const token = Cookie.getToken();
+			await Answer.putAnswersId({ formData, answer,token });
 			setIsSubmit(true);
 		} catch (error) {
 			console.log('error', error);
@@ -58,31 +59,24 @@ export const getServerSideProps = async (context: any) => {
 		answer: {},
 	};
 	const { res } = context;
+
 	try {
-		const cookies = context.req ? new Cookies(context.req.headers.cookie) : new Cookies();
-		const token = cookies.get('token');
-		if(!token) {
-			res.setHeader('location', '/');
-			res.statusCode = 302;
-			res.end();
-			return {
-				props,
-			};	
+		const token = Cookie.getToken(context.req);
+		const isUser = await checkUser({res, token});
+		if(!isUser) {
+			return res.end();
 		}
+		
 		const {id} = context.params;
-		const answer = await Answer.getAnswer({id, token});
+		const answer = await Answer.getAnswersId({id, token});
 		props.answer = answer;
 		return {
 			props,
 		};
 	} catch (error) {
 		console.log(error);
-		res.setHeader('location', '/');
-		res.statusCode = 302;
-		res.end();
-		return {
-			props,
-		};
+		redirectRoot(res);
+		return res.end();
 	}
 };
 

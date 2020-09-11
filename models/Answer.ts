@@ -34,14 +34,26 @@ export default class Answer  {
 
   updatedAt?: Date;
 
-  public static editAnswer ({ formData, answer,token }: { formData: FormData; answer: Answer; token: string; }) {
-      return this.api.put(`/answers/${answer.id}`, formData, {
+  public static postAnswers ({ formData, token }: { formData: FormData; token: string; }) {
+    return this.api.post(`/v1/answers/`, formData, {
+      headers: { Authorization: token, 'Content-Type': 'multipart/form-data' },
+    });
+}
+
+  public static putAnswersId ({ formData, answer,token }: { formData: FormData; answer: Answer; token: string; }) {
+      return this.api.put(`/v1/answers/${answer.id}`, formData, {
         headers: { Authorization: token, 'Content-Type': 'multipart/form-data' },
       });
   }
 
-  public static getAnswer ({ id,token }: { id: string; token:string;}) {
-      return this.api.get(`/answers/${id}`, {}, {
+  public static getAnswersId ({ id,token }: { id: string; token:string;}) {
+      return this.api.get(`/v1/answers/${id}`, {}, {
+        headers: { Authorization: token },
+      });
+  }
+
+  public static getAnswersWeek (token:string) {
+      return this.api.get(`/v1/answers/week`, {}, {
         headers: { Authorization: token },
       });
   }

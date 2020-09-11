@@ -17,4 +17,10 @@ export default class Mission {
   createdAt?: Date;
 
   updatedAt?: Date;
+
+  public static getMissionsId ({id, token}: {id: string; token: string;}) {
+    return this.api.get(`/v1/missions/${id}`, {}, {
+      headers: { Authorization: token },
+    });
+  }
 }

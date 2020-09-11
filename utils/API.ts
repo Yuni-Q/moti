@@ -54,7 +54,7 @@ export interface APIGatewayResponse<T> {
 export default class API<EXTRA = {}> {
 	public static SERVER_TIME_GAP = 0;
 
-	public static HOSTNAME = 'https://moti.company/api/v1';
+	public static HOSTNAME = 'https://moti.company/api';
 
 	public static HEADERS: { [key: string]: any } = {};
 
@@ -147,7 +147,7 @@ export default class API<EXTRA = {}> {
 							API.SERVER_TIME_GAP ||
 							0;
 
-					if (result.status === 200) {
+					if (result.status === 200 || result.status === 201) {
 						const data: T =
 							(typeof result?.data?.data !== 'undefined' ? result.data.data : undefined) ||
 							result?.data?.data ||

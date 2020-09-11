@@ -10,7 +10,7 @@ export default class User  {
   email? :string;
 
   name?: string;
- 
+
   gender?: string;
 
   refreshDate?: string;
@@ -26,4 +26,10 @@ export default class User  {
   createdAt?: string;
 
   updatedAt?: string;
+
+  public static getUsersMy (token: string) {
+    return this.api.get(`/v1/users/my`, {}, {
+      headers: { Authorization: token },
+    });
+  }
 }

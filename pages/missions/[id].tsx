@@ -1,12 +1,15 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Cookies from 'universal-cookie';
 import ContentComponent from '../../components/ContentComponent';
 import FileInput from '../../components/FileInput';
 import Header from '../../components/Header';
 import { StyeldForm, StyledBottomButton, StyledCardFrame, StyledCardFrameWrapper, StyledSubTitle } from '../../components/StyledComponent';
 import Submit from '../../components/Submit';
+import Answer from '../../models/Answer';
 import Mission from '../../models/Mission';
+import { redirectRoot, checkUser } from '../../utils/redirect';
+import Cookie from '../../utils/Cookie';
 
 interface Props {
 	mission: Mission;
@@ -16,9 +19,10 @@ const MissionPage: React.FC<Props> = ({ mission }) => {
 	const [content, setContent] = useState('');
 	const [file, setFile] = useState<File>({} as File);
 	const [isSubmit, setIsSubmit] = useState(false);
-	const onSubmit = async () => {
+	const onSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
 		try {
-			const cookies = new Cookies();
+			const token = Cookie.getToken();
 			const formData = new FormData();
 			if (mission.isContent) {
 				formData.append('content', content);
@@ -33,14 +37,12 @@ const MissionPage: React.FC<Props> = ({ mission }) => {
 				}
 				formData.append('file', new Blob([file], { type: 'application/octet-stream' }));
 			}
-			await axios.post('https://moti.company/api/v1/answers', formData, {
-				headers: { Authorization: cookies.get('token'), 'Content-Type': 'multipart/form-data' },
-			});
+			const a = await Answer.postAnswers({formData, token});
 			setIsSubmit(true);
 		} catch (error) {
 			console.log('error', error);
 		}
-	};
+	}, [content, file, mission.id, mission.isContent, mission.isImage]);
 	if (mission.isImage && !file.type) {
 		return <FileInput mission={mission} setFile={setFile} />;
 	}
@@ -64,47 +66,33 @@ const MissionPage: React.FC<Props> = ({ mission }) => {
 
 export const getServerSideProps = async (context: any) => {
 	const props = {
-		user: null,
 		mission: {},
 	};
+	const { res } = context;
 	try {
-		const cookies = context.req ? new Cookies(context.req.headers.cookie) : new Cookies();
-		console.log('contextcontext', context.params);
-		const token = cookies.get('token');
-		const result = await axios.get('https://moti.company/api/v1/users/my', {
-			headers: { Authorization: token },
-		});
-		props.user = result.data.data;
-		if (props.user) {
-			const answers = await axios.get('https://moti.company/api/v1/answers/week', {
-				headers: { Authorization: token },
-			});
-			const check = answers.data.data.answers.filter((answer: any) => {
-				return answer.date === answers.data.data.today;
-			});
-			if (check.length > 0) {
-				// const { res } = context;
-				// res.setHeader('location', '/');
-				// res.statusCode = 302;
-				// return res.end();
-			}
-			const mission = await axios.get(`https://moti.company/api/v1/missions/${context.params.id}`, {
-				headers: { Authorization: token },
-			});
-			props.mission = mission.data.data;
+		const token = Cookie.getToken(context.req);
+		const isUser = await checkUser({res, token});
+		if(!isUser) {
+			return res.end(); 
 		}
+		const weekAnswers = await Answer.getAnswersWeek(token);
+		const check = weekAnswers.answers.filter((answer: Answer) => {
+			return answer.date === weekAnswers.today;
+		});
+		if (check.length > 0) {
+			redirectRoot(res);
+			return res.end(); 
+		}
+		const { id } = context.params;
+		const mission = await Mission.getMissionsId({id, token});
+		props.mission = mission;
 		return {
 			props,
 		};
 	} catch (error) {
-		console.log(error.message);
-		const { res } = context;
-		res.setHeader('location', '/');
-		res.statusCode = 302;
-		res.end();
-		return {
-			props,
-		};
+		console.log('error', error);
+		redirectRoot(res);
+		return res.end(); 
 	}
 };
 
