@@ -1,10 +1,9 @@
 import _ from 'lodash';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import styled, { StyledComponent } from 'styled-components';
+import styled from 'styled-components';
 import AnswerDetail from '../components/AnswerDetail';
 import Header from '../components/Header';
-import { StyeldWrapper, StyledCardFrameWrapper, StyledCardFrame, StyledPart } from '../components/StyledComponent';
+import { StyeldWrapper, StyledCardFrame, StyledCardFrameWrapper, StyledPart } from '../components/StyledComponent';
 import Answer from '../models/Answer';
 import imgCardframe from '../static/assets/images/imgCardframe.png';
 import Cookie from '../utils/Cookie';
@@ -107,33 +106,7 @@ const Album: React.FC<Props> = ({ initCards }) => {
 	return (
 		<StyledAlbum>
 			<Header left={{}}  title="앨범" />
-			<StyledCardsWrapper>
-				{cards.map((answer) => {
-					return (
-						<StyledCardWrapperButton
-							key={answer[0].no}
-							type="button"
-							onClick={() => {
-								setAnswers(answer);
-							}}
-						>
-							<StyledNo>No. {answer[0].no}</StyledNo>
-							<StyledAlbumCardFrameWrapper>
-								<StyledCardFrame src={imgCardframe} alt="imgCardframe" />
-								{answer.map((value, index) => {
-									return (
-										<StyledPart
-											key={value.id}
-											src={value?.file?.cardPngUrl}
-											alt={`cardImg${index}`}
-										/>
-									);
-								})}
-							</StyledAlbumCardFrameWrapper>
-						</StyledCardWrapperButton>
-					);
-				})}
-			</StyledCardsWrapper>
+			<CardsComponent cards={cards} onChangeAnswers={onChangeAnswers} />
 		</StyledAlbum>
 	);
 };
@@ -172,3 +145,52 @@ export const getServerSideProps = async ({req, res}: PageContext): Promise<void 
 };
 
 export default Album;
+
+interface CardsComponentProps {
+	cards: Answer[][];
+	onChangeAnswers: (answers: Answer[]) => void;
+}
+
+const CardsComponent: React.FC<CardsComponentProps> = ({cards, onChangeAnswers}) => {
+	return (
+		<StyledCardsWrapper>
+			{cards.map((answers) => {
+				return (
+					<StyledCardWrapperButton
+						key={answers[0].no}
+						type="button"
+						onClick={() => {
+							onChangeAnswers(answers);
+						}}
+					>
+						<StyledNo>No. {answers[0].no}</StyledNo>
+						<StyledAlbumCardFrameWrapper>
+							<StyledCardFrame src={imgCardframe} alt="imgCardframe" />
+							<PartsComponent answers={answers} />
+						</StyledAlbumCardFrameWrapper>
+					</StyledCardWrapperButton>
+				);
+			})}
+		</StyledCardsWrapper>
+	)
+}
+
+interface PartsComponentProps {
+	answers: Answer[];
+}
+
+const PartsComponent: React.FC<PartsComponentProps> = ({answers}) => {
+	return (
+		<>
+			{answers.map((value, index) => {
+				return (
+					<StyledPart
+						key={value.id}
+						src={value?.file?.cardPngUrl}
+						alt={`cardImg${index}`}
+					/>
+				);
+			})}
+		</>
+	)
+}
