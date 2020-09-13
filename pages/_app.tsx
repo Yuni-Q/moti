@@ -1,5 +1,5 @@
-import { IncomingMessage, ServerResponse } from 'http';
-import { NextPageContext, NextComponentType } from 'next';
+import { ServerResponse } from 'http';
+import { NextComponentType, NextPageContext } from 'next';
 import App from 'next/app';
 import Router from 'next/router';
 import React from 'react';
@@ -10,6 +10,7 @@ import { log } from '../utils/log';
 Router.events.on('routeChangeStart', () => {
 	log('routeChangeStart');
 });
+
 Router.events.on('routeChangeComplete', () => {
 	log('routeChangeComplete');
 });
@@ -35,6 +36,7 @@ class MyApp extends App<Props> {
 
 	render(): JSX.Element {
 		const { Component, pageProps = {} } = this.props;
+
 		return (
 			<>
 				<Helmet
@@ -75,12 +77,14 @@ class MyApp extends App<Props> {
 
 MyApp.getInitialProps = async (context) => {
 	const { res } = context.ctx;
+
 	const isServer = !!context.ctx.req;
 	if (isServer) {
 		log(isServer);
 	} else {
 		log(isServer);
 	}
+	
 	let pageProps = {} as PageContext;
 	if (context.Component.getInitialProps) {
 		const { ctx } = context;

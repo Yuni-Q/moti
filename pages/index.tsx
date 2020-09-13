@@ -4,6 +4,7 @@ import Cookies from 'universal-cookie';
 import Login from '../components/Login';
 import Main from '../components/Main';
 import AnswerDetail from '../components/AnswerDetail';
+import Answer from '../models/Answer';
 
 interface Props {
 	user: any;
@@ -16,8 +17,9 @@ interface Props {
 
 const App: React.FC<Props> = ({ user, isOnboard, answers, missions, refresh, check }) => {
 	const [isDetail, setIsDetail] = useState(false);
+	
 	if (isDetail) {
-		return <AnswerDetail cardArray={answers} setIsDetail={setIsDetail} />;
+		return <AnswerDetail answers={answers} onChangeAnswers={() => {console.log('click')}} />;
 	}
 
 	if (!user) {

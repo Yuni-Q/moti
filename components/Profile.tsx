@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Cookies from 'universal-cookie';
 import icArrowLeft from '../static/assets/images/icArrowLeft.png';
+import { consoleError } from '../utils/log';
 
 interface Props {
 	user: any;
@@ -169,7 +170,7 @@ const Profile: React.FC<Props> = ({ user, setIsEdit }) => {
 							);
 							setIsEdit(false);
 						} catch (error) {
-							console.log('error', error);
+							consoleError('error', error);
 						}
 					}}
 				>

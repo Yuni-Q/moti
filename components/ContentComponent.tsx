@@ -5,18 +5,17 @@ interface ContentComponentProps {
     imgSrc: string;
     isContent?: boolean;
     content: string;
-    setContent: React.Dispatch<React.SetStateAction<string>>;
-    setFile: React.Dispatch<React.SetStateAction<File>>;
+    onChangeContent: (content: string) => void
+    onChangeFile: (file: File) => void;
 }
 
-const ContentComponent: React.FC<ContentComponentProps> = ({imgSrc, isContent, content, setContent, setFile }) => {
+const ContentComponent: React.FC<ContentComponentProps> = ({imgSrc, isContent, content, onChangeContent, onChangeFile }) => {
     if (!isContent) {
         return null;
     }
     const onChagne = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files && typeof event.target.files[0] === 'object') {
-            console.log(event.target.files[0])
-            setFile(event.target.files[0]);
+            onChangeFile(event.target.files[0]);
 		}
 	}
     return (
@@ -30,7 +29,7 @@ const ContentComponent: React.FC<ContentComponentProps> = ({imgSrc, isContent, c
         }
         {!!isContent && <StyledTextAreaWrapper imgSrc={imgSrc}
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e) => onChangeContent(e.target.value)}
             placeholder="여기를 눌러 질문에 대한 답을 적어주세요"
         />}
         </StyldContentComponent>

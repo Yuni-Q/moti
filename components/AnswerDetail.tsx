@@ -7,6 +7,9 @@ import imgCardframe from '../static/assets/images/imgCardframe.png';
 import icArrowLeft from '../static/assets/images/icArrowLeft.png';
 import normal from '../static/assets/images/normal.png';
 import icRewriteNormal from '../static/assets/images/icRewriteNormal.png';
+import Answer from '../models/Answer';
+import { StyeldWrapper } from './StyledComponent';
+import Header from './Header';
 
 const StyledCarousel = styled(Carousel)`
 	.slider-frame {
@@ -23,14 +26,14 @@ const StyledCarousel = styled(Carousel)`
 `;
 
 interface Props {
-	cardArray: any[];
-	setIsDetail: React.Dispatch<React.SetStateAction<boolean>>;
+	answers: Answer[];
+	onChangeAnswers: (answers: Answer[]) => void;
 }
 
-const AnswerDetail: React.FC<Props> = ({ cardArray, setIsDetail }) => {
-	console.log('cardArray', cardArray);
+const AnswerDetail: React.FC<Props> = ({ answers, onChangeAnswers }) => {
 	const router = useRouter();
 	const [slideIndex, setSlideIndex] = useState(0);
+	const title = moment(answers[slideIndex].date).format('YYYY. MM. DD');
 	return (
 		<div
 			style={{
@@ -41,7 +44,7 @@ const AnswerDetail: React.FC<Props> = ({ cardArray, setIsDetail }) => {
 			}}
 		>
 			<div style={{ display: 'flex', height: 72, alignItems: 'center', position: 'relative' }}>
-				<button type="button" onClick={() => setIsDetail(false)}>
+				<button type="button" onClick={() => onChangeAnswers([])}>
 					<img
 						style={{ position: 'absolute', margin: '0 12px', top: 24 }}
 						width={24}
@@ -51,7 +54,7 @@ const AnswerDetail: React.FC<Props> = ({ cardArray, setIsDetail }) => {
 					/>
 				</button>
 				<div style={{ flex: 1, color: 'rgb(241, 219, 205)', textAlign: 'center' }}>
-					{moment(cardArray[slideIndex].date).format('YYYY. MM. DD')}
+					{moment(answers[slideIndex].date).format('YYYY. MM. DD')}
 				</div>
 				<button type="button" onClick={() => router.push('/album')}>
 					<img
@@ -64,7 +67,7 @@ const AnswerDetail: React.FC<Props> = ({ cardArray, setIsDetail }) => {
 				</button>
 			</div>
 			<div style={{ display: 'flex', margin: '24px 24px 16px', justifyContent: 'center' }}>
-				{cardArray.map((value, index) => {
+				{answers.map((value, index) => {
 					return (
 						<div
 							key={value.id}
@@ -74,7 +77,7 @@ const AnswerDetail: React.FC<Props> = ({ cardArray, setIsDetail }) => {
 						>
 							<button
 								type="button"
-								 onClick={() => setSlideIndex(index)}
+								onClick={() => setSlideIndex(index)}
 								style={{
 									width: 8,
 									height: 8,
@@ -92,7 +95,7 @@ const AnswerDetail: React.FC<Props> = ({ cardArray, setIsDetail }) => {
 			</div>
 
 			<StyledCarousel
-				style={{ height: '100%' }}
+				style={{height: '100%' }}
 				cellAlign="center"
 				slidesToShow={1}
 				cellSpacing={24}
@@ -104,11 +107,11 @@ const AnswerDetail: React.FC<Props> = ({ cardArray, setIsDetail }) => {
 				slideIndex={slideIndex}
 				afterSlide={(newSlideIndex) => setSlideIndex(newSlideIndex)}
 			>
-				{cardArray.map((answer) => {
+				{answers.map((answer) => {
 					return (
 						<div key={answer.id} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
 							<div style={{ padding: '16px 60px 0 24px ', fontSize: 24, position: 'relative' }}>
-								<div>{answer.mission.title}</div>
+								<div>{answer?.mission?.title}</div>
 								<button type="button" onClick={() => router.push(`/answers/${answer.id}`)}>
 									<img
 										style={{ position: 'absolute', margin: '0 12px', top: 20, right: 0 }}

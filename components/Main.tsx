@@ -4,11 +4,11 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import icProfileToucharea from '../static/assets/images/icProfileToucharea.png';
 import normal from '../static/assets/images/normal.png';
-import Answer from './Answer';
 import Error from './Error';
 import Motivation from './Motivation';
 import Onboard from './Onboard';
 import Question from './Question';
+import Answer from './Answer';
 
 interface Props {
 	isOnboard?: boolean;

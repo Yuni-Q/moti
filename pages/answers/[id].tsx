@@ -5,7 +5,7 @@ import { StyeldForm, StyledBottomButton, StyledCardFrame, StyledCardFrameWrapper
 import Submit from '../../components/Submit';
 import Answer from '../../models/Answer';
 import Cookie from '../../utils/Cookie';
-import { log } from '../../utils/log';
+import { consoleError } from '../../utils/log';
 import { redirectRoot } from '../../utils/redirect';
 import { PageContext } from '../_app';
 
@@ -17,6 +17,7 @@ const AnswerPage: React.FC<Props> = ({ answer }) => {
 	const [content, setContent] = useState(answer.content || '');
 	const [isSubmit, setIsSubmit] = useState(false);
 	const [file, setFile] = useState<File>({name: answer.imageUrl || ''} as File);
+
 	const onSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		try {
@@ -34,19 +35,29 @@ const AnswerPage: React.FC<Props> = ({ answer }) => {
 			await Answer.putAnswersId({ formData, answer,token });
 			setIsSubmit(true);
 		} catch (error) {
-			log('error', error);
+			consoleError('error', error);
 		}
 	}, [answer, content, file])
+
+	const onChangeContent = (newContent: string) => {
+		setContent(newContent);
+	}
+
+	const onChangeFile = (newFile: File) => {
+		setFile(newFile);
+	}
+
 	if (isSubmit) {
 		return <Submit />;
 	}
+	
 	return (
 		<StyeldForm onSubmit={onSubmit}>
-			<Header title='답변 수정하기' isLeftButton />
+			<Header left={{}} title='답변 수정하기' />
 			<StyledSubTitle>{answer.mission?.title}</StyledSubTitle>
 			<StyledCardFrameWrapper>
 				<StyledCardFrame src="/static/assets/images/imgCardframe.png" alt="imgCardframe" />
-				<ContentComponent imgSrc={file.type?  URL.createObjectURL(file) : file.name}  setFile={setFile} isContent={answer.mission?.isContent} content={content} setContent={setContent} />
+				<ContentComponent imgSrc={file.type?  URL.createObjectURL(file) : file.name}  onChangeFile={onChangeFile} isContent={answer.mission?.isContent} content={content} onChangeContent={onChangeContent} />
 			</StyledCardFrameWrapper>
 			<StyledBottomButton type="submit" width={240}>
 				답변하기
@@ -65,6 +76,7 @@ export const getServerSideProps = async ({req, res, params}: PageContext): Promi
 	const props = {
 		answer: {} as Answer,
 	};
+	
 	try {
 		const token = Cookie.getToken(req);
 		if(!token) {
@@ -90,8 +102,8 @@ export const getServerSideProps = async ({req, res, params}: PageContext): Promi
 			props,
 		};
 	} catch (error) {
-		log(error);
-		redirectRoot(res);
+		consoleError('error', error);
+		return redirectRoot(res);
 	}
 };
 

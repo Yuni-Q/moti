@@ -7,7 +7,7 @@ import Submit from '../../components/Submit';
 import Answer from '../../models/Answer';
 import Mission from '../../models/Mission';
 import Cookie from '../../utils/Cookie';
-import { log } from '../../utils/log';
+import { consoleError } from '../../utils/log';
 import { redirectRoot } from '../../utils/redirect';
 import { PageContext } from '../_app';
 
@@ -19,6 +19,7 @@ const MissionPage: React.FC<Props> = ({ mission }) => {
 	const [content, setContent] = useState('');
 	const [file, setFile] = useState<File>({} as File);
 	const [isSubmit, setIsSubmit] = useState(false);
+
 	const onSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		try {
@@ -40,22 +41,33 @@ const MissionPage: React.FC<Props> = ({ mission }) => {
 			await Answer.postAnswers({formData, token});
 			setIsSubmit(true);
 		} catch (error) {
-			log('error', error);
+			consoleError('error', error);
 		}
 	}, [content, file, mission.id, mission.isContent, mission.isImage]);
+	
+	const onChangeContent = (newContent: string) => {
+		setContent(newContent);
+	}
+
+	const onChangeFile = (newFile: File) => {
+		setFile(newFile);
+	}
+
 	if (mission.isImage && !file.type) {
 		return <FileInput mission={mission} setFile={setFile} />;
 	}
+
 	if (isSubmit) {
 		return <Submit />;
 	}
+	
 	return (
 		<StyeldForm onSubmit={onSubmit}>
-			<Header isLeftButton title="답변 하기" />
+			<Header left={{}} title="답변 하기" />
 			<StyledSubTitle>{mission.title}</StyledSubTitle>
 			<StyledCardFrameWrapper>
 				<StyledCardFrame src="/static/assets/images/imgCardframe.png" alt="imgCardframe" />
-				<ContentComponent imgSrc={file.type ? URL.createObjectURL(file) : ''} setFile={setFile} isContent={mission?.isContent} content={content} setContent={setContent} />
+				<ContentComponent imgSrc={file.type ? URL.createObjectURL(file) : ''} onChangeFile={onChangeFile} isContent={mission?.isContent} content={content} onChangeContent={onChangeContent} />
 			</StyledCardFrameWrapper>
 			<StyledBottomButton type="submit" width={240}>
 				답변하기
@@ -78,12 +90,13 @@ export const getServerSideProps = async ({req, res, params}: PageContext): Promi
 		const token = Cookie.getToken(req);
 		if(!token) {
             return redirectRoot(res);
-        }
-		// const isUser = await checkUser({token});
+		}
 		
+		// const isUser = await checkUser({token});
 		// if(!isUser) {
 		// 	return redirectRoot(res);
 		// }
+		
 		const weekAnswers = await Answer.getAnswersWeek(token);
 		const check = weekAnswers.answers.filter((answer: Answer) => {
 			return answer.date === weekAnswers.today;
@@ -106,7 +119,7 @@ export const getServerSideProps = async ({req, res, params}: PageContext): Promi
 			props,
 		};
 	} catch (error) {
-		log('error', error);
+		consoleError('error', error);
 		return redirectRoot(res);
 	}
 };

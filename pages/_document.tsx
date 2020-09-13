@@ -1,20 +1,30 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+import { AppType, RenderPageResult } from 'next/dist/next-server/lib/utils';
+import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
-import Helmet from 'react-helmet';
+import Helmet, { HelmetData } from 'react-helmet';
 import { ServerStyleSheet } from 'styled-components';
 import { consoleError } from '../utils/log';
 
-export default class CustomDocument extends Document<any> {
-	static async getInitialProps(context: any): Promise<any> {
+interface Props {
+	styles: JSX.Element;
+	helmet: HelmetData;
+	html: string;
+	head?: (JSX.Element | null)[] | undefined;
+}
+
+type getInitialPropsRuturnType = RenderPageResult | Props;
+
+export default class CustomDocument extends Document<Props> {
+	static async getInitialProps(context: DocumentContext): Promise<getInitialPropsRuturnType>{
 		const sheet = new ServerStyleSheet();
 		const originalRenderPage = context.renderPage;
 		try {
 			context.renderPage = () =>
 				originalRenderPage({
-					enhanceApp: (App: any) => (props: any) => sheet.collectStyles(<App {...props} />),
+					enhanceApp: (App: AppType) => (props) => sheet.collectStyles(<App {...props} />),
 				});
 			const initialProps = await Document.getInitialProps(context);
-			const page = context.renderPage((App: any) => (props: any) => sheet.collectStyles(<App {...props} />));
+			const page = context.renderPage((App) => (props) => sheet.collectStyles(<App {...props} />));
 			const styles = (
 				<>
 					<link href="/static/reset.css" rel="stylesheet" />
@@ -30,17 +40,17 @@ export default class CustomDocument extends Document<any> {
 			};
 		} catch (error) {
 			consoleError(error);
-			return null;
+			throw new Error('CustomDocument Error')
 		} finally {
 			sheet.seal();
 		}
 	}
 
 	render(): JSX.Element {
-		// const { publicRuntimeConfig } = getConfig();
 		const { htmlAttributes, bodyAttributes, ...helmet } = this.props.helmet;
 		const htmlAttrs = htmlAttributes.toComponent();
 		const bodyAttrs = bodyAttributes.toComponent();
+		
 		return (
 			<Html lang="en" dir="ltr" {...htmlAttrs}>
 				<Head>
@@ -55,7 +65,7 @@ export default class CustomDocument extends Document<any> {
 					<meta property="og:description" content="yuni-q" />
 					<meta property="og:site_name" content="yuni-q" />
 					<meta property="og:locale" content="ko-KO" />
-					{Object.values(helmet).map((el: any) => el.toComponent())}
+					{Object.values(helmet).map((el) => el.toComponent())}
 					<link rel="manifest" href="/static/manifest.json" />
 					<link rel="shorcut icon" href="/static/favicon.png" />
 					<meta name="theme-color" content="black" />

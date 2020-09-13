@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import icArrowLeft from '../static/assets/images/icArrowLeft.png';
 import imgMale from '../static/assets/images/imgMale.svg';
 import imgFemale from '../static/assets/images/imgFemale.svg';
+import { consoleError } from '../utils/log';
 
 interface Props {
 	token: string;
@@ -241,7 +242,7 @@ const SignUp: React.FC<Props> = ({ token }) => {
 											{ headers: { Authorization: token } },
 										);
 									} catch (error) {
-										console.log('error', error);
+										consoleError('error', error);
 										return;
 									}
 								}

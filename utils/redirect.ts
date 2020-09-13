@@ -1,6 +1,6 @@
 import { ServerResponse } from "http";
 import User from "../models/User";
-import { log } from "./log";
+import { consoleError } from "./log";
 
 export default (): string => {
     return ''
@@ -24,7 +24,7 @@ export const checkUser = async ({token}: {token: string}): Promise<boolean> => {
         }
         return true;
     } catch(error) {
-        log('error', error);
+        consoleError('error', error);
         return false;
     }
 }

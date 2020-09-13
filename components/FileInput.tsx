@@ -16,7 +16,7 @@ const FileInput: React.FC<Props> = ({ mission, setFile }) => {
 	}
 	return (
 		<StyeldWrapper>
-			<Header isLeftButton title="질문 선택" />
+			<Header left={{}} title="질문 선택" />
 			<StyledSubTitle>{mission.title}</StyledSubTitle>
 			<div>
 				<StyledImg src="/static/assets/images/imgCam.png" alt="imgCam" width="202" height="202" />

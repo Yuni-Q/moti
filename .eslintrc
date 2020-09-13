@@ -40,7 +40,9 @@
 		"jsx-a11y/anchor-is-valid": 0,
 		"consistent-return": 0,
 		"jsx-a11y/label-has-associated-control": 0,
-		"no-alert": 0
+		"no-alert": 0,
+		"no-empty-function": 0
+
 	},
 	"settings": {
 		"import/resolver": {
