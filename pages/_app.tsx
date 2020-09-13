@@ -14,6 +14,11 @@ Router.events.on('routeChangeComplete', () => {
 	log('routeChangeComplete');
 });
 
+interface Props {
+	Component: NextComponentType<NextPageContext>;
+	pageProps: PageContext;
+}
+
 class MyApp extends App<Props> {
 	componentDidMount(): void {
 		if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
@@ -88,16 +93,7 @@ MyApp.getInitialProps = async (context) => {
 	return { pageProps, isServer };
 };
 
-interface Props {
-	Component: NextComponentType<NextPageContext>;
-	pageProps: PageContext;
-}
-
-
-
-export interface PageContext {
-	req: IncomingMessage;
-	res: ServerResponse;
+export interface PageContext extends NextPageContext {
 	params: {
 		id?: string
 	};

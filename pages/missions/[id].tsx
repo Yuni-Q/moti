@@ -7,9 +7,9 @@ import Submit from '../../components/Submit';
 import Answer from '../../models/Answer';
 import Mission from '../../models/Mission';
 import Cookie from '../../utils/Cookie';
-import { checkUser, redirectRoot } from '../../utils/redirect';
-import { PageContext } from '../_app';
 import { log } from '../../utils/log';
+import { redirectRoot } from '../../utils/redirect';
+import { PageContext } from '../_app';
 
 interface Props {
 	mission: Mission;
@@ -76,27 +76,30 @@ export const getServerSideProps = async ({req, res, params}: PageContext): Promi
 	};
 	try {
 		const token = Cookie.getToken(req);
-		const isUser = await checkUser({res, token});
-		if(!isUser) {
-			return res.end(); 
-		}
+		if(!token) {
+            return redirectRoot(res);
+        }
+		// const isUser = await checkUser({token});
+		
+		// if(!isUser) {
+		// 	return redirectRoot(res);
+		// }
 		const weekAnswers = await Answer.getAnswersWeek(token);
 		const check = weekAnswers.answers.filter((answer: Answer) => {
 			return answer.date === weekAnswers.today;
 		});
 		if (check.length > 0) {
-			redirectRoot(res);
-			return res.end(); 
+			return redirectRoot(res);
 		}
+
 		const { id } = params;
 		if(!id) {
-			redirectRoot(res);
-			return res.end(); 
+			return redirectRoot(res);
 		}
+		
 		const mission: Mission = await Mission.getMissionsId({id, token});
 		if(!mission) {
-			redirectRoot(res);
-			return res.end(); 
+			return redirectRoot(res);
 		}
 		props.mission = mission;
 		return {
@@ -104,8 +107,7 @@ export const getServerSideProps = async ({req, res, params}: PageContext): Promi
 		};
 	} catch (error) {
 		log('error', error);
-		redirectRoot(res);
-		return res.end(); 
+		return redirectRoot(res);
 	}
 };
 

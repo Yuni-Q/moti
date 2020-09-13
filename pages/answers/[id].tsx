@@ -5,9 +5,9 @@ import { StyeldForm, StyledBottomButton, StyledCardFrame, StyledCardFrameWrapper
 import Submit from '../../components/Submit';
 import Answer from '../../models/Answer';
 import Cookie from '../../utils/Cookie';
-import { checkUser, redirectRoot } from '../../utils/redirect';
-import { PageContext } from '../_app';
 import { log } from '../../utils/log';
+import { redirectRoot } from '../../utils/redirect';
+import { PageContext } from '../_app';
 
 interface Props {
 	answer: Answer;
@@ -67,19 +67,23 @@ export const getServerSideProps = async ({req, res, params}: PageContext): Promi
 	};
 	try {
 		const token = Cookie.getToken(req);
-		const isUser = await checkUser({res, token});
-		if(!isUser) {
-			return res.end();
+		if(!token) {
+            return redirectRoot(res);
 		}
+		
+		// const isUser = await checkUser({token});
+		// if(!isUser) {
+		// 	return redirectRoot(res);
+		// }
+
 		const {id} = params;
 		if(!id) {
-			redirectRoot(res);
-			return res.end();
+			return redirectRoot(res);
 		}
+
 		const answer = await Answer.getAnswersId({id, token});
 		if(!answer) {
-			redirectRoot(res);
-			return res.end();
+			return redirectRoot(res);
 		}
 		props.answer = answer;
 		return {
@@ -88,7 +92,6 @@ export const getServerSideProps = async ({req, res, params}: PageContext): Promi
 	} catch (error) {
 		log(error);
 		redirectRoot(res);
-		return res.end();
 	}
 };
 

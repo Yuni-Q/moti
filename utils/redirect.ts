@@ -1,29 +1,30 @@
+import { ServerResponse } from "http";
 import User from "../models/User";
+import { log } from "./log";
 
-export default () => {
+export default (): string => {
     return ''
 };
 
-export const redirectRoot = (res: any) => {
-    res.setHeader('location', '/');
-    res.statusCode = 302;
-    return false;
+export const redirectRoot = (res?: ServerResponse): void => {
+    if(res) {
+        res.setHeader('location', '/');
+        res.statusCode = 302;
+        res.end();
+    } else {
+        window.location.pathname = '/'
+    }
 }
 
-export const checkUser = async ({res,token}: {res: any, token: string}) => {
-        try {
-            if(!token) {
-                return redirectRoot(res);
-            }
-            const user = await User.getUsersMy(token);
-            if(user.id) {
-                return true;
-            }
-            return false;
-        } catch(error) {
-            console.log('error', error);
+export const checkUser = async ({token}: {token: string}): Promise<boolean> => {
+    try {
+        const user = await User.getUsersMy(token);
+        if(!user || !user.id) {
             return false;
         }
-		
-        
+        return true;
+    } catch(error) {
+        log('error', error);
+        return false;
+    }
 }
