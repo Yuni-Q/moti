@@ -1,3 +1,5 @@
+import { IncomingMessage, ServerResponse } from 'http';
+import { NextPageContext, NextComponentType } from 'next';
 import App from 'next/app';
 import Router from 'next/router';
 import React from 'react';
@@ -6,14 +8,14 @@ import GlobalStyle from '../components/GlobalStyle';
 import { log } from '../utils/log';
 
 Router.events.on('routeChangeStart', () => {
-	console.log('routeChangeStart');
+	log('routeChangeStart');
 });
 Router.events.on('routeChangeComplete', () => {
-	console.log('routeChangeComplete');
+	log('routeChangeComplete');
 });
 
-class MyApp extends App<Props, any> {
-	componentDidMount() {
+class MyApp extends App<Props> {
+	componentDidMount(): void {
 		if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
 			navigator.serviceWorker
 				.register('/service-worker.js')
@@ -26,7 +28,7 @@ class MyApp extends App<Props, any> {
 		}
 	}
 
-	render() {
+	render(): JSX.Element {
 		const { Component, pageProps = {} } = this.props;
 		return (
 			<>
@@ -74,21 +76,31 @@ MyApp.getInitialProps = async (context) => {
 	} else {
 		log(isServer);
 	}
-	let pageProps: any = {};
+	let pageProps = {} as PageContext;
 	if (context.Component.getInitialProps) {
 		const { ctx } = context;
-		const obj: any = {
+		const obj: { ctx: NextPageContext; res: ServerResponse | undefined } = {
 			ctx,
 			res,
 		};
-		pageProps = await context.Component.getInitialProps(obj);
+		pageProps = await context.Component.getInitialProps(obj as unknown as NextPageContext) as PageContext;
 	}
 	return { pageProps, isServer };
 };
 
 interface Props {
-	Component: any;
-	pageProps: any;
+	Component: NextComponentType<NextPageContext>;
+	pageProps: PageContext;
+}
+
+
+
+export interface PageContext {
+	req: IncomingMessage;
+	res: ServerResponse;
+	params: {
+		id?: string
+	};
 }
 
 export default MyApp;

@@ -1,12 +1,13 @@
 import React, { useCallback, useState } from 'react';
-import Cookies from 'universal-cookie';
 import ContentComponent from '../../components/ContentComponent';
 import Header from '../../components/Header';
 import { StyeldForm, StyledBottomButton, StyledCardFrame, StyledCardFrameWrapper, StyledSubTitle } from '../../components/StyledComponent';
 import Submit from '../../components/Submit';
 import Answer from '../../models/Answer';
-import { redirectRoot, checkUser } from '../../utils/redirect';
 import Cookie from '../../utils/Cookie';
+import { checkUser, redirectRoot } from '../../utils/redirect';
+import { PageContext } from '../_app';
+import { log } from '../../utils/log';
 
 interface Props {
 	answer: Answer;
@@ -33,7 +34,7 @@ const AnswerPage: React.FC<Props> = ({ answer }) => {
 			await Answer.putAnswersId({ formData, answer,token });
 			setIsSubmit(true);
 		} catch (error) {
-			console.log('error', error);
+			log('error', error);
 		}
 	}, [answer, content, file])
 	if (isSubmit) {
@@ -54,27 +55,38 @@ const AnswerPage: React.FC<Props> = ({ answer }) => {
 	);
 };
 
-export const getServerSideProps = async (context: any) => {
-	const props = {
-		answer: {},
-	};
-	const { res } = context;
+interface ServerSideProps {
+	props: {
+		answer: Answer;
+	}
+}
 
+export const getServerSideProps = async ({req, res, params}: PageContext): Promise<void | ServerSideProps> => {
+	const props = {
+		answer: {} as Answer,
+	};
 	try {
-		const token = Cookie.getToken(context.req);
+		const token = Cookie.getToken(req);
 		const isUser = await checkUser({res, token});
 		if(!isUser) {
 			return res.end();
 		}
-		
-		const {id} = context.params;
+		const {id} = params;
+		if(!id) {
+			redirectRoot(res);
+			return res.end();
+		}
 		const answer = await Answer.getAnswersId({id, token});
+		if(!answer) {
+			redirectRoot(res);
+			return res.end();
+		}
 		props.answer = answer;
 		return {
 			props,
 		};
 	} catch (error) {
-		console.log(error);
+		log(error);
 		redirectRoot(res);
 		return res.end();
 	}

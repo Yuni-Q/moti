@@ -1,6 +1,4 @@
-import axios from 'axios';
-import React, { useState, useCallback } from 'react';
-import Cookies from 'universal-cookie';
+import React, { useCallback, useState } from 'react';
 import ContentComponent from '../../components/ContentComponent';
 import FileInput from '../../components/FileInput';
 import Header from '../../components/Header';
@@ -8,8 +6,10 @@ import { StyeldForm, StyledBottomButton, StyledCardFrame, StyledCardFrameWrapper
 import Submit from '../../components/Submit';
 import Answer from '../../models/Answer';
 import Mission from '../../models/Mission';
-import { redirectRoot, checkUser } from '../../utils/redirect';
 import Cookie from '../../utils/Cookie';
+import { checkUser, redirectRoot } from '../../utils/redirect';
+import { PageContext } from '../_app';
+import { log } from '../../utils/log';
 
 interface Props {
 	mission: Mission;
@@ -37,10 +37,10 @@ const MissionPage: React.FC<Props> = ({ mission }) => {
 				}
 				formData.append('file', new Blob([file], { type: 'application/octet-stream' }));
 			}
-			const a = await Answer.postAnswers({formData, token});
+			await Answer.postAnswers({formData, token});
 			setIsSubmit(true);
 		} catch (error) {
-			console.log('error', error);
+			log('error', error);
 		}
 	}, [content, file, mission.id, mission.isContent, mission.isImage]);
 	if (mission.isImage && !file.type) {
@@ -64,13 +64,18 @@ const MissionPage: React.FC<Props> = ({ mission }) => {
 	);
 };
 
-export const getServerSideProps = async (context: any) => {
+interface ServerSideProps {
+	props: {
+		mission: Mission;
+	}
+}
+
+export const getServerSideProps = async ({req, res, params}: PageContext): Promise<void | ServerSideProps> => {
 	const props = {
-		mission: {},
+		mission: {} as Mission,
 	};
-	const { res } = context;
 	try {
-		const token = Cookie.getToken(context.req);
+		const token = Cookie.getToken(req);
 		const isUser = await checkUser({res, token});
 		if(!isUser) {
 			return res.end(); 
@@ -83,14 +88,22 @@ export const getServerSideProps = async (context: any) => {
 			redirectRoot(res);
 			return res.end(); 
 		}
-		const { id } = context.params;
-		const mission = await Mission.getMissionsId({id, token});
+		const { id } = params;
+		if(!id) {
+			redirectRoot(res);
+			return res.end(); 
+		}
+		const mission: Mission = await Mission.getMissionsId({id, token});
+		if(!mission) {
+			redirectRoot(res);
+			return res.end(); 
+		}
 		props.mission = mission;
 		return {
 			props,
 		};
 	} catch (error) {
-		console.log('error', error);
+		log('error', error);
 		redirectRoot(res);
 		return res.end(); 
 	}
