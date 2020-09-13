@@ -1,19 +1,37 @@
 import _ from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { StyledComponent } from 'styled-components';
 import AnswerDetail from '../components/AnswerDetail';
 import Header from '../components/Header';
-import { StyeldWrapper } from '../components/StyledComponent';
+import { StyeldWrapper, StyledCardFrameWrapper, StyledCardFrame, StyledPart } from '../components/StyledComponent';
 import Answer from '../models/Answer';
-import icArrowLeft from '../static/assets/images/icArrowLeft.png';
 import imgCardframe from '../static/assets/images/imgCardframe.png';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
 import { redirectRoot } from '../utils/redirect';
 import { PageContext } from './_app';
 
-const StyleTitle = styled.div`
+
+const StyledAlbum = styled(StyeldWrapper)`
+	justify-content: flex-start;
+`;
+
+const StyledCardsWrapper = styled.div`
+	margin: 16px 12px 0;
+	display: flex;
+	flex-wrap: wrap;
+`;
+
+const StyledCardWrapperButton = styled.button`
+	width: 34%;
+	flex-shrink: 0;
+	flex-grow: 1;
+	text-align: center;
+	margin: 0 16px 32px;
+`;
+
+const StyledNo = styled.div`
 	display: flex;
 	flex-basis: 100%;
 	align-items: center;
@@ -33,27 +51,30 @@ const StyleTitle = styled.div`
 	}
 `;
 
+const StyledAlbumCardFrameWrapper = styled(StyledCardFrameWrapper)`
+	width: 100%;
+`;
+
 interface Props {
-	initCardList: Answer[][];
+	initCards: Answer[][];
 }
 
-const Album: React.FC<Props> = ({ initCardList }) => {
-	const [cardList, setAnswerList] = useState(initCardList || [[]]);
+const Album: React.FC<Props> = ({ initCards }) => {
+	const [cards, setAnswerList] = useState([...initCards, ...initCards] || [[]]);
 	const [answers, setAnswers] = useState([] as Answer[]);
-	const router = useRouter();
 
 	useEffect(() => {
 		const checkPoint = window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300;
 		const getItem = async () => {
 			if (checkPoint) {
 				try {
-					const lastAnswerNo = cardList[cardList.length - 1][0]?.no;
+					const lastAnswerNo = cards[cards.length - 1][0]?.no;
 					if (!!lastAnswerNo && lastAnswerNo !== 1) {
 						const token = Cookie.getToken();
 						if(!token) {
 							return redirectRoot();
 						}
-						const { id } = cardList[cardList.length - 1][cardList[cardList.length - 1].length - 1];
+						const { id } = cards[cards.length - 1][cards[cards.length - 1].length - 1];
 						if(id) {
 							const newCardList = await Answer.getAnswersList({id, token})
 							setAnswerList((oldCardList: Answer[][]) => [...oldCardList, ...newCardList]);
@@ -74,7 +95,7 @@ const Album: React.FC<Props> = ({ initCardList }) => {
 		return () => {
 			window.removeEventListener('scroll', fn);
 		};
-	}, [cardList]);
+	}, [cards]);
 
 	const onChangeAnswers = (newAnswers: Answer[]) => {
 		setAnswers(newAnswers);
@@ -84,77 +105,48 @@ const Album: React.FC<Props> = ({ initCardList }) => {
 		return <AnswerDetail answers={answers} onChangeAnswers={onChangeAnswers} />;
 	}
 	return (
-		<StyeldWrapper>
+		<StyledAlbum>
 			<Header left={{}}  title="앨범" />
-			<div style={{ display: 'flex', height: 72, alignItems: 'center', position: 'relative', flexShrink: 0 }}>
-				<button type="button" onClick={() => router.push('/')}>
-					<img
-						style={{ position: 'absolute', margin: '0 12px', top: 24 }}
-						width={24}
-						height={24}
-						src={icArrowLeft}
-						alt="icArrowLeft"
-					/>
-				</button>
-				<div style={{ flex: 1, color: 'rgb(241, 219, 205)', textAlign: 'center' }}>앨범</div>
-			</div>
-			{/* <div style={{ display: 'flex', margin: '24px 24px 16px', justifyContent: 'center' }} /> */}
-			<div style={{ margin: '16px 0 0' }}>
-				<div style={{ display: 'flex', flexWrap: 'wrap' }}>
-					{cardList.map((answer: any) => {
-						return (
-							<button
-								type="button"
-								onClick={() => {
-									setAnswers(answer);
-								}}
-								key={answer[0].no}
-								style={{ width: '34%', flexShrink: 0, flexGrow: 1, textAlign: 'center', margin: '0 0 32px' }}
-							>
-								<StyleTitle>No. {answer[0].no}</StyleTitle>
-								<button
-									type="button"
-									// onClick={() => setIsDetail(true)}
-									style={{
-										width: '80%',
-										boxShadow: '0 0 10px 0 rgb(231, 188, 158)',
-										borderRadius: 11,
-										position: 'relative',
-										// display: 'flex',
-										flexDirection: 'column',
-									}}
-								>
-									<img src={imgCardframe} width="85%" alt="imgCardframe" style={{ margin: 12 }} />
-									{answer.map((value: any) => {
-										return (
-											<img
-												key={value.id}
-												width="70%"
-												src={value.file.cardPngUrl}
-												alt="cardImg"
-												style={{ background: 'initial', zIndex: 100, position: 'absolute', top: '10%', left: '15%' }}
-											/>
-										);
-									})}
-								</button>
-							</button>
-						);
-					})}
-				</div>
-			</div>
-		</StyeldWrapper>
+			<StyledCardsWrapper>
+				{cards.map((answer) => {
+					return (
+						<StyledCardWrapperButton
+							key={answer[0].no}
+							type="button"
+							onClick={() => {
+								setAnswers(answer);
+							}}
+						>
+							<StyledNo>No. {answer[0].no}</StyledNo>
+							<StyledAlbumCardFrameWrapper>
+								<StyledCardFrame src={imgCardframe} alt="imgCardframe" />
+								{answer.map((value, index) => {
+									return (
+										<StyledPart
+											key={value.id}
+											src={value?.file?.cardPngUrl}
+											alt={`cardImg${index}`}
+										/>
+									);
+								})}
+							</StyledAlbumCardFrameWrapper>
+						</StyledCardWrapperButton>
+					);
+				})}
+			</StyledCardsWrapper>
+		</StyledAlbum>
 	);
 };
 
 interface ServerSideProps {
 	props: {
-		initCardList: Answer[][];
+		initCards: Answer[][];
 	}
 }
 
 export const getServerSideProps = async ({req, res}: PageContext): Promise<void | ServerSideProps> => {
 	const props = {
-		initCardList: [] as Answer[][],
+		initCards: [] as Answer[][],
 	};
 	try {
 		const token = Cookie.getToken(req);
@@ -168,7 +160,7 @@ export const getServerSideProps = async ({req, res}: PageContext): Promise<void 
 		// }
 
 		const cardList = await Answer.getAnswersList({token})
-		props.initCardList = cardList;
+		props.initCards = cardList;
 
 		return {
 			props,

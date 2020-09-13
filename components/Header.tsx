@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import icArrowLeft from '../static/assets/images/icArrowLeft.png';
-import { StyldHeader, StyledIcon, StyledTitle } from "./StyledComponent";
+import { StyldHeader, StyledLeftIcon, StyledTitle, StyledRightIcon } from "./StyledComponent";
 
 interface Props {
     left?: {
@@ -26,7 +26,7 @@ const Header: React.FC<Props> = ({title, left, right}) => {
                     }
                     left.onClick();
                     }}>
-					<StyledIcon
+					<StyledLeftIcon
 						width={24}
 						height={24}
 						src={icArrowLeft}
@@ -35,8 +35,7 @@ const Header: React.FC<Props> = ({title, left, right}) => {
 				</button>}
 				<StyledTitle>{title}</StyledTitle>
                 {right && <button type="button" onClick={() => right.onClick()}>
-					<img
-						style={{ position: 'absolute', margin: '0 12px', top: 24, right: 0 }}
+					<StyledRightIcon
 						width={24}
 						height={24}
 						src={right.imgUrl}

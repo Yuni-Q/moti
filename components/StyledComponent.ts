@@ -5,8 +5,9 @@ const StyledDiv = styled.div``;
 export default StyledDiv;
 
 export const StyeldWrapper = styled.div`
-    min-width: 100vw;
-    min-height: 100vh;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -14,8 +15,10 @@ export const StyeldWrapper = styled.div`
 `;
 
 export const StyeldForm = styled.form`
-    min-width: 100vw;
+    width: 100vw;
+    max-width: 100vw;
     min-height: 100vh;
+    height: 100vh;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -37,15 +40,23 @@ export const StyledTitle = styled.div`
     text-align: center;
 `;
 
-export const StyledIcon = styled.img`
+export const StyledLeftIcon = styled.img`
     position: absolute; 
     margin: 0 12px; 
     top: 24px;
     left: 0px;
 `;
 
+export const StyledRightIcon = styled.img`
+    position: absolute; 
+    margin: 0 12px; 
+    top: 24px;
+    right: 0px;
+`;
+
+
 export const StyledSubTitle = styled.div`
-    margin: 8px 24px 56px;
+    margin: 8px 36px 56px;
     font-size: 24px;
 `;
 
@@ -142,4 +153,30 @@ background: initial;
 & > input {
     display: none;
 }
+`;
+
+export const StyledDotWrapper = styled.div`
+    display: flex; 
+    margin: 24px 24px 16px;
+    justify-content: center;
+`;
+
+export const StyledDotButton = styled.button<{active: boolean}>`
+    width: 8px;
+    height: 8px;
+    border-radius: 8px;
+    background-color: ${({active}) => active ? '#d4a17d' : 'rgb(68, 68, 68)'};
+    margin: 8px 8px;
+    font-size: 0;
+    display: block;
+`;
+
+export const StyledPart = styled.img`
+    width: 70%;
+    background: initial;
+    z-index: 100;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 `;

@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 import moment from 'moment';
-import styled from 'styled-components';
+import { useRouter } from 'next/router';
 import Carousel from 'nuka-carousel';
-import imgCardframe from '../static/assets/images/imgCardframe.png';
-import icArrowLeft from '../static/assets/images/icArrowLeft.png';
-import normal from '../static/assets/images/normal.png';
-import icRewriteNormal from '../static/assets/images/icRewriteNormal.png';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import Answer from '../models/Answer';
-import { StyeldWrapper } from './StyledComponent';
+import icRewriteNormal from '../static/assets/images/icRewriteNormal.png';
+import ContentComponent from './ContentComponent';
 import Header from './Header';
+import { StyeldWrapper, StyledCardFrame, StyledCardFrameWrapper, StyledDotButton, StyledDotWrapper, StyledRightIcon, StyledSubTitle } from './StyledComponent';
 
 const StyledCarousel = styled(Carousel)`
+	flex: 1;
+	height: 100%;
 	.slider-frame {
 		ul.slider-list {
 			height: 100% !important;
@@ -34,68 +34,51 @@ const AnswerDetail: React.FC<Props> = ({ answers, onChangeAnswers }) => {
 	const router = useRouter();
 	const [slideIndex, setSlideIndex] = useState(0);
 	const title = moment(answers[slideIndex].date).format('YYYY. MM. DD');
+
+	const onChagneSlideIndex = (newIndex: number) => {
+		setSlideIndex(newIndex);
+	}
 	return (
-		<div
-			style={{
-				width: '100vw',
-				height: '100vh',
-				display: 'flex',
-				flexDirection: 'column',
-			}}
-		>
-			<div style={{ display: 'flex', height: 72, alignItems: 'center', position: 'relative' }}>
-				<button type="button" onClick={() => onChangeAnswers([])}>
-					<img
-						style={{ position: 'absolute', margin: '0 12px', top: 24 }}
-						width={24}
-						height={24}
-						src={icArrowLeft}
-						alt="icArrowLeft"
-					/>
-				</button>
-				<div style={{ flex: 1, color: 'rgb(241, 219, 205)', textAlign: 'center' }}>
-					{moment(answers[slideIndex].date).format('YYYY. MM. DD')}
-				</div>
-				<button type="button" onClick={() => router.push('/album')}>
-					<img
-						style={{ position: 'absolute', margin: '0 12px', top: 24, right: 0 }}
-						width={24}
-						height={24}
-						src={normal}
-						alt="normal"
-					/>
-				</button>
-			</div>
-			<div style={{ display: 'flex', margin: '24px 24px 16px', justifyContent: 'center' }}>
-				{answers.map((value, index) => {
+		<StyeldWrapper>
+			<Header left={{onClick: () => onChangeAnswers([])}}  title={title} right={{onClick: () => router.push('/album'), imgUrl: '/static/assets/images/normal.png', alt: 'normal'}} />
+			<StyledDotWrapper>
+				{answers.map((_, index) => {
 					return (
-						<div
-							key={value.id}
-							style={{
-								margin: '0 8px',
-							}}
+						<StyledDotButton
+							active={index === slideIndex}
+							type="button"
+							onClick={() => setSlideIndex(index)}
 						>
-							<button
-								type="button"
-								onClick={() => setSlideIndex(index)}
-								style={{
-									width: 8,
-									height: 8,
-									borderRadius: 8,
-									backgroundColor: index === slideIndex ? '#d4a17d' : 'rgb(68, 68, 68)',
-									marginTop: 8,
-									fontSize: 0,
-								}}
-							>
-								dot
-							</button>
-						</div>
+							dot
+						</StyledDotButton>
 					);
 				})}
-			</div>
+			</StyledDotWrapper>
+			<AnswerCarosel answers={answers} slideIndex={slideIndex} onChagneSlideIndex={onChagneSlideIndex} />
+		</StyeldWrapper>
+	);
+};
 
+const StyledCardsWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 100%;
+	overflow: scroll;
+`;
+
+interface AnswerCaroselProps {
+	answers: Answer[];
+	slideIndex: number;
+	onChagneSlideIndex: (index: number) => void;
+}
+
+export default AnswerDetail;
+
+const AnswerCarosel: React.FC<AnswerCaroselProps> = ({answers, slideIndex, onChagneSlideIndex}) => {
+	const router = useRouter();
+	return (
 			<StyledCarousel
-				style={{height: '100%' }}
 				cellAlign="center"
 				slidesToShow={1}
 				cellSpacing={24}
@@ -105,59 +88,30 @@ const AnswerDetail: React.FC<Props> = ({ answers, onChangeAnswers }) => {
 					prevButtonStyle: { display: 'none' },
 				}}
 				slideIndex={slideIndex}
-				afterSlide={(newSlideIndex) => setSlideIndex(newSlideIndex)}
+				afterSlide={(newSlideIndex) => onChagneSlideIndex(newSlideIndex)}
 			>
 				{answers.map((answer) => {
 					return (
-						<div key={answer.id} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-							<div style={{ padding: '16px 60px 0 24px ', fontSize: 24, position: 'relative' }}>
+						<StyledCardsWrapper key={answer.id} >
+							<StyledSubTitle>
 								<div>{answer?.mission?.title}</div>
 								<button type="button" onClick={() => router.push(`/answers/${answer.id}`)}>
-									<img
-										style={{ position: 'absolute', margin: '0 12px', top: 20, right: 0 }}
+									<StyledRightIcon
+										className="mr-6"
 										width={24}
 										height={24}
 										src={icRewriteNormal}
 										alt="icRewriteNormal"
 									/>
 								</button>
-							</div>
-							<div
-								style={{
-									margin: '56px auto 0',
-									width: 311,
-									height: 482,
-									boxShadow: '0 0 10px 0 rgb(231, 188, 158)',
-									borderRadius: 11,
-									position: 'relative',
-									display: 'flex',
-									flexDirection: 'column',
-								}}
-							>
-								<img src={imgCardframe} width="287" alt="imgCardframe" style={{ margin: 12, position: 'absolute' }} />
-								{answer.imageUrl && (
-									<img src={answer.imageUrl} alt="imgaeUrl" width="80%" style={{ zIndex: 10, margin: '25px auto 0' }} />
-								)}
-								<pre
-									style={{
-										height: '100%',
-										display: 'flex',
-										justifyContent: 'center',
-										alignItems: 'center',
-										zIndex: 10,
-										background: 'initial',
-										overflow: 'scroll',
-									}}
-								>
-									{answer.content}
-								</pre>
-							</div>
-						</div>
+							</StyledSubTitle>
+							<StyledCardFrameWrapper>
+								<StyledCardFrame src="/static/assets/images/imgCardframe.png" alt="imgCardframe" />
+								<ContentComponent imgSrc={answer.imageUrl || ''}  isContent={answer.mission?.isContent} content={answer.content || ''} />
+							</StyledCardFrameWrapper>
+						</StyledCardsWrapper>
 					);
 				})}
 			</StyledCarousel>
-		</div>
-	);
-};
-
-export default AnswerDetail;
+	)
+}
