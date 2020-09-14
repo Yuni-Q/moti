@@ -1,7 +1,7 @@
 import React from 'react';
 import Mission from '../models/Mission';
 import Header from './Header';
-import { StyeldWrapper, StyledFileInputButton, StyledImg, StyledSubTitle } from './StyledComponent';
+import { StyledWrapper, StyledFileInputButton, StyledImg, StyledSubTitle } from './StyledComponent';
 
 interface Props {
 	mission: Mission;
@@ -15,7 +15,7 @@ const FileInput: React.FC<Props> = ({ mission, setFile }) => {
 		}
 	}
 	return (
-		<StyeldWrapper>
+		<StyledWrapper>
 			<Header left={{}} title="질문 선택" />
 			<StyledSubTitle>{mission.title}</StyledSubTitle>
 			<div>
@@ -25,7 +25,7 @@ const FileInput: React.FC<Props> = ({ mission, setFile }) => {
 				<label htmlFor="file">이미지 업로드</label>
 				<input type="file" id="file" onChange={onChagne}/>
 			</StyledFileInputButton>
-		</StyeldWrapper>
+		</StyledWrapper>
 	);
 };
 

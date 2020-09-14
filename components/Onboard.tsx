@@ -1,21 +1,18 @@
 import React from 'react';
-import Cookies from 'universal-cookie';
-import onbording1 from '../static/assets/images/onbording1.png';
-import onbording2 from '../static/assets/images/onbording2.png';
-import onbording3 from '../static/assets/images/onbording3.png';
-import onbording4 from '../static/assets/images/onbording4.png';
+import Cookie from '../utils/Cookie';
+import { StyledWrapper, StyldHeader, StyledDotButton, StyledImg } from './StyledComponent';
 
 const getImage = (step: number) => {
 	if (step === 1) {
-		return onbording1;
+		return '/static/assets/images/onbording1.png';
 	}
 	if (step === 2) {
-		return onbording2;
+		return '/static/assets/images/onbording2.png';
 	}
 	if (step === 3) {
-		return onbording3;
+		return '/static/assets/images/onbording3.png';
 	}
-	return onbording4;
+	return '/static/assets/images/onbording4.png';
 };
 
 const getTitle = (step: number) => {
@@ -63,88 +60,59 @@ const getText = (step: number) => {
 		<>
 			앨범에서 지금까지 모은 드림캐쳐와
 			<br />
-			기록을 다시 확인할 수 있어요.{' '}
+			기록을 다시 확인할 수 있어요.
 		</>
 	);
 };
 
 interface Props {
 	step: number;
-	setStep: React.Dispatch<React.SetStateAction<number>>;
+	onChageStep: (step: number) => void;
 }
 
-const Onboard: React.FC<Props> = ({ step, setStep }) => {
+const Onboard: React.FC<Props> = ({ step, onChageStep }) => {
+	const onChagne = () => {
+		if (step >= 4) {
+			Cookie.setOnboard({});
+		}
+		onChageStep(step + 1);
+	}
 	return (
 		<button
 			type="button"
-			onClick={() => {
-				if (step >= 4) {
-					const cookies = new Cookies();
-					cookies.set('onboard', 'true');
-				}
-				setStep((oldStep) => oldStep + 1);
-			}}
+			onClick={onChagne}
 		>
-			<div
-				style={{
-					width: '100vw',
-					height: '100vh',
-					display: 'flex',
-					justifyContent: 'space-between',
-					alignItems: 'center',
-					flexDirection: 'column',
-				}}
-			>
-				<div>
-					<div
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							height: 72,
-							alignItems: 'center',
-							justifyContent: 'center',
-						}}
-					>
-						{[1, 2, 3, 4].map((num) => {
-							return (
-								<div
-									key={num}
-									style={{
-										width: 8,
-										height: 8,
-										borderRadius: 8,
-										backgroundColor: num === step ? '#d4a17d' : '#444',
-										marginLeft: 16,
-										marginRight: 16,
-									}}
-								/>
-							);
-						})}
-					</div>
-					<div
-						style={{
-							color: '#d4a17d',
-							textAlign: 'center',
-							fontSize: 20,
-						}}
-					>
+			<StyledWrapper>
+					<OnboardDot step={step} />
+					<div className="text-center h3">
 						{getTitle(step)}
 					</div>
-					<div
-						style={{
-							marginTop: 16,
-							color: '#d4a17d',
-							textAlign: 'center',
-							fontSize: 12,
-						}}
-					>
+					<div className="text-center h5 mt-4">
 						{getText(step)}
 					</div>
-				</div>
-				<img src={getImage(step)} style={{ width: '100vw', height: 'calc(100vh / 3 * 2)px' }} alt="onbording" />
-			</div>
+				<StyledImg src={getImage(step)} width="100%" alt="onbording" />
+			</StyledWrapper>
 		</button>
 	);
 };
+
+interface OnboardDotProps {
+	step: number;
+}
+
+const OnboardDot: React.FC<OnboardDotProps> = ({step}) => {
+	return (
+		<StyldHeader>
+			{[1, 2, 3, 4].map((num) => {
+				return (
+					<StyledDotButton
+						key={num}
+						active={num === step}
+					/>
+				);
+			})}
+		</StyldHeader>
+	)
+}
 
 export default Onboard;

@@ -12,35 +12,47 @@ import { PageContext } from './_app';
 interface Props {
 	user: User;
 	isOnboard: boolean;
-	answers: Answer[];
-	missions: Mission[];
-	cnaRefresh: boolean;
+	initAnswers: Answer[];
+	initMissions: Mission[];
+	initCanRefresh: boolean;
 	isTodayAnswer: boolean;
 }
 
-const App: React.FC<Props> = ({ user, isOnboard, answers, missions, cnaRefresh, isTodayAnswer }) => {
-	const [isDetail, setIsDetail] = useState(false);
+const App: React.FC<Props> = ({ user, isOnboard, initAnswers, initMissions, initCanRefresh, isTodayAnswer }) => {
+	const [answers, setAnswers] = useState([] as Answer[]);
+	const [missions, setMission] = useState(initMissions);
+	const [canRefresh, setCanRefresh] = useState(initCanRefresh);
 
-	const onChangeAnswers = () => {
-		setIsDetail(false);	
+	const onChangeAnswers = (newAnswers: Answer[]) => {
+		setAnswers(newAnswers);	
+	}
+	
+	const onChangeMission = (newMissions: Mission[]) => {
+		setMission(newMissions);
+	}
+
+	const onChangeCanRefresh = (newCanRefresh: boolean) => {
+		setCanRefresh(newCanRefresh)
 	}
 
 	if (!user.id) {
 		return <Login />;
 	}
 	
-	if (isDetail) {
+	if (answers.length > 0) {
 		return <AnswerDetail answers={answers} onChangeAnswers={onChangeAnswers} />;
 	}
 	
 	return (
 		<Main
 			isOnboard={isOnboard}
-			answers={answers}
+			answers={initAnswers}
 			missions={missions}
-			cnaRefresh={cnaRefresh}
+			cnaRefresh={canRefresh}
 			isTodayAnswer={isTodayAnswer}
-			setIsDetail={setIsDetail}
+			onChangeAnswers={onChangeAnswers}
+			onChangeMission={onChangeMission}
+			onChangeCanRefresh={onChangeCanRefresh}
 		/>
 	);
 };
@@ -48,22 +60,22 @@ const App: React.FC<Props> = ({ user, isOnboard, answers, missions, cnaRefresh, 
 interface ServerSideProps {
 	props: {
 		user: User,
-		answers: Answer[],
-		missions: Mission[],
+		initAnswers: Answer[],
+		initMissions: Mission[],
 		isTodayAnswer: boolean,
 		isOnboard: boolean,
-		cnaRefresh: boolean,
+		initCanRefresh: boolean,
 	}
 }
 
 export const getServerSideProps = async ({req}: PageContext): Promise<ServerSideProps | void> => {
 	const props = {
 		user: {} as User,
-		answers: [] as Answer[],
-		missions: [] as Mission[],
+		initAnswers: [] as Answer[],
+		initMissions: [] as Mission[],
 		isTodayAnswer: false,
 		isOnboard: false,
-		cnaRefresh: false,
+		initCanRefresh: false,
 	};
 	try {
 		const token = Cookie.getToken(req);
@@ -80,7 +92,7 @@ export const getServerSideProps = async ({req}: PageContext): Promise<ServerSide
 		props.user = user;
 		
 		const {today, answers} = await Answer.getAnswersWeek({token})
-		props.answers = answers;
+		props.initAnswers = answers;
 
 		const isTodayAnswer = answers.filter((answer) => {
 			return answer.date === today;
@@ -88,8 +100,8 @@ export const getServerSideProps = async ({req}: PageContext): Promise<ServerSide
 		props.isTodayAnswer = isTodayAnswer;
 
 		const {missions, refresh} = await Mission.getMissions({token});
-		props.missions = missions;
-		props.cnaRefresh = refresh;
+		props.initMissions = missions;
+		props.initCanRefresh = refresh;
 		
 		return {
 			props,

@@ -1,10 +1,11 @@
-import styled from 'styled-components'
+import Carousel from 'nuka-carousel';
+import styled from 'styled-components';
 
 const StyledDiv = styled.div``;
 
 export default StyledDiv;
 
-export const StyeldWrapper = styled.div`
+export const StyledWrapper = styled.div`
     width: 100vw;
     max-width: 100vw;
     height: 100vh;
@@ -27,10 +28,11 @@ export const StyeldForm = styled.form`
 
 export const StyldHeader = styled.div`
     display: flex;
-    height: 72px;
     align-items: center;
+    justify-content: center;
+    height: 72px;
     position: relative;
-    width: 100vw;
+    width: 100%;
     flex-shrink: 0;
 `;
 
@@ -62,7 +64,7 @@ export const StyledSubTitle = styled.div`
 
 export const StyledCardFrameWrapper = styled.div`
     max-width: 287px;
-    width: calc(100% - 64px);
+    width: calc(100vw - 64px);
     box-shadow: 0 0 10px 0 rgb(231, 188, 158);
     border-radius: 11px;
     position: relative;
@@ -179,4 +181,30 @@ export const StyledPart = styled.img`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+`;
+
+export const StyledCarousel = styled(Carousel)`
+	flex: 1;
+	height: 100%;
+	.slider-frame {
+		ul.slider-list {
+			height: 100% !important;
+			li.slider-slide {
+				height: 100% !important;
+			}
+		}
+	}
+	.slider-control-bottomcenter {
+		display: none;
+	}
+`;
+
+export const StyledFooter = styled.footer`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    height: 60px;
+    flex-shrink: 0;
+    align-items: center;
 `;

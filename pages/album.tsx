@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import AnswerDetail from '../components/AnswerDetail';
 import Header from '../components/Header';
-import { StyeldWrapper, StyledCardFrame, StyledCardFrameWrapper, StyledPart } from '../components/StyledComponent';
+import Parts from '../components/Parts';
+import { StyledWrapper, StyledCardFrame, StyledCardFrameWrapper, StyledPart } from '../components/StyledComponent';
 import Answer from '../models/Answer';
 import imgCardframe from '../static/assets/images/imgCardframe.png';
 import Cookie from '../utils/Cookie';
@@ -12,7 +13,7 @@ import { redirectRoot } from '../utils/redirect';
 import { PageContext } from './_app';
 
 
-const StyledAlbum = styled(StyeldWrapper)`
+const StyledAlbum = styled(StyledWrapper)`
 	justify-content: flex-start;
 `;
 
@@ -59,9 +60,8 @@ interface Props {
 }
 
 const Album: React.FC<Props> = ({ initCards }) => {
-	const [cards, setAnswerList] = useState([...initCards, ...initCards] || [[]]);
+	const [cards, setAnswerList] = useState([...initCards] || [[]]);
 	const [answers, setAnswers] = useState([] as Answer[]);
-
 	useEffect(() => {
 		const checkPoint = window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300;
 		const getItem = async () => {
@@ -166,31 +166,11 @@ const CardsComponent: React.FC<CardsComponentProps> = ({cards, onChangeAnswers})
 						<StyledNo>No. {answers[0].no}</StyledNo>
 						<StyledAlbumCardFrameWrapper>
 							<StyledCardFrame src={imgCardframe} alt="imgCardframe" />
-							<PartsComponent answers={answers} />
+							<Parts answers={answers} />
 						</StyledAlbumCardFrameWrapper>
 					</StyledCardWrapperButton>
 				);
 			})}
 		</StyledCardsWrapper>
-	)
-}
-
-interface PartsComponentProps {
-	answers: Answer[];
-}
-
-const PartsComponent: React.FC<PartsComponentProps> = ({answers}) => {
-	return (
-		<>
-			{answers.map((value, index) => {
-				return (
-					<StyledPart
-						key={value.id}
-						src={value?.file?.cardPngUrl}
-						alt={`cardImg${index}`}
-					/>
-				);
-			})}
-		</>
 	)
 }

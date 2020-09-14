@@ -1,47 +1,34 @@
 import React from 'react';
-import imgQuestion from '../static/assets/images/imgQuestion.png';
+import { StyledBody, StyledCardFrameWrapper, StyledImg } from './StyledComponent';
 
 interface Props {
-	setIsQuestion: React.Dispatch<React.SetStateAction<boolean>>;
+	onChageIsQuestion: (isQuestion: boolean) => void
 }
 
-const Motivation: React.FC<Props> = ({ setIsQuestion }) => {
+const Motivation: React.FC<Props> = ({ onChageIsQuestion }) => {
 	return (
-		<div
-			style={{
-				flex: 1,
-				display: 'flex',
-				alignItems: 'center',
-				flexDirection: 'column',
-				justifyContent: 'center',
-				margin: '24px 0',
-			}}
-		>
+		<StyledBody className="justify-content-center">
 			<button
 				type="button"
-				onClick={() => setIsQuestion(true)}
-				style={{
-					width: 257,
-					height: 416,
-					boxShadow: '0 0 10px 0 rgb(231, 188, 158)',
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
-					justifyContent: 'center',
-					borderRadius: 11,
-				}}
+				onClick={() => onChageIsQuestion(true)}
 			>
-				<div style={{ margin: '32px 0 0 0' }}>Motivation</div>
-				<img src={imgQuestion} width="202" height="202" style={{ margin: '36px 0 0 0' }} alt="imgQuestion" />
-				<div style={{ textAlign: 'center', margin: '36px 0 0 0' }}>
-					Today’s
-					<br />
-					your
-					<br />
-					Question
-				</div>
+				<StyledCardFrameWrapper>
+					<div className="mt-8">Motivation</div>
+					<StyledImg className="mt-8" src="/static/assets/images/imgQuestion.png" width="202" height="202" alt="imgQuestion" />
+					<div className="text-align-center my-8">
+						<div>
+							Today’s
+						</div>
+						<div className="mt-2">
+							your
+						</div>
+						<div className="mt-2">
+							Question
+						</div>
+					</div>
+				</StyledCardFrameWrapper>
 			</button>
-		</div>
+		</StyledBody>
 	);
 };
 

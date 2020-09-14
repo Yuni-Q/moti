@@ -290,6 +290,10 @@ const Typo = `
 		margin: 0;
 	}
 
+	.position-absolute {
+		position: absolute;
+	}
+
 	.text-ellipsis {
 		white-space: normal;
 		line-height: 1.4;

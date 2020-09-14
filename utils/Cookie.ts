@@ -18,4 +18,9 @@ export default class Cookie {
         const cookies = req ? new Cookies(req.headers.cookie) : new Cookies();
 		return cookies.get('onboard');
     }
+
+    public static setOnboard({req}: {req?: IncomingMessage;}): void {
+        const cookies = req ? new Cookies(req.headers.cookie) : new Cookies();
+		cookies.set('onboard', 'true');
+    }
 }

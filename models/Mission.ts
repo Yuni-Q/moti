@@ -19,13 +19,19 @@ export default class Mission {
   updatedAt?: Date;
 
   public static getMissionsId ({id, token}: {id: string; token: string;}): Promise<Mission> {
-    return this.api.get(`/v1/missions/${id}`, {}, {
+    return this.api.get(`/v1/missions/${id}/`, {}, {
       headers: { Authorization: token },
     });
   }
 
   public static getMissions ({token}: {token: string;}): Promise<{missions: Mission[]; refresh: boolean;}> {
     return this.api.get(`/v1/missions/`, {}, {
+      headers: { Authorization: token },
+    });
+  }
+
+  public static getMissionsRefresh ({token}: {token: string;}): Promise<{missions: Mission[]; refresh: boolean;}> {
+    return this.api.get(`/v1/missions/refresh/`, {}, {
       headers: { Authorization: token },
     });
   }

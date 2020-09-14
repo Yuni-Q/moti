@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Signin from '../models/Signin';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
-import { StyeldWrapper, StyledImg } from './StyledComponent';
+import { StyledWrapper, StyledImg } from './StyledComponent';
 
 const StyledAppleLoginButton = styled.button`
 	background-color: #fff;
@@ -31,7 +31,7 @@ const StyledAppleLoginButton = styled.button`
 
 const Login: React.FC = () => {
 	return (
-		<StyeldWrapper>
+		<StyledWrapper>
 			<StyledImg
 				src="/static/assets/images/motiLogo.png"
 				alt="motiLogo"
@@ -50,7 +50,7 @@ const Login: React.FC = () => {
 			<div className="h6 my-6 text-center">
 				Make Own True Identity
 			</div>
-		</StyeldWrapper>
+		</StyledWrapper>
 	);
 };
 

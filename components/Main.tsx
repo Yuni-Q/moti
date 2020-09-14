@@ -1,102 +1,98 @@
 import moment from 'moment';
 import { NextPage } from 'next';
-import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import icProfileToucharea from '../static/assets/images/icProfileToucharea.png';
-import normal from '../static/assets/images/normal.png';
+import React, { useState } from 'react';
+import Answer from '../models/Answer';
+import Mission from '../models/Mission';
+import AnswerComponent from './AnswerComponent';
 import Error from './Error';
 import Motivation from './Motivation';
 import Onboard from './Onboard';
 import Question from './Question';
-import Answer from './Answer';
+import { StyledDotButton, StyledDotWrapper, StyledFooter, StyledImg, StyledWrapper } from './StyledComponent';
 
 interface Props {
 	isOnboard?: boolean;
-	answers: any[];
-	missions: any[];
+	answers: Answer[];
+	missions: Mission[];
 	cnaRefresh: boolean;
 	isTodayAnswer: boolean;
 
-	setIsDetail: React.Dispatch<React.SetStateAction<boolean>>;
+	onChangeAnswers: (answers: Answer[]) => void;
+	onChangeMission: (missions: Mission[]) => void;
+	onChangeCanRefresh: (cnaRefresh: boolean) => void;
 }
 
-const Main: NextPage<Props> = ({ isOnboard, answers, missions, cnaRefresh, isTodayAnswer, setIsDetail }) => {
-	console.log('check', isTodayAnswer);
+const Main: NextPage<Props> = ({ isOnboard, answers, missions, cnaRefresh, isTodayAnswer, onChangeAnswers, onChangeMission, onChangeCanRefresh }) => {
 	const router = useRouter();
 	const [step, setStep] = useState(1);
 	const [isQuestion, setIsQuestion] = useState(false);
 	const [errorMessage] = useState('');
-	const [cardArray] = useState(answers);
+
+	const onChageStep = (newStep: number) => {
+		setStep(newStep)
+	}
+
+	const onChageIsQuestion = (bol: boolean) => {
+		setIsQuestion(bol);
+	}
+
+	const onClickFooterLeftButton = () => router.push('/album')
+	const onClickFooterRightButton = () => router.push('/my')
 
 	if (!isOnboard && step <= 4) {
-		return <Onboard step={step} setStep={setStep} />;
+		return <Onboard step={step} onChageStep={onChageStep} />;
 	}
 	if (isQuestion) {
-		return <Question setIsQuestion={setIsQuestion} missions={missions} refresh={cnaRefresh} />;
+		return <Question onChageIsQuestion={onChageIsQuestion} missions={missions} cnaRefresh={cnaRefresh} onChangeMission={onChangeMission}
+		onChangeCanRefresh={onChangeCanRefresh}/>;
 	}
 
 	return (
-		<div style={{ display: 'flex', flexDirection: 'column', width: '100vw', height: '100vh' }}>
-			<div
-				style={{
-					display: 'flex',
-					flexDirection: 'row',
-					justifyContent: 'space-around',
-					width: '100%',
-				}}
-			>
-				{[1, 2, 3, 4, 5, 6].map((num, index) => {
-					return (
-						<div
-							key={num}
-							style={{
-								margin: '16px 0',
-							}}
-						>
-							<span style={{ color: '#d4a17d' }}>{num}th</span>
-							<div
-								style={{
-									width: 16,
-									height: 16,
-									borderRadius: 16,
-									backgroundColor: cardArray[index] ? '#d4a17d' : 'rgb(68, 68, 68)',
-									marginTop: 8,
-								}}
-							/>
-						</div>
-					);
-				})}
-			</div>
+		<StyledWrapper>
+			<MainDot answers={answers} />
 			{errorMessage && <Error errorMessage={errorMessage} />}
-			{!errorMessage && !isQuestion && !isTodayAnswer && <Motivation setIsQuestion={setIsQuestion} />}
-			{!!isTodayAnswer && <Answer cardArray={cardArray} setIsDetail={setIsDetail} />}
-			<div
-				style={{
-					display: 'flex',
-					flexDirection: 'row',
-					justifyContent: 'space-around',
-					width: '100%',
-					height: 60,
-					flexShrink: 0,
-					alignItems: 'center',
-				}}
-			>
+			{!errorMessage && !isQuestion && !isTodayAnswer && <Motivation onChageIsQuestion={onChageIsQuestion} />}
+			{!!isTodayAnswer && <AnswerComponent answers={answers} onChangeAnswers={onChangeAnswers} />}
+			<StyledFooter>
 				<div>
-					<button type="button" onClick={() => router.push('/album')}>
-						<img src={normal} style={{ width: 24, height: 24 }} alt="normal" />
+					<button type="button" onClick={onClickFooterLeftButton}>
+						<StyledImg src="/static/assets/images/normal.png" width="24" height="24" alt="normal" />
 					</button>
 				</div>
-				<div>
-					<span style={{ color: '#d4a17d', fontSize: 20 }}>{moment().format('YYYY. MM. DD')}</span>
+				<div className="h3">
+					<span>{moment().format('YYYY. MM. DD')}</span>
 				</div>
 				<div>
-					<button type="button" onClick={() => router.push('/my')}>
-						<img src={icProfileToucharea} style={{ width: 24, height: 24 }} alt="icProfileToucharea" />
+					<button type="button" onClick={onClickFooterRightButton}>
+						<StyledImg src="/static/assets/images/icProfileToucharea.png" width="24" height="24" alt="icProfileToucharea" />
 					</button>
 				</div>
-			</div>
-		</div>
+			</StyledFooter>
+		</StyledWrapper>
 	);
 };
 
 export default Main;
+
+interface MainDotProps {
+	answers: Answer[];
+}
+
+const MainDot: React.FC<MainDotProps> = ({answers}) => {
+	return (
+		<StyledDotWrapper>
+			{[1, 2, 3, 4, 5, 6].map((num, index) => {
+				return (
+					<div className="my-4 mx-4">
+						<div className="text-center">{num}th</div>
+						<StyledDotButton
+							key={num}
+							active={!!answers[index]}
+						/>
+					</div>
+				);
+			})}
+		</StyledDotWrapper>
+	)
+}
