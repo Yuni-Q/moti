@@ -97,7 +97,7 @@ export const getServerSideProps = async ({req, res, params}: PageContext): Promi
 		// 	return redirectRoot(res);
 		// }
 		
-		const weekAnswers = await Answer.getAnswersWeek(token);
+		const weekAnswers = await Answer.getAnswersWeek({token});
 		const check = weekAnswers.answers.filter((answer: Answer) => {
 			return answer.date === weekAnswers.today;
 		});

@@ -27,7 +27,7 @@ export default class User  {
 
   updatedAt?: string;
 
-  public static getUsersMy (token: string) {
+  public static getUsersMy ({ token } : {token: string}): Promise<User> {
     return this.api.get(`/v1/users/my`, {}, {
       headers: { Authorization: token },
     });

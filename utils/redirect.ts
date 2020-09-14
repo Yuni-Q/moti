@@ -18,7 +18,7 @@ export const redirectRoot = (res?: ServerResponse): void => {
 
 export const checkUser = async ({token}: {token: string}): Promise<boolean> => {
     try {
-        const user = await User.getUsersMy(token);
+        const user = await User.getUsersMy({token});
         if(!user || !user.id) {
             return false;
         }

@@ -8,4 +8,14 @@ export default class Cookie {
         const cookies = req ? new Cookies(req.headers.cookie) : new Cookies();
 		return cookies.get('token');
     }
+
+    public static setToken({req, token}: {req?: IncomingMessage; token: string}): void {
+        const cookies = req ? new Cookies(req.headers.cookie) : new Cookies();
+		cookies.set('token', token);
+    }
+    
+    public static getOnboard(req?: IncomingMessage): string {
+        const cookies = req ? new Cookies(req.headers.cookie) : new Cookies();
+		return cookies.get('onboard');
+    }
 }

@@ -14,14 +14,14 @@ interface Props {
 	isOnboard?: boolean;
 	answers: any[];
 	missions: any[];
-	refresh: boolean;
-	check: boolean;
+	cnaRefresh: boolean;
+	isTodayAnswer: boolean;
 
 	setIsDetail: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Main: NextPage<Props> = ({ isOnboard, answers, missions, refresh, check, setIsDetail }) => {
-	console.log('check', check);
+const Main: NextPage<Props> = ({ isOnboard, answers, missions, cnaRefresh, isTodayAnswer, setIsDetail }) => {
+	console.log('check', isTodayAnswer);
 	const router = useRouter();
 	const [step, setStep] = useState(1);
 	const [isQuestion, setIsQuestion] = useState(false);
@@ -32,7 +32,7 @@ const Main: NextPage<Props> = ({ isOnboard, answers, missions, refresh, check, s
 		return <Onboard step={step} setStep={setStep} />;
 	}
 	if (isQuestion) {
-		return <Question setIsQuestion={setIsQuestion} missions={missions} refresh={refresh} />;
+		return <Question setIsQuestion={setIsQuestion} missions={missions} refresh={cnaRefresh} />;
 	}
 
 	return (
@@ -68,8 +68,8 @@ const Main: NextPage<Props> = ({ isOnboard, answers, missions, refresh, check, s
 				})}
 			</div>
 			{errorMessage && <Error errorMessage={errorMessage} />}
-			{!errorMessage && !isQuestion && !check && <Motivation setIsQuestion={setIsQuestion} />}
-			{!!check && <Answer cardArray={cardArray} setIsDetail={setIsDetail} />}
+			{!errorMessage && !isQuestion && !isTodayAnswer && <Motivation setIsQuestion={setIsQuestion} />}
+			{!!isTodayAnswer && <Answer cardArray={cardArray} setIsDetail={setIsDetail} />}
 			<div
 				style={{
 					display: 'flex',

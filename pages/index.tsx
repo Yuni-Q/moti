@@ -1,86 +1,101 @@
-import axios from 'axios';
 import React, { useState } from 'react';
-import Cookies from 'universal-cookie';
+import AnswerDetail from '../components/AnswerDetail';
 import Login from '../components/Login';
 import Main from '../components/Main';
-import AnswerDetail from '../components/AnswerDetail';
 import Answer from '../models/Answer';
+import Mission from '../models/Mission';
+import User from '../models/User';
+import Cookie from '../utils/Cookie';
+import { consoleError } from '../utils/log';
+import { PageContext } from './_app';
 
 interface Props {
-	user: any;
+	user: User;
 	isOnboard: boolean;
-	answers: any[];
-	missions: any[];
-	refresh: boolean;
-	check: boolean;
+	answers: Answer[];
+	missions: Mission[];
+	cnaRefresh: boolean;
+	isTodayAnswer: boolean;
 }
 
-const App: React.FC<Props> = ({ user, isOnboard, answers, missions, refresh, check }) => {
+const App: React.FC<Props> = ({ user, isOnboard, answers, missions, cnaRefresh, isTodayAnswer }) => {
 	const [isDetail, setIsDetail] = useState(false);
-	
-	if (isDetail) {
-		return <AnswerDetail answers={answers} onChangeAnswers={() => {console.log('click')}} />;
+
+	const onChangeAnswers = () => {
+		setIsDetail(false);	
 	}
 
-	if (!user) {
+	if (!user.id) {
 		return <Login />;
 	}
+	
+	if (isDetail) {
+		return <AnswerDetail answers={answers} onChangeAnswers={onChangeAnswers} />;
+	}
+	
 	return (
 		<Main
 			isOnboard={isOnboard}
 			answers={answers}
 			missions={missions}
-			refresh={refresh}
-			check={check}
+			cnaRefresh={cnaRefresh}
+			isTodayAnswer={isTodayAnswer}
 			setIsDetail={setIsDetail}
 		/>
 	);
 };
 
-export const getServerSideProps = async (context: any) => {
+interface ServerSideProps {
+	props: {
+		user: User,
+		answers: Answer[],
+		missions: Mission[],
+		isTodayAnswer: boolean,
+		isOnboard: boolean,
+		cnaRefresh: boolean,
+	}
+}
+
+export const getServerSideProps = async ({req}: PageContext): Promise<ServerSideProps | void> => {
 	const props = {
-		user: null,
+		user: {} as User,
+		answers: [] as Answer[],
+		missions: [] as Mission[],
+		isTodayAnswer: false,
 		isOnboard: false,
-		answers: [],
-		refresh: false,
-		missions: [],
-		check: false,
+		cnaRefresh: false,
 	};
 	try {
-		const cookies = context.req ? new Cookies(context.req.headers.cookie) : new Cookies();
-		props.isOnboard = !!cookies.get('onboard');
-		if (!cookies.get('token')) {
-			return {
-				props,
-			};
+		const token = Cookie.getToken(req);
+		if(!token) {
+            return { props };
 		}
-		const token = cookies.get('token');
-		const result = await axios.get('https://moti.company/api/v1/users/my', {
-			headers: { Authorization: token },
-		});
-		props.user = result.data.data;
-		if (props.user) {
-			const answers = await axios.get('https://moti.company/api/v1/answers/week', {
-				headers: { Authorization: token },
-			});
-			props.answers = answers.data.data.answers;
 
-			const check = answers.data.data.answers.filter((answer: any) => {
-				return answer.date === answers.data.data.today;
-			});
-			props.check = check.length > 0;
-
-			const missions = await axios.get('https://moti.company/api/v1/missions', {
-				headers: { Authorization: token },
-			});
-			props.missions = missions.data.data.missions;
-			props.refresh = missions.data.data.refresh;
+		props.isOnboard = !!Cookie.getOnboard(req);
+		
+		const user = await User.getUsersMy({token})
+		if(!user) {
+			return { props };
 		}
+		props.user = user;
+		
+		const {today, answers} = await Answer.getAnswersWeek({token})
+		props.answers = answers;
+
+		const isTodayAnswer = answers.filter((answer) => {
+			return answer.date === today;
+		}).length > 0;
+		props.isTodayAnswer = isTodayAnswer;
+
+		const {missions, refresh} = await Mission.getMissions({token});
+		props.missions = missions;
+		props.cnaRefresh = refresh;
+		
 		return {
 			props,
 		};
 	} catch (error) {
-		console.log(error.message);
+		consoleError('error', error);
 		return {
 			props,
 		};

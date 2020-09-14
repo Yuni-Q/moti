@@ -1,105 +1,107 @@
-import React from 'react';
-import GoogleLogin, { GoogleLoginResponse } from 'react-google-login';
-import axios from 'axios';
-import Cookies from 'universal-cookie';
 import { useRouter } from 'next/router';
-import icApple from '../static/assets/images/icApple.png';
-import motiLogo from '../static/assets/images/motiLogo.png';
+import React from 'react';
+import GoogleLogin, { GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
+import styled from 'styled-components';
+import Signin from '../models/Signin';
+import Cookie from '../utils/Cookie';
+import { consoleError } from '../utils/log';
+import { StyeldWrapper, StyledImg } from './StyledComponent';
+
+const StyledAppleLoginButton = styled.button`
+	background-color: #fff;
+	width: 260px;
+	height: 44px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 20px;
+	margin: 24px 0 0;
+	
+	& > img {
+		width: 22px;
+		height: 22px;
+		background-color: #fff;
+	}
+
+	& > div {
+		font-size: 14px;
+		background-color: #fff;
+	}
+`;
 
 const Login: React.FC = () => {
-	const router = useRouter();
-
 	return (
-		<div style={{ display: 'flex', alignItems: 'center', width: '100vw', height: '100vh', flexDirection: 'column' }}>
-			<img
-				src={motiLogo}
+		<StyeldWrapper>
+			<StyledImg
+				src="/static/assets/images/motiLogo.png"
 				alt="motiLogo"
-				style={{ width: 'calc(100vw / 2)', height: 'calc(100vw / 2 / 5)', marginTop: 204 }}
+				width="50%"
+				className="mt-26"
 			/>
-			<div
-				style={{
-					color: '#f1dbcd',
-					marginTop: 24,
-					fontSize: 14,
-					textAlign: 'center',
-				}}
-			>
-				Make Own True Identity
-			</div>
-			<div
-				style={{ position: 'absolute', bottom: 100, display: 'flex', alignItems: 'center', flexDirection: 'column' }}
-			>
-				<GoogleLogin
-					clientId="507319569465-nrfi50380ihnc22f4fsk13cii6e90pff.apps.googleusercontent.com"
-					render={(renderProps) => (
-						<button
-							type="button"
-							onClick={renderProps.onClick}
-							disabled={renderProps.disabled}
-							style={{
-								backgroundColor: '#fff',
-								width: 'calc(100vw - 16px - 16px)',
-								height: 44,
-								display: 'flex',
-								justifyContent: 'center',
-								alignItems: 'center',
-								borderRadius: 20,
-								marginTop: 24,
-							}}
-						>
-							<div
-								style={{
-									display: 'flex',
-									alignItems: 'center',
-									flexDirection: 'row',
-									marginRight: 8,
-									backgroundColor: '#fff',
-								}}
-							>
-								<img src={icApple} style={{ width: 22, height: 22, backgroundColor: '#fff' }} alt="icApple" />
-								<div style={{ fontSize: 14, backgroundColor: '#fff' }}>Sign in with google</div>
-							</div>
-						</button>
-					)}
-					buttonText="Login"
-					onSuccess={(result) => {
-            /* eslint-disable */
-            const { accessToken } = result as GoogleLoginResponse;
-            /* eslint-enable */
-						axios
-							.post(
-								'https://moti.company/api/v1/signin',
-								{ snsType: 'google' },
-								{ headers: { Authorization: accessToken } },
-							)
-							.then((apiResult) => {
-                const cookies = new Cookies();
-                const { accessToken: token, signUp } = apiResult.data.data;
-                cookies.set('token', token);
-                if(signUp) {
-                  return router.push('/');
-                }
-                return router.push('/signUp');
-							})
-							.catch((error) => {
-								console.error('error', error);
-								router.reload();
-							});
-					}}
-					onFailure={(result) => console.log(result)}
-					cookiePolicy="single_host_origin"
-				/>
-				<div style={{ marginTop: 24, color: '#d4a17d', backgroundClip: '#fff' }}>
+			<div className="d-flex flex-column align-items-center">
+				<GoogleLoginComponent />
+				<div className='mt-6'>
 					By creating an account you are agreeing to
 				</div>
-				<a href="https://www.notion.so/MOTI-35d01dd331bb4aa0915c33d28d60b63c" target="_blank" rel="noreferrer">
-					<div style={{ marginTop: 8, color: '#d4a17d', textDecorationLine: 'underline' }}>
-						MOTI&apos;s User Agreement
-					</div>
+				<a className='mt-2' href="https://www.notion.so/MOTI-35d01dd331bb4aa0915c33d28d60b63c" target="_blank" rel="noreferrer">
+					MOTI&apos;s User Agreement
 				</a>
 			</div>
-		</div>
+			<div className="h6 my-6 text-center">
+				Make Own True Identity
+			</div>
+		</StyeldWrapper>
 	);
 };
 
 export default Login;
+
+const GoogleLoginComponent = () => {
+	const router = useRouter();
+
+	const render = (renderProps: {
+		onClick: () => void;
+		disabled?: boolean | undefined;
+	}) => (
+		<StyledAppleLoginButton
+			type="button"
+			onClick={renderProps.onClick}
+			disabled={renderProps.disabled}
+		>
+			<img src="static/assets/images/icApple.png" alt="icApple" />
+			<div>Sign in with google</div>
+		</StyledAppleLoginButton>
+	)
+
+	const onSuccess = async (result: GoogleLoginResponse | GoogleLoginResponseOffline) => {
+		try {
+			const { accessToken } = result as GoogleLoginResponse;
+			const body = { snsType: 'google' };
+			const { accessToken: token, signUp } = await Signin.postSignin({accessToken, body});
+			if(token) {
+				Cookie.setToken({token});
+			}
+			
+			if(!signUp) {
+				return router.push('/signUp');
+			}
+		} catch(error) {
+			consoleError('error', error);
+		} finally {
+			router.reload();
+		}
+	}
+
+	const onFailure = (error: unknown) => consoleError('sns Login Faulure', error);
+
+	return (
+		<GoogleLogin
+			clientId="507319569465-nrfi50380ihnc22f4fsk13cii6e90pff.apps.googleusercontent.com"
+			render={render}
+			buttonText="Login"
+			onSuccess={onSuccess}
+			onFailure={onFailure}
+			cookiePolicy="single_host_origin"
+		/>
+	)
+}

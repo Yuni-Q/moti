@@ -52,7 +52,7 @@ export default class Answer  {
       });
   }
 
-  public static getAnswersWeek (token:string): Promise<{answers: Answer[]; today: string;}> {
+  public static getAnswersWeek ({token}:{token: string}): Promise<{answers: Answer[]; today: string;}> {
       return this.api.get(`/v1/answers/week`, {}, {
         headers: { Authorization: token },
       });
