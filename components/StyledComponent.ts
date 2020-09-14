@@ -208,3 +208,28 @@ export const StyledFooter = styled.footer`
     flex-shrink: 0;
     align-items: center;
 `;
+
+export const StyledHr = styled.hr`
+	width: calc(100% - 32px);
+	margin: 26px 16px 0;
+	border: 1px solid rgb(255, 223, 223);
+`;
+
+export const StyledRow = styled.div`
+	width: calc(100% - 32px);
+	display: flex;
+	justify-content: space-between;
+	height: 52px;
+	align-content: center;
+	div {
+		display: flex;
+		align-items: center;
+	}
+`;
+
+export const StyledInput = styled.input`
+    display: flex;
+    align-items: center;
+    border: none;
+    text-align: end;
+`;

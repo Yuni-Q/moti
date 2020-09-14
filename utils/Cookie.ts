@@ -14,6 +14,11 @@ export default class Cookie {
 		cookies.set('token', token);
     }
     
+    public static removeToken({req}: {req?: IncomingMessage;}): void {
+        const cookies = req ? new Cookies(req.headers.cookie) : new Cookies();
+		cookies.remove('token');
+    }
+    
     public static getOnboard(req?: IncomingMessage): string {
         const cookies = req ? new Cookies(req.headers.cookie) : new Cookies();
 		return cookies.get('onboard');

@@ -1,183 +1,104 @@
-import axios from 'axios';
+import moment from 'moment';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import Cookies from 'universal-cookie';
-import icArrowLeft from '../static/assets/images/icArrowLeft.png';
+import User from '../models/User';
+import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
+import Header from './Header';
+import { StyeldForm, StyledBottomButton, StyledHr, StyledInput, StyledRow } from './StyledComponent';
 
 interface Props {
-	user: any;
-	setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
+	user: User;
+	onChageUser: (user: User) => void;
+	onChageIsEdit: (bol: boolean) => void
 }
 
-const Profile: React.FC<Props> = ({ user, setIsEdit }) => {
-	const [name, setName] = useState(user.name);
-	const [birthday, setBirthday] = useState(user.birthday);
-	const [gender, setGender] = useState(user.gender);
+const Profile: React.FC<Props> = ({ user, onChageUser, onChageIsEdit }) => {
+	const [name, setName] = useState(user.name || '');
+	const [birthday, setBirthday] = useState(user.birthday || '');
+	const [gender, setGender] = useState(user.gender || '');
 	const router = useRouter();
-	return (
-		<div
-			style={{
-				width: '100vw',
-				height: '100vh',
-				display: 'flex',
-				flexDirection: 'column',
-			}}
-		>
-			<div style={{ display: 'flex', height: 72, alignItems: 'center', position: 'relative' }}>
-				<button type="button" onClick={() => router.push('/')}>
-					<img
-						style={{ position: 'absolute', margin: '0 12px', top: 24 }}
-						width={24}
-						height={24}
-						src={icArrowLeft}
-						alt="icArrowLeft"
-					/>
-				</button>
-				<div style={{ flex: 1, color: 'rgb(241, 219, 205)', textAlign: 'center' }}>수정하기</div>
-			</div>
-			<div style={{ display: 'flex', margin: '24px 24px 16px', justifyContent: 'center' }} />
 
-			<div
-				style={{
-					textAlign: 'center',
-					margin: '8px 16px 0',
-					borderTop: '1px solid rgb(255, 223, 223)',
-					display: 'flex',
-					justifyContent: 'space-between',
-					height: 52,
-					alignContent: 'center',
-				}}
-			>
-				<div style={{ display: 'flex', alignItems: 'center' }}>닉네임</div>
-				<input
+	const onClickLogout = () => {
+		Cookie.removeToken({});
+		router.push('/');
+	}
+
+	const onClickDeleteUser = async () => {
+		try {
+			const token = Cookie.getToken();
+			await User.deleteUser({token});
+			router.push('/');
+		} catch (error) {
+			consoleError('error', JSON.stringify(error));
+		}
+	}
+
+	const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		try {
+			const dayRegExp = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
+			if(!dayRegExp.test(birthday)){
+				return alert('날짜가 올바르지 않습니다.');
+			}
+			if(gender !== '남' && gender !== '여') {
+				return alert('성별은 남/여 중에 선택해주세요.');
+			}
+			const token = Cookie.getToken();
+			const body = {
+				name,
+				gender,
+				birthday,
+			}
+			await User.putUser({token, body})
+			const newUser = await User.getUsersMy({token})
+			onChageUser(newUser);
+			onChageIsEdit(false);
+		} catch (error) {
+			consoleError('error', error);
+		}
+	}
+
+	return (
+		<StyeldForm className="justify-content-start" onSubmit={onSubmit}>
+			<Header left={{}} title="수정하기" />
+			<StyledHr />
+			<StyledRow>
+				<div>닉네임</div>
+				<StyledInput
 					value={name}
 					onChange={(e) => setName(e.target.value)}
-					style={{ display: 'flex', alignItems: 'center', border: 'none' }}
 				/>
-			</div>
-			<div
-				style={{
-					textAlign: 'center',
-					margin: '0 16px 0',
-					display: 'flex',
-					justifyContent: 'space-between',
-					height: 52,
-					alignContent: 'center',
-				}}
-			>
-				<div style={{ display: 'flex', alignItems: 'center' }}>생년월일</div>
-				<input
+			</StyledRow>
+			<StyledRow>
+				<div>생년월일</div>
+				<StyledInput
 					value={birthday}
 					onChange={(e) => setBirthday(e.target.value)}
-					style={{ display: 'flex', alignItems: 'center', border: 'none' }}
 				/>
-			</div>
-			<div
-				style={{
-					textAlign: 'center',
-					margin: '0 16px 0',
-					display: 'flex',
-					justifyContent: 'space-between',
-					height: 52,
-					alignContent: 'center',
-				}}
-			>
-				<div style={{ display: 'flex', alignItems: 'center' }}>성별</div>
-				<input
+			</StyledRow>
+			<StyledRow>
+				<div>성별</div>
+				<StyledInput
 					value={gender}
 					onChange={(e) => setGender(e.target.value)}
-					style={{ display: 'flex', alignItems: 'center', border: 'none' }}
 				/>
-			</div>
-			<div
-				style={{
-					textAlign: 'center',
-					margin: '0 16px 0',
-					borderTop: '1px solid rgb(255, 223, 223)',
-					display: 'flex',
-					justifyContent: 'flex-end',
-					height: 52,
-					alignContent: 'center',
-				}}
-			>
-				<button
-					type="button"
-					style={{ display: 'flex', alignItems: 'center' }}
-					onClick={() => {
-						const cookies = new Cookies();
-						cookies.remove('token');
-						router.push('/');
-					}}
-				>
+			</StyledRow>
+			<StyledHr />
+			<StyledRow className="justify-content-end">
+				<button type="button" onClick={onClickLogout}>
 					로그아웃
 				</button>
-			</div>
-			<div
-				style={{
-					textAlign: 'center',
-					margin: '0 16px 0',
-					display: 'flex',
-					justifyContent: 'flex-end',
-					height: 52,
-					alignContent: 'center',
-				}}
-			>
-				<button
-					type="button"
-					style={{ display: 'flex', alignItems: 'center' }}
-					onClick={async () => {
-						try {
-							const cookies = new Cookies();
-							await axios.delete('https://moti.company/api/v1/users', {
-								headers: { Authorization: cookies.get('token') },
-							});
-							router.push('/');
-						} catch (error) {
-							console.log('error', JSON.stringify(error));
-						}
-					}}
-				>
+			</StyledRow>
+			<StyledRow className="justify-content-end">
+				<button type="button" onClick={onClickDeleteUser}>
 					탈퇴하기
 				</button>
-			</div>
-			<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-				<button
-					type="button"
-					style={{
-						width: 136,
-						height: 40,
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						borderRadius: 20,
-						backgroundColor: '#fff',
-						color: 'rgb(212, 161, 125)',
-						boxShadow: '0 0 10px 0 rgb(252, 222, 227)',
-					}}
-					onClick={async () => {
-						try {
-							const cookies = new Cookies();
-							const token = cookies.get('token');
-							await axios.put(
-								'https://moti.company/api/v1/users',
-								{
-									name,
-									gender,
-									birthday,
-								},
-								{ headers: { Authorization: token } },
-							);
-							setIsEdit(false);
-						} catch (error) {
-							consoleError('error', error);
-						}
-					}}
-				>
-					저장하기
-				</button>
-			</div>
-		</div>
+			</StyledRow>
+			<StyledBottomButton width={136} type="submit" >
+				저장하기
+			</StyledBottomButton>
+		</StyeldForm>
 	);
 };
 
