@@ -111,7 +111,7 @@ const Question: React.FC<Props> = ({ missions, cnaRefresh, onChageIsQuestion, on
 					);
 				})}
 			</StyledCarousel>
-			<QuestionDot onChangeSlideIndex={onChangeSlideIndex} />
+			<QuestionDot slideIndex={slideIndex} onChangeSlideIndex={onChangeSlideIndex} />
 			<StyledBottomButton width={201} type="submit">
 				질문 다시받기 {cnaRefresh ? '1' : '0'} / 1
 			</StyledBottomButton>
