@@ -39,7 +39,7 @@ export default class User  {
     });
   }
   
-  public static putUser ({ token, body } : {token: string, body: {name: string; gender: string; birthday: string}}): Promise<void> {
+  public static putUser ({ token, body } : {token: string, body: {name: string; gender: string; birthday?: string}}): Promise<void> {
     return this.api.put(`/v1/users/`, body, {
       headers: { Authorization: token },
     });

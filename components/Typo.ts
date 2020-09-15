@@ -35,7 +35,6 @@ const Typo = `
 		letter-spacing: -1.2px;
 	}
 
-	h3,
 	.h3 {
 		font-size: 22px;
 		line-height: 32px;

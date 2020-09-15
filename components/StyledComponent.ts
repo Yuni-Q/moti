@@ -113,6 +113,7 @@ export const StyledBody = styled.div`
 export const StyledImg = styled.img`
     display: block;
     margin: 0 auto;
+    background: initial;
 `;
 
 export const StyledFileInputButton = styled.div`

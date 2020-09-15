@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -16,7 +16,7 @@ interface Props {
 const AnswerDetail: React.FC<Props> = ({ answers, onChangeAnswers }) => {
 	const router = useRouter();
 	const [slideIndex, setSlideIndex] = useState(0);
-	const title = moment(answers[slideIndex].date).format('YYYY. MM. DD');
+	const title = dayjs(answers[slideIndex].date).format('YYYY. MM. DD');
 
 	const onChagneSlideIndex = (newIndex: number) => {
 		setSlideIndex(newIndex);

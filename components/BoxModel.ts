@@ -203,7 +203,7 @@ export const BoxModel = (sizePrefix = ''): string => {
 };
 
 export const MarginAndPadding = (sizePrefix = ''): string => {
-	const arr = Array(28).fill(1);
+	const arr = Array(40).fill(1);
 	return arr.reduce((previousValue, _, currentIndex) => {
 		const index = currentIndex - 1;
 		return `

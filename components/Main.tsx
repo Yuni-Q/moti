@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -61,7 +61,7 @@ const Main: NextPage<Props> = ({ isOnboard, answers, missions, cnaRefresh, isTod
 					</button>
 				</div>
 				<div className="h3">
-					<span>{moment().format('YYYY. MM. DD')}</span>
+					<span>{dayjs().format('YYYY. MM. DD')}</span>
 				</div>
 				<div>
 					<button type="button" onClick={onClickFooterRightButton}>

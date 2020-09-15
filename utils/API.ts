@@ -3,7 +3,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable max-classes-per-file */
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import QueryString from 'querystring';
 import { LocalCacheWithTTL } from './LocalCache';
 import QueueRunner from './QueueRunner';
@@ -143,7 +143,7 @@ export default class API<EXTRA = {}> {
 					// SERVER_TIME_GAP 설정
 					if (timestamp)
 						API.SERVER_TIME_GAP =
-							(moment(parseInt(timestamp.toString(), 10)).toDate().getTime() - new Date().getTime()) / 1000 ||
+							(dayjs(parseInt(timestamp.toString(), 10)).toDate().getTime() - new Date().getTime()) / 1000 ||
 							API.SERVER_TIME_GAP ||
 							0;
 
