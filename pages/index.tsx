@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AnswerDetail from '../components/AnswerDetail';
 import Login from '../components/Login';
 import Main from '../components/Main';
 import Answer from '../models/Answer';
 import Mission from '../models/Mission';
+import Signin from '../models/Signin';
 import User from '../models/User';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
@@ -22,6 +23,26 @@ const App: React.FC<Props> = ({ user, isOnboard, initAnswers, initMissions, init
 	const [answers, setAnswers] = useState([] as Answer[]);
 	const [missions, setMission] = useState(initMissions);
 	const [canRefresh, setCanRefresh] = useState(initCanRefresh);
+
+	useEffect(() => {
+		const params = new URL(window.location.href).searchParams;
+		const code = params.get('code');
+		if(code) {
+			try {
+				const getToken = async () => {
+					const {accessToken: token} = await Signin.postSigninGoogle({code});
+					if(token) {
+						Cookie.setToken({token})
+						window.location.pathname = '/'
+					}
+				}
+				getToken();
+			} catch(error) {
+				consoleError('error', error.response)
+			}
+			
+		}
+	},[])
 
 	const onChangeAnswers = (newAnswers: Answer[]) => {
 		setAnswers(newAnswers);	

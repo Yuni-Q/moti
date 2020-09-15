@@ -15,4 +15,8 @@ export default class Signin  {
     });
   }
 
+  public static postSigninGoogle ({ code }: { code: string; }): Promise<Signin> {
+    return this.api.post(`/v1/signin/google`, { code});
+  }
+
 }
