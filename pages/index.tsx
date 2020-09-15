@@ -29,12 +29,13 @@ const App: React.FC<Props> = ({ user, isOnboard, initAnswers, initMissions, init
 	useEffect(() => {
 		const params = new URL(window.location.href).searchParams;
 		const code = params.get('code');
-		if(code) {
+		const token = Cookie.getToken();
+		if(!token && code) {
 			try {
 				const getToken = async () => {
-					const {accessToken: token} = await Signin.postSigninGoogle({code});
-					if(token) {
-						Cookie.setToken({token})
+					const {accessToken: newToken} = await Signin.postSigninGoogle({code});
+					if(newToken) {
+						Cookie.setToken({token: newToken})
 						router.reload();	
 					}
 				}
