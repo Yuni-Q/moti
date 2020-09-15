@@ -87,7 +87,7 @@ const GoogleLoginComponent = () => {
 	// const onFailure = (error: unknown) => consoleError('sns Login Faulure', error);
 
 	return (
-		<a href="https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/analytics.readonly&access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=https://yuni-q.github.io&response_type=code&client_id=507319569465-nrfi50380ihnc22f4fsk13cii6e90pff.apps.googleusercontent.com" >aaaa</a>
+		<a href="https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/analytics.readonly&access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=https://yuni-q.herokuapp.com/&response_type=code&client_id=507319569465-nrfi50380ihnc22f4fsk13cii6e90pff.apps.googleusercontent.com" >aaaa</a>
 		// <GoogleLogin
 		// 	clientId="507319569465-nrfi50380ihnc22f4fsk13cii6e90pff.apps.googleusercontent.com"
 		// 	render={render}
