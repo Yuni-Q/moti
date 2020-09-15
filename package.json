@@ -40,7 +40,6 @@
 		"nuka-carousel": "^4.7.1",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
-		"react-google-login": "^5.1.21",
 		"react-helmet": "^5.2.1",
 		"react-redux": "^7.2.1",
 		"redux": "^4.0.5",
