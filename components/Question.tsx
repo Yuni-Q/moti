@@ -59,7 +59,7 @@ const Question: React.FC<Props> = ({ missions, cnaRefresh, onChageIsQuestion, on
 
 	const onClickAnswrButton = (id?: number) => {
 		if(id) {
-			router.push(`missions/${id}`);
+			router.push(`/missions/${id}`);
 		}
 	};
 

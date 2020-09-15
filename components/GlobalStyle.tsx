@@ -14,6 +14,10 @@ const GlobalStyle = createGlobalStyle`
     color: rgb(241, 219, 205);
   }
 
+  *:focus {
+    outline: none;
+  }
+
   a {
     color: rgb(241, 219, 205);
     text-decoration-line: none;
