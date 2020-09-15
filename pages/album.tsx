@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import AnswerDetail from '../components/AnswerDetail';
 import Header from '../components/Header';
 import Parts from '../components/Parts';
-import { StyledWrapper, StyledCardFrame, StyledCardFrameWrapper, StyledPart } from '../components/StyledComponent';
+import { StyledCardFrame, StyledCardFrameWrapper, StyledWrapper } from '../components/StyledComponent';
 import Answer from '../models/Answer';
 import imgCardframe from '../static/assets/images/imgCardframe.png';
 import Cookie from '../utils/Cookie';
