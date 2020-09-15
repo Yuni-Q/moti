@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import AnswerDetail from '../components/AnswerDetail';
 import Login from '../components/Login';
@@ -20,6 +21,7 @@ interface Props {
 }
 
 const App: React.FC<Props> = ({ user, isOnboard, initAnswers, initMissions, initCanRefresh, isTodayAnswer }) => {
+	const router = useRouter();
 	const [answers, setAnswers] = useState([] as Answer[]);
 	const [missions, setMission] = useState(initMissions);
 	const [canRefresh, setCanRefresh] = useState(initCanRefresh);
@@ -33,7 +35,7 @@ const App: React.FC<Props> = ({ user, isOnboard, initAnswers, initMissions, init
 					const {accessToken: token} = await Signin.postSigninGoogle({code});
 					if(token) {
 						Cookie.setToken({token})
-						window.location.pathname = '/'
+						router.reload();	
 					}
 				}
 				getToken();
@@ -42,7 +44,7 @@ const App: React.FC<Props> = ({ user, isOnboard, initAnswers, initMissions, init
 			}
 			
 		}
-	},[])
+	},[router])
 
 	const onChangeAnswers = (newAnswers: Answer[]) => {
 		setAnswers(newAnswers);	
