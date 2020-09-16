@@ -6,11 +6,11 @@ import { consoleError } from '../../utils/log';
 
 export default async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
     try {
-        const HOST = process.env.NODE_ENV === "production" ? 'https%3a%2f%2fyuni-q.herokuapp.com' :'http%3a%2f%2flocalhost%3a8080'
+        const HOST = process.env.NODE_ENV === "production" ? 'https://yuni-q.herokuapp.com' :'http://localhost:8080'
         const oauth2Client = new google.auth.OAuth2(
             process.env.CLIENT_ID,
             process.env.CLIENT_SECRET,
-            `${HOST}%2fapi%2fgoogle`,
+            `${HOST}/api/google`,
         );
         const qs = new url.URL(req.url || '', HOST).searchParams;
         const code = qs.get('code');
