@@ -34,7 +34,7 @@ const Login: React.FC = () => {
 				className="mt-26"
 			/>
 			<div className="d-flex flex-column align-items-center">
-				<a href={`https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/analytics.readonly&access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=${process.env.NODE_ENV === "production" ? 'https://yuni-q.herokuapp.com' :'http://localhost:8080'}/api/google&response_type=code&client_id=507319569465-nrfi50380ihnc22f4fsk13cii6e90pff.apps.googleusercontent.com`} >
+				<a href={`https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/analytics.readonly&access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=${process.env.NODE_ENV === "production" ? 'https%3a%2f%2fyuni-q.herokuapp.com' :'http%3a%2f%2flocalhost%3a8080'}%2fapi%2fgoogle&response_type=code&client_id=507319569465-nrfi50380ihnc22f4fsk13cii6e90pff.apps.googleusercontent.com`} >
 					<StyledAppleLoginButton>
 						<img src="static/assets/images/icApple.png" alt="icApple" />
 						<div>Sign in with google</div>
