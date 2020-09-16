@@ -1,11 +1,9 @@
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import AnswerDetail from '../components/AnswerDetail';
 import Login from '../components/Login';
 import Main from '../components/Main';
 import Answer from '../models/Answer';
 import Mission from '../models/Mission';
-import Signin from '../models/Signin';
 import User from '../models/User';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
@@ -21,31 +19,9 @@ interface Props {
 }
 
 const App: React.FC<Props> = ({ user, isOnboard, initAnswers, initMissions, initCanRefresh, isTodayAnswer }) => {
-	const router = useRouter();
 	const [answers, setAnswers] = useState([] as Answer[]);
 	const [missions, setMission] = useState(initMissions);
 	const [canRefresh, setCanRefresh] = useState(initCanRefresh);
-
-	useEffect(() => {
-		const params = new URL(window.location.href).searchParams;
-		const code = params.get('code');
-		const token = Cookie.getToken();
-		if(!token && code) {
-			try {
-				const getToken = async () => {
-					const {accessToken: newToken} = await Signin.postSigninGoogle({code});
-					if(newToken) {
-						Cookie.setToken({token: newToken})
-						router.reload();	
-					}
-				}
-				getToken();
-			} catch(error) {
-				consoleError('error', error.response)
-			}
-			
-		}
-	},[router])
 
 	const onChangeAnswers = (newAnswers: Answer[]) => {
 		setAnswers(newAnswers);	

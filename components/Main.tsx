@@ -48,6 +48,7 @@ const Main: NextPage<Props> = ({ isOnboard, answers, missions, cnaRefresh, isTod
 		onChangeCanRefresh={onChangeCanRefresh}/>;
 	}
 
+	console.log('step', step)
 	return (
 		<StyledWrapper>
 			<MainDot answers={answers} />

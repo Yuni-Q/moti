@@ -1,6 +1,6 @@
 import React from 'react';
 import Cookie from '../utils/Cookie';
-import { StyledWrapper, StyldHeader, StyledDotButton, StyledImg } from './StyledComponent';
+import { StyldHeader, StyledDotButton, StyledImg, StyledWrapper } from './StyledComponent';
 
 const getImage = (step: number) => {
 	if (step === 1) {
@@ -78,11 +78,12 @@ const Onboard: React.FC<Props> = ({ step, onChageStep }) => {
 		onChageStep(step + 1);
 	}
 	return (
-		<button
-			type="button"
-			onClick={onChagne}
-		>
-			<StyledWrapper>
+		<div>
+			<button
+				type="button"
+				onClick={onChagne}
+			>
+				<StyledWrapper>
 					<OnboardDot step={step} />
 					<div className="text-center h3">
 						{getTitle(step)}
@@ -90,9 +91,10 @@ const Onboard: React.FC<Props> = ({ step, onChageStep }) => {
 					<div className="text-center h5 mt-4">
 						{getText(step)}
 					</div>
-				<StyledImg src={getImage(step)} width="100%" alt="onbording" />
-			</StyledWrapper>
-		</button>
+					<StyledImg src={getImage(step)} width="100%" alt="onbording" />
+				</StyledWrapper>
+			</button>
+		</div>
 	);
 };
 
@@ -100,7 +102,7 @@ interface OnboardDotProps {
 	step: number;
 }
 
-const OnboardDot: React.FC<OnboardDotProps> = ({step}) => {
+const OnboardDot: React.FC<OnboardDotProps> = ({ step }) => {
 	return (
 		<StyldHeader>
 			{[1, 2, 3, 4].map((num) => {
