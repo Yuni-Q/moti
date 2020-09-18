@@ -68,25 +68,19 @@ interface ServerSideProps {
 }
 
 
-export const getServerSideProps = async ({req, res}: PageContext): Promise<ServerSideProps> => {
+export const getServerSideProps = async ({req, res}: PageContext): Promise<ServerSideProps | void> => {
 	const props = {
 		initUser: {} as User,
 	};
 	try {
 		const token = await Cookie.getToken(req);
 		if(!token) {
-			redirectLogin(res);
-			return {
-				props,
-			};
+			return redirectLogin(res);
 		}
 
-		const user = await User.getUsersMy({token})
+		const user = await User.getUsersMy({token,req})
 		if(!user) {
-			redirectLogin(res);
-			return {
-				props,
-			};
+			return redirectLogin(res);
 		}
 		props.initUser = user;
 
@@ -95,11 +89,7 @@ export const getServerSideProps = async ({req, res}: PageContext): Promise<Serve
 		};
 	} catch (error) {
 		consoleError('error', error);
-		redirectRoot(res);
-		return {
-			props,
-		};
-
+		return redirectRoot(res);
 	}
 };
 

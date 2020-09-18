@@ -95,12 +95,7 @@ export const getServerSideProps = async ({req, res, params}: PageContext): Promi
 			return redirectLogin();
 		}
 		
-		// const isUser = await checkUser({token});
-		// if(!isUser) {
-		// 	return redirectRoot(res);
-		// }
-		
-		const weekAnswers = await Answer.getAnswersWeek({token});
+		const weekAnswers = await Answer.getAnswersWeek({token, req});
 		const check = weekAnswers.answers.filter((answer: Answer) => {
 			return answer.date === weekAnswers.today;
 		});
@@ -112,8 +107,7 @@ export const getServerSideProps = async ({req, res, params}: PageContext): Promi
 		if(!id) {
 			return redirectRoot(res);
 		}
-		
-		const mission: Mission = await Mission.getMissionsId({id, token});
+		const mission: Mission = await Mission.getMissionsId({id, token,req});
 		if(!mission) {
 			return redirectRoot(res);
 		}

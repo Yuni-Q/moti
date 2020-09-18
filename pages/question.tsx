@@ -165,7 +165,7 @@ interface ServerSideProps {
 	}
 }
 
-export const getServerSideProps = async ({req, res}: PageContext): Promise<ServerSideProps> => {
+export const getServerSideProps = async ({req, res}: PageContext): Promise<ServerSideProps | void> => {
 	const props = {
 		initMissions: [] as Mission[],
 		initCanRefresh: false,
@@ -173,21 +173,15 @@ export const getServerSideProps = async ({req, res}: PageContext): Promise<Serve
 	try {
 		const token = await Cookie.getToken(req);
 		if(!token) {
-            redirectLogin(res);
-			return {
-				props,
-			};
+            return redirectLogin(res);
 		}
 
-		const user = await User.getUsersMy({token})
+		const user = await User.getUsersMy({token,req})
 		if(!user.id) {
-			redirectLogin(res);
-			return {
-				props,
-			};
+			return redirectLogin(res);
 		}
 
-		const {missions, refresh} = await Mission.getMissions({token});
+		const {missions, refresh} = await Mission.getMissions({token,req});
 		props.initMissions = missions;
 		props.initCanRefresh = refresh;
 		
@@ -196,9 +190,6 @@ export const getServerSideProps = async ({req, res}: PageContext): Promise<Serve
 		};
 	} catch (error) {
 		consoleError('error', error);
-		redirectRoot();
-		return {
-			props,
-		};
+		return redirectRoot();
 	}
 };

@@ -4,19 +4,17 @@ import Answer from '../models/Answer';
 import User from '../models/User';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
-import { redirectLogin, redirectRoot } from '../utils/redirect';
+import { redirectLogin } from '../utils/redirect';
 import { PageContext } from './_app';
 
 interface Props {
-	isOnboard: boolean;
 	answers: Answer[];
 	isTodayAnswer: boolean;
 }
 
-const App: React.FC<Props> = ({ isOnboard, answers, isTodayAnswer }) => {	
+const App: React.FC<Props> = ({ answers, isTodayAnswer }) => {	
 	return (
 		<Main
-			isOnboard={isOnboard}
 			answers={answers}
 			isTodayAnswer={isTodayAnswer}
 		/>
@@ -27,11 +25,10 @@ interface ServerSideProps {
 	props: {
 		answers: Answer[],
 		isTodayAnswer: boolean,
-		isOnboard: boolean,
 	}
 }
 
-export const getServerSideProps = async ({req, res}: PageContext): Promise<ServerSideProps> => {
+export const getServerSideProps = async ({req, res}: PageContext): Promise<ServerSideProps | void> => {
 	const props = {
 		answers: [] as Answer[],
 		isTodayAnswer: false,
@@ -40,23 +37,15 @@ export const getServerSideProps = async ({req, res}: PageContext): Promise<Serve
 	try {
 		const token = await Cookie.getToken(req);
 		if(!token) {
-			redirectLogin(res);
-			return {
-				props,
-			};
+			return redirectLogin(res);
 		}
 
-		props.isOnboard = !!Cookie.getOnboard(req);
-
-		const user = await User.getUsersMy({token})
+		const user = await User.getUsersMy({token,req})
 		if(!user.id) {
-			redirectLogin(res);
-			return {
-				props,
-			};
+			return redirectLogin(res);
 		}
 		
-		const {today, answers} = await Answer.getAnswersWeek({token})
+		const {today, answers} = await Answer.getAnswersWeek({token,req})
 		props.answers = answers;
 
 		const isTodayAnswer = answers.filter((answer) => {
@@ -69,10 +58,7 @@ export const getServerSideProps = async ({req, res}: PageContext): Promise<Serve
 		};
 	} catch (error) {
 		consoleError('error', error);
-		redirectRoot(res);
-		return {
-			props,
-		};
+		return redirectLogin(res);
 	}
 };
 

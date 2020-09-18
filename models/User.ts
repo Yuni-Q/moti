@@ -1,3 +1,4 @@
+import { IncomingMessage } from "http";
 import API from "../utils/API";
 
 export default class User  {
@@ -27,21 +28,24 @@ export default class User  {
 
   updatedAt?: string;
 
-  public static getUsersMy ({ token } : {token: string}): Promise<User> {
+  public static getUsersMy ({ token,req } : {token: string;req?: IncomingMessage;}): Promise<User> {
     return this.api.get(`/v1/users/my/`, {}, {
       headers: { Authorization: token },
+      extra: { req }
     });
   }
   
-  public static deleteUser ({ token } : {token: string}): Promise<void> {
+  public static deleteUser ({ token,req } : {token: string;req?: IncomingMessage;}): Promise<void> {
     return this.api.delete(`/v1/users/`, {}, {
       headers: { Authorization: token },
+      extra: { req }
     });
   }
   
-  public static putUser ({ token, body } : {token: string, body: {name: string; gender: string; birthday?: string}}): Promise<void> {
+  public static putUser ({ token, body,req } : {token: string, body: {name: string; gender: string; birthday?: string};req?: IncomingMessage;}): Promise<void> {
     return this.api.put(`/v1/users/`, body, {
       headers: { Authorization: token },
+      extra: { req }
     });
   }
 }

@@ -1,6 +1,4 @@
 import { ServerResponse } from "http";
-import User from "../models/User";
-import { consoleError } from "./log";
 
 export default (): string => {
     return ''
@@ -28,15 +26,15 @@ export const redirectLogin = (res?: ServerResponse): void => {
     }
 }
 
-export const checkUser = async ({token}: {token: string}): Promise<boolean> => {
-    try {
-        const user = await User.getUsersMy({token});
-        if(!user || !user.id) {
-            return false;
-        }
-        return true;
-    } catch(error) {
-        consoleError('error', error);
-        return false;
-    }
-}
+// export const checkUser = async ({token}: {token: string}): Promise<boolean> => {
+//     try {
+//         const user = await User.getUsersMy({token});
+//         if(!user || !user.id) {
+//             return false;
+//         }
+//         return true;
+//     } catch(error) {
+//         consoleError('error', error);
+//         return false;
+//     }
+// }

@@ -1,3 +1,4 @@
+import { IncomingMessage } from "http";
 import API from "../utils/API";
 import File from './File';
 import Mission from "./Mission";
@@ -34,39 +35,45 @@ export default class Answer  {
 
   updatedAt?: Date;
 
-  public static postAnswers ({ formData, token }: { formData: FormData; token: string; }): Promise<void> {
+  public static postAnswers ({ formData, token,req  }: { formData: FormData; token: string;req?: IncomingMessage }): Promise<void> {
     return this.api.post(`/v1/answers/`, formData, {
       headers: { Authorization: token, 'Content-Type': 'multipart/form-data' },
+      extra: { req }
     });
 }
 
-  public static putAnswersId ({ formData, answer,token }: { formData: FormData; answer: Answer; token: string; }): Promise<void>  {
+  public static putAnswersId ({ formData, answer,token,req }: { formData: FormData; answer: Answer; token: string;req?: IncomingMessage }): Promise<void>  {
       return this.api.put(`/v1/answers/${answer.id}`, formData, {
         headers: { Authorization: token, 'Content-Type': 'multipart/form-data' },
+        extra: { req }
       });
   }
 
-  public static getAnswersId ({ id,token }: { id: string; token:string;}): Promise<Answer>  {
+  public static getAnswersId ({ id,token,req }: { id: string; token:string;req?: IncomingMessage}): Promise<Answer>  {
       return this.api.get(`/v1/answers/${id}`, {}, {
         headers: { Authorization: token },
+        extra: { req }
       });
   }
 
-  public static getAnswersWeek ({token}:{token: string}): Promise<{answers: Answer[]; today: string;}> {
+  public static getAnswersWeek ({token, req}:{token: string;req?: IncomingMessage;}): Promise<{answers: Answer[]; today: string;}> {
       return this.api.get(`/v1/answers/week`, {}, {
         headers: { Authorization: token },
+        extra: { req }
       });
   }
 
-  public static getAnswersList ({token, id} : {token: string; id?: number;}): Promise<Answer[][]> {
+  public static getAnswersList ({token, id,req} : {token: string; id?: number;req?: IncomingMessage;}): Promise<Answer[][]> {
     return this.api.get(`/v1/answers/list`, {answerId: id}, {
       headers: { Authorization: token },
+      extra: { req }
     });
   }
 
-  public static getAnswersListId ({token, id} : {token: string; id: number;}): Promise<Answer[]> {
+  public static getAnswersListId ({token, id, req} : {token: string; id: number; req?: IncomingMessage}): Promise<Answer[]> {
     return this.api.get(`/v1/answers/list/${id}`, {}, {
       headers: { Authorization: token },
+      extra: { req }
     });
   }
 }

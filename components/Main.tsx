@@ -3,6 +3,7 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Answer from '../models/Answer';
+import Cookie from '../utils/Cookie';
 import AnswerComponent from './AnswerComponent';
 import Error from './Error';
 import Motivation from './Motivation';
@@ -10,12 +11,11 @@ import Onboard from './Onboard';
 import { StyledDotButton, StyledDotWrapper, StyledFooter, StyledImg, StyledWrapper } from './StyledComponent';
 
 interface Props {
-	isOnboard?: boolean;
 	answers: Answer[];
 	isTodayAnswer: boolean;
 }
 
-const Main: NextPage<Props> = ({ isOnboard, answers, isTodayAnswer }) => {
+const Main: NextPage<Props> = ({ answers, isTodayAnswer }) => {
 	const router = useRouter();
 	const [step, setStep] = useState(1);
 	const [errorMessage] = useState('');
@@ -27,7 +27,7 @@ const Main: NextPage<Props> = ({ isOnboard, answers, isTodayAnswer }) => {
 	const onClickFooterLeftButton = () => router.push('/album')
 	const onClickFooterRightButton = () => router.push('/my')
 
-	if (!isOnboard && step <= 4) {
+	if (!Cookie.getOnboard() && step <= 4) {
 		return <Onboard step={step} onChageStep={onChageStep} />;
 	}
 	

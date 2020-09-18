@@ -97,18 +97,15 @@ const SignUp: React.FC<Props> = () => {
 	);
 };
 
-export const getServerSideProps = async ({req, res}: PageContext):  Promise<unknown>  => {
+export const getServerSideProps = async ({req, res}: PageContext):  Promise<void>  => {
 	try {
 		const token = Cookie.getToken(req);
 		if (!token) {
-			redirectLogin(res);
-			return {};
+			return redirectLogin(res);
 		}
-		return {};
 	} catch (error) {
 		consoleError('error', error);
-		redirectRoot(res);
-		return {};
+		return redirectRoot(res);
 	}
 };
 

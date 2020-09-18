@@ -20,7 +20,7 @@ export default async (req: IncomingMessage, res: ServerResponse): Promise<void> 
             headers: { Authorization: access_token },
         })
         res.writeHead(301, {
-            'Set-Cookie':`token=${result.data.data.accessToken}; Path=/`,
+            'Set-Cookie': [`token=${result.data.data.accessToken}; Path=/; max-age=604800;`, `refreshToken=${result.data.data.refreshToken}; Path=/; max-age=2592000;`],
             'Location': '/'
         });
         res.end()

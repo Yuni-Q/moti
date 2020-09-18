@@ -1,3 +1,4 @@
+import { IncomingMessage } from "http";
 import API from "../utils/API";
 
 export default class Mission {
@@ -17,21 +18,24 @@ export default class Mission {
 
   updatedAt?: Date;
 
-  public static getMissionsId ({id, token}: {id: string; token: string;}): Promise<Mission> {
+  public static getMissionsId ({id, token,req}: {id: string; token: string;req?: IncomingMessage;}): Promise<Mission> {
     return this.api.get(`/v1/missions/${id}/`, {}, {
       headers: { Authorization: token },
+      extra: { req }
     });
   }
 
-  public static getMissions ({token}: {token: string;}): Promise<{missions: Mission[]; refresh: boolean;}> {
+  public static getMissions ({token,req}: {token: string;req?: IncomingMessage;}): Promise<{missions: Mission[]; refresh: boolean;}> {
     return this.api.get(`/v1/missions/`, {}, {
       headers: { Authorization: token },
+      extra: { req }
     });
   }
 
-  public static getMissionsRefresh ({token}: {token: string;}): Promise<{missions: Mission[]; refresh: boolean;}> {
+  public static getMissionsRefresh ({token,req}: {token: string;req?: IncomingMessage;}): Promise<{missions: Mission[]; refresh: boolean;}> {
     return this.api.get(`/v1/missions/refresh/`, {}, {
       headers: { Authorization: token },
+      extra: { req }
     });
   }
 }

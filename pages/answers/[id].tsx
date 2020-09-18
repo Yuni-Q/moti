@@ -91,7 +91,7 @@ export const getServerSideProps = async ({req, res, params}: PageContext): Promi
 			return redirectRoot(res);
 		}
 
-		const answer = await Answer.getAnswersId({id, token});
+		const answer = await Answer.getAnswersId({id, token,req});
 		if(!answer) {
 			return redirectRoot(res);
 		}

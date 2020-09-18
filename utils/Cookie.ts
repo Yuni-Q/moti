@@ -8,11 +8,11 @@ export default class Cookie {
     public static async getToken(req?: IncomingMessage): Promise<string> {
         try {
             const cookies = req ? new Cookies(req.headers.cookie) : new Cookies();
-            const token = cookies.get('token');
-            const user = await User.getUsersMy({token})
-            if(!user.id) {
-                return ''
-            }
+            // const token = cookies.get('token');
+            // const user = await User.getUsersMy({token, req})
+            // if(!user.id) {
+            //     return ''
+            // }
             return cookies.get('token');
         } catch(error) {
             return ''
@@ -22,6 +22,7 @@ export default class Cookie {
 
     public static setToken({req, token}: {req?: IncomingMessage; token: string}): void {
         const cookies = req ? new Cookies(req.headers.cookie) : new Cookies();
+        console.log(3333, req, token)
 		cookies.set('token', token);
     }
     
@@ -38,5 +39,15 @@ export default class Cookie {
     public static setOnboard({req}: {req?: IncomingMessage;}): void {
         const cookies = req ? new Cookies(req.headers.cookie) : new Cookies();
 		cookies.set('onboard', 'true');
+    }
+
+    public static getRefreshToken(req?: IncomingMessage): string {
+        const cookies = req ? new Cookies(req.headers.cookie) : new Cookies();
+        return cookies.get('refreshToken');
+    }
+    
+    public static setRefreshToken({req, token}: {req?: IncomingMessage; token: string;}): void {
+        const cookies = req ? new Cookies(req.headers.cookie) : new Cookies();
+        cookies.set('refreshToken', token);
     }
 }

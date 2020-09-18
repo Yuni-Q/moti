@@ -109,20 +109,18 @@ interface ServerSideProps {
 	}
 }
 
-export const getServerSideProps = async ({req, res}: PageContext): Promise<ServerSideProps> => {
+export const getServerSideProps = async ({req, res}: PageContext): Promise<ServerSideProps | void> => {
 	const props = {
 		initCards: [] as Answer[][],
 	};
 	try {
 		const token = await Cookie.getToken(req);
 		if(!token) {
-			redirectLogin(res);
-			return {
-				props,
-			};
+			return redirectLogin(res);
 		}
 
-		const cardList = await Answer.getAnswersList({token})
+		const cardList = await Answer.getAnswersList({token,req})
+
 		props.initCards = cardList;
 
 		return {
@@ -130,10 +128,7 @@ export const getServerSideProps = async ({req, res}: PageContext): Promise<Serve
 		};
 	} catch (error) {
 		consoleError('error', error);
-		redirectRoot(res);
-		return {
-			props,
-		};
+		return redirectRoot(res);
 	}
 };
 

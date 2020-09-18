@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import dayjs from 'dayjs';
+import { IncomingMessage } from 'http';
 import QueryString from 'querystring';
+import Signin from '../models/Signin';
+import Cookie from './Cookie';
 import { LocalCacheWithTTL } from './LocalCache';
+import { consoleError } from './log';
 import MemoryCache from './MemoryCache';
 import QueueRunner from './QueueRunner';
 
@@ -12,7 +16,7 @@ export interface APIOption<EXTRA = {}> {
 	timeout?: number;
 	headers?: { [key: string]: string } | { 'Content-Type': string };
 	raw?: boolean;
-	extra?: EXTRA;
+	extra?: EXTRA | { req?: IncomingMessage };
 }
 
 export interface APIOptionWithCache<EXTRA = {}> extends APIOption<EXTRA> {
@@ -124,6 +128,7 @@ export default class API<EXTRA = {}> {
 			responseType: 'json',
 		})
 			.then(async (result: AxiosResponse<APIGatewayResponse<T>>) => {
+
 				await this.options?.onResponse?.(result);
 				if (result) {
 					const timestamp = result?.data?.timestamp;
@@ -161,6 +166,26 @@ export default class API<EXTRA = {}> {
 				);
 			})
 			.catch(async (result: AxiosError<APIGatewayResponse<T>> | string) => {
+				if((result as any)?.response?.data?.status === 1100) {
+					try {
+						const { req } = opt?.extra as any;
+						const token = await Cookie.getRefreshToken(req);
+						const tokenResult = await axios.post('https://moti.company/api/v1/signin/refresh', {}, {
+							headers: { Authorization: token },
+						})
+						const {accessToken, refreshToken} = tokenResult.data.data
+						if(refreshToken){
+							Cookie.setRefreshToken({token: refreshToken});
+						}
+						if(accessToken) {
+							Cookie.setToken({token: accessToken});
+							return this.call(method, url, data, {...opt, headers: {...opt.headers, Authorization: accessToken }});
+						}
+					} catch(error) {
+						consoleError('catch', error);
+					}
+					
+				}
 				await this.options?.onError?.(result);
 
 				if (typeof result === 'string') {
