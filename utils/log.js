@@ -24,7 +24,7 @@ exports.consoleError = (alt, error) => {
 
 	let msg = [];
 	if (error) {
-		if(error?.response?.data?.message) msg.push(error.response.data.message.toString());
+		if (typeof error?.response?.data?.message === 'string') msg.push(error.response.data.message.toString());
 		if (error.text) msg.push(error.text.toString());
 		if (error.message) msg.push(error.message.toString());
 		if (error.resultMsg) msg.push(error.resultMsg.toString());
