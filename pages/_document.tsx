@@ -73,7 +73,7 @@ export default class CustomDocument extends Document<Props> {
 					{/* CODELAB: Add iOS meta tags and icons */}
 					<meta name="apple-mobile-web-app-capable" content="yes" />
 					<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-					<meta name="apple-mobile-web-app-title" content="yuni-q" />
+					<meta name="apple-mobile-web-app-title" content="MOTI" />
 					<link rel="apple-touch-icon" href="/static/favicon.png" />
 				</Head>
 				<body {...bodyAttrs}>
