@@ -3,7 +3,6 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import dayjs from 'dayjs';
 import { IncomingMessage } from 'http';
 import QueryString from 'querystring';
-import Signin from '../models/Signin';
 import Cookie from './Cookie';
 import { LocalCacheWithTTL } from './LocalCache';
 import { consoleError } from './log';
