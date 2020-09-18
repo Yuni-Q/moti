@@ -1,7 +1,7 @@
-import MotiAPI from "../utils/MotiAPI";
+import API from "../utils/API";
 
 export default class Signin  {
-  protected static readonly api: MotiAPI = new MotiAPI('/api');
+  protected static readonly api: API = new API('/api');
 
   accessToken?: string;
 

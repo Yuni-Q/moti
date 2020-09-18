@@ -38,7 +38,7 @@ export interface APIGatewayResponse<T> {
 export default class API<EXTRA = {}> {
 	public static SERVER_TIME_GAP = 0;
 
-	public static HOSTNAME = '';
+	public static HOSTNAME = 'https://moti.company';
 
 	public static HEADERS: { [key: string]: any } = {};
 

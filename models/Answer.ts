@@ -1,10 +1,10 @@
-import MotiAPI from "../utils/MotiAPI";
+import API from "../utils/API";
 import File from './File';
 import Mission from "./Mission";
 import User from "./User";
 
 export default class Answer  {
-  protected static readonly api: MotiAPI = new MotiAPI('/api');
+  protected static readonly api: API = new API('/api');
 
   id?: number;
 
