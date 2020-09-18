@@ -10,9 +10,9 @@ const { resolve } = require('path');
 const { log } = require('./utils/log');
 const router = require('./routes');
 
-// setInterval(function() {
-//   http.get('http://study-watson.herokuapp.com');
-// }, 300000);
+setInterval(function() {
+	http.get('https://yuni-q.herokuapp.com/');
+}, 300000);
 
 const port = process.env.PORT || 8080;
 

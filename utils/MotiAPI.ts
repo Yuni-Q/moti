@@ -1,6 +1,6 @@
 import API from "./API";
 
-class MotiAPI extends API<unknown> {
+class MotiAPI extends API {
 	public static HOSTNAME = 'https://moti.company';
 }
 

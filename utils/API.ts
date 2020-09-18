@@ -34,7 +34,8 @@ export interface APIGatewayResponse<T> {
 	timestamp: number;
 }
 
-export default class API<EXTRA> {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export default class API<EXTRA = {}> {
 	public static SERVER_TIME_GAP = 0;
 
 	public static HOSTNAME = '';
