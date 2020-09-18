@@ -1,6 +1,5 @@
 import { IncomingMessage } from "http";
 import Cookies from "universal-cookie";
-import User from "../models/User";
 
 export default class Cookie {
     static cookies = new Cookies();
