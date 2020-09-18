@@ -7,7 +7,7 @@ import Mission from '../models/Mission';
 import User from '../models/User';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
-import { redirectLogin } from '../utils/redirect';
+import { redirectLogin, redirectRoot } from '../utils/redirect';
 import { PageContext } from './_app';
 
 const StyledQuestionWrapper = styled.div`
@@ -165,7 +165,7 @@ interface ServerSideProps {
 	}
 }
 
-export const getServerSideProps = async ({req, res}: PageContext): Promise<ServerSideProps | void> => {
+export const getServerSideProps = async ({req, res}: PageContext): Promise<ServerSideProps> => {
 	const props = {
 		initMissions: [] as Mission[],
 		initCanRefresh: false,
@@ -173,12 +173,18 @@ export const getServerSideProps = async ({req, res}: PageContext): Promise<Serve
 	try {
 		const token = await Cookie.getToken(req);
 		if(!token) {
-            return { props };
+            redirectLogin(res);
+			return {
+				props,
+			};
 		}
 
 		const user = await User.getUsersMy({token})
 		if(!user.id) {
-            return redirectLogin(res);
+			redirectLogin(res);
+			return {
+				props,
+			};
 		}
 
 		const {missions, refresh} = await Mission.getMissions({token});
@@ -190,6 +196,7 @@ export const getServerSideProps = async ({req, res}: PageContext): Promise<Serve
 		};
 	} catch (error) {
 		consoleError('error', error);
+		redirectRoot();
 		return {
 			props,
 		};

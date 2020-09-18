@@ -3,7 +3,6 @@ import { NextComponentType, NextPageContext } from 'next';
 import App from 'next/app';
 import Router from 'next/router';
 import React from 'react';
-import Helmet from 'react-helmet';
 import GlobalStyle from '../components/GlobalStyle';
 import { log } from '../utils/log';
 
@@ -39,35 +38,6 @@ class MyApp extends App<Props> {
 
 		return (
 			<>
-				<Helmet
-					title="yuni-q"
-					htmlAttributes={{ lang: 'ko-KO' }}
-					meta={[
-						{
-							name: 'viewport',
-							content:
-								'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes,viewport-fit=cover',
-						},
-						// {
-						//   'http-equiv': 'X-UA-Compatible',
-						//   content: 'IE=edge',
-						// },
-						{
-							name: 'description',
-							content: 'yuni-q',
-						},
-						{
-							property: 'og:type',
-							content: 'website',
-						},
-					]}
-					link={[
-						{
-							rel: 'shortcut icon',
-							href: '',
-						},
-					]}
-				/>
 				<GlobalStyle />
 				<Component {...pageProps} />
 			</>

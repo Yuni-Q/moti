@@ -1,6 +1,6 @@
 {
-	"name": "moti",
-	"short_name": "moti",
+	"name": "MOTI",
+	"short_name": "MOTI",
 	"icons": [
 		{
 			"src": "favicon.png",
@@ -19,7 +19,7 @@
 		}
 	],
 	"start_url": "/",
-	"display": "fullscreen",
+	"display": "standalone",
 	"orientation": "natural",
 	"background_color": "rgb(26, 22, 22)",
 	"theme_color": "rgb(241, 219, 205)",

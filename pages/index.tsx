@@ -4,7 +4,7 @@ import Answer from '../models/Answer';
 import User from '../models/User';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
-import { redirectLogin } from '../utils/redirect';
+import { redirectLogin, redirectRoot } from '../utils/redirect';
 import { PageContext } from './_app';
 
 interface Props {
@@ -31,7 +31,7 @@ interface ServerSideProps {
 	}
 }
 
-export const getServerSideProps = async ({req, res}: PageContext): Promise<ServerSideProps | void> => {
+export const getServerSideProps = async ({req, res}: PageContext): Promise<ServerSideProps> => {
 	const props = {
 		answers: [] as Answer[],
 		isTodayAnswer: false,
@@ -40,14 +40,20 @@ export const getServerSideProps = async ({req, res}: PageContext): Promise<Serve
 	try {
 		const token = await Cookie.getToken(req);
 		if(!token) {
-            return redirectLogin(res);
+			redirectLogin(res);
+			return {
+				props,
+			};
 		}
 
 		props.isOnboard = !!Cookie.getOnboard(req);
-		
+
 		const user = await User.getUsersMy({token})
 		if(!user.id) {
-            return redirectLogin(res);
+			redirectLogin(res);
+			return {
+				props,
+			};
 		}
 		
 		const {today, answers} = await Answer.getAnswersWeek({token})
@@ -63,6 +69,7 @@ export const getServerSideProps = async ({req, res}: PageContext): Promise<Serve
 		};
 	} catch (error) {
 		consoleError('error', error);
+		redirectRoot(res);
 		return {
 			props,
 		};
