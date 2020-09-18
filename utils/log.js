@@ -23,12 +23,12 @@ exports.consoleError = (alt, error) => {
 	if (typeof e === 'string') return e;
 
 	let msg = [];
-	if (e) {
-		if (e.text) msg.push(e.text.toString());
-		if (e.message) msg.push(e.message.toString());
-		if (e.resultMsg) msg.push(e.resultMsg.toString());
-		if (e.errorMessage) msg.push(e.errorMessage.toString());
-		if (e.errMsg) msg.push(e.errMsg.toString());
+	if (error) {
+		if (error.text) msg.push(error.text.toString());
+		if (error.message) msg.push(error.message.toString());
+		if (error.resultMsg) msg.push(error.resultMsg.toString());
+		if (error.errorMessage) msg.push(error.errorMessage.toString());
+		if (error.errMsg) msg.push(error.errMsg.toString());
 	}
 
 	if (msg.length > 0) return msg.join('\n');
