@@ -4,14 +4,14 @@ const express = require('express');
 const next = require('next');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
-const http = require('http');
 const { parse } = require('url');
 const { resolve } = require('path');
 const { log } = require('./utils/log');
 const router = require('./routes');
+const { default: Axios } = require('axios');
 
 setInterval(function() {
-	http.get('https://yuni-q.herokuapp.com/');
+	Axios.get('https://yuni-q.herokuapp.com/')
 }, 300000);
 
 const port = process.env.PORT || 8080;
