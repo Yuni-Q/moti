@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import dayjs from 'dayjs';
 import QueryString from 'querystring';
@@ -7,14 +8,14 @@ import QueueRunner from './QueueRunner';
 
 export type APIMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-export interface APIOption<EXTRA> {
+export interface APIOption<EXTRA = {}> {
 	timeout?: number;
 	headers?: { [key: string]: string } | { 'Content-Type': string };
 	raw?: boolean;
 	extra?: EXTRA;
 }
 
-export interface APIOptionWithCache<EXTRA> extends APIOption<EXTRA> {
+export interface APIOptionWithCache<EXTRA = {}> extends APIOption<EXTRA> {
 	cacheId?: string;
 	// 캐시 시간
 	cacheTTL?: number;
@@ -34,7 +35,6 @@ export interface APIGatewayResponse<T> {
 	timestamp: number;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export default class API<EXTRA = {}> {
 	public static SERVER_TIME_GAP = 0;
 

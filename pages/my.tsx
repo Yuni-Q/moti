@@ -75,7 +75,7 @@ export const getServerSideProps = async ({req, res}: PageContext): Promise<Serve
 	try {
 		const token = await Cookie.getToken(req);
 		if(!token) {
-			return redirectLogin();
+			return redirectLogin(res);
 		}
 
 		const user = await User.getUsersMy({token})

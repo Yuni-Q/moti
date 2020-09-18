@@ -40,7 +40,7 @@ export const getServerSideProps = async ({req, res}: PageContext): Promise<Serve
 	try {
 		const token = await Cookie.getToken(req);
 		if(!token) {
-            return { props };
+            return redirectLogin(res);
 		}
 
 		props.isOnboard = !!Cookie.getOnboard(req);

@@ -1,7 +1,6 @@
 import API from "../utils/API";
 
 export default class Mission {
-
   protected static readonly api: API = new API('/api');
 
   id?: number;
