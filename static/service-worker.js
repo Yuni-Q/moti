@@ -7,7 +7,7 @@ self.addEventListener('install', (event) => {
 	event.waitUntil(
 		fetch(offlinePage).then((response) => {
 			return caches
-				.open('MASH-UP-offline')
+				.open('Yuni-Q-offline')
 				.then((cache) => {
 					console.log(`Page cached ${response.url}`);
 					return cache.put(offlinePage, response);
@@ -23,7 +23,7 @@ self.addEventListener('fetch', (event) => {
 		fetch(event.request).catch((error) => {
 			console.error(`Serving Offline ${error}`);
 			return caches
-				.open('MASH-UP-offline')
+				.open('Yuni-Q-offline')
 				.then((cache) => {
 					return cache.match('/');
 				})
