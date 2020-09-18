@@ -1,10 +1,10 @@
-import API from "../utils/API";
+import MotiAPI from "../utils/MotiAPI";
 import File from './File';
 import Mission from "./Mission";
 import User from "./User";
 
 export default class Answer  {
-  static api: API = new API();
+  protected static readonly api: MotiAPI = new MotiAPI('/api');
 
   id?: number;
 
@@ -60,6 +60,12 @@ export default class Answer  {
 
   public static getAnswersList ({token, id} : {token: string; id?: number;}): Promise<Answer[][]> {
     return this.api.get(`/v1/answers/list`, {answerId: id}, {
+      headers: { Authorization: token },
+    });
+  }
+
+  public static getAnswersListId ({token, id} : {token: string; id: number;}): Promise<Answer[]> {
+    return this.api.get(`/v1/answers/list/${id}`, {}, {
       headers: { Authorization: token },
     });
   }

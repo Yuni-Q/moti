@@ -1,16 +1,15 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import { StyledBody, StyledCardFrameWrapper, StyledImg } from './StyledComponent';
 
-interface Props {
-	onChageIsQuestion: (isQuestion: boolean) => void
-}
+const Motivation: React.FC = () => {
+	const router = useRouter();
 
-const Motivation: React.FC<Props> = ({ onChageIsQuestion }) => {
 	return (
 		<StyledBody className="justify-content-center">
 			<button
 				type="button"
-				onClick={() => onChageIsQuestion(true)}
+				onClick={() => router.push('/question')}
 			>
 				<StyledCardFrameWrapper>
 					<div className="mt-8">Motivation</div>

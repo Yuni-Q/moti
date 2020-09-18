@@ -8,7 +8,7 @@ import Answer from '../../models/Answer';
 import Mission from '../../models/Mission';
 import Cookie from '../../utils/Cookie';
 import { consoleError } from '../../utils/log';
-import { redirectRoot } from '../../utils/redirect';
+import { redirectLogin, redirectRoot } from '../../utils/redirect';
 import { PageContext } from '../_app';
 
 interface Props {
@@ -23,7 +23,10 @@ const MissionPage: React.FC<Props> = ({ mission }) => {
 	const onSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		try {
-			const token = Cookie.getToken();
+			const token = await Cookie.getToken();
+			if(!token) {
+				return redirectLogin();
+			}
 			const formData = new FormData();
 			if (mission.isContent) {
 				formData.append('content', content);
@@ -87,9 +90,9 @@ export const getServerSideProps = async ({req, res, params}: PageContext): Promi
 		mission: {} as Mission,
 	};
 	try {
-		const token = Cookie.getToken(req);
+		const token = await Cookie.getToken(req);
 		if(!token) {
-            return redirectRoot(res);
+			return redirectLogin();
 		}
 		
 		// const isUser = await checkUser({token});

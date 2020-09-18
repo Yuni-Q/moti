@@ -7,12 +7,24 @@ export default (): string => {
 };
 
 export const redirectRoot = (res?: ServerResponse): void => {
+    const path = '/'
     if(res) {
-        res.setHeader('location', '/');
+        res.setHeader('location', path);
         res.statusCode = 302;
         res.end();
     } else {
-        window.location.pathname = '/'
+        window.location.pathname = path
+    }
+}
+
+export const redirectLogin = (res?: ServerResponse): void => {
+    const path = '/login'
+    if(res) {
+        res.setHeader('location', path);
+        res.statusCode = 302;
+        res.end();
+    } else {
+        window.location.pathname = path;
     }
 }
 

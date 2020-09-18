@@ -1,8 +1,8 @@
-import API from "../utils/API";
+import MotiAPI from "../utils/MotiAPI";
 
 export default class File {
 
-  api: API = new API();
+  protected static readonly api: MotiAPI = new MotiAPI('/api');
 
   id?: number;
 

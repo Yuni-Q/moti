@@ -6,7 +6,7 @@ import { StyledBody, StyledBottomButton, StyledImg, StyledSubTitle, StyledWrappe
 import User from '../models/User';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
-import { redirectRoot } from '../utils/redirect';
+import { redirectLogin, redirectRoot } from '../utils/redirect';
 import { PageContext } from './_app';
 
 const StyledSignUpButton = styled.button`
@@ -298,7 +298,10 @@ const SignUpBirthday: React.FC<SignUpBirthdayProps> = ({ name, gender, year, onC
 			if (!dayRegExp.test(birthday)) {
 				return alert('날짜가 올바르지 않습니다.');
 			}
-			const token = Cookie.getToken();
+			const token = await Cookie.getToken();
+			if(!token) {
+				return redirectLogin();
+			}
 			const body = { name, gender, birthday };
 			await User.putUser({ token, body })
 			return onChangeStep();
@@ -309,7 +312,10 @@ const SignUpBirthday: React.FC<SignUpBirthdayProps> = ({ name, gender, year, onC
 
 	const onClickJump = async () => {
 		try {
-			const token = Cookie.getToken();
+			const token = await Cookie.getToken();
+			if(!token) {
+				return redirectLogin();
+			}
 			const body = { name, gender };
 			await User.putUser({ token, body })
 			return onChangeStep();

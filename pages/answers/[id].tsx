@@ -6,7 +6,7 @@ import Submit from '../../components/Submit';
 import Answer from '../../models/Answer';
 import Cookie from '../../utils/Cookie';
 import { consoleError } from '../../utils/log';
-import { redirectRoot } from '../../utils/redirect';
+import { redirectLogin, redirectRoot } from '../../utils/redirect';
 import { PageContext } from '../_app';
 
 interface Props {
@@ -31,7 +31,10 @@ const AnswerPage: React.FC<Props> = ({ answer }) => {
 			if (answer.mission?.isImage && !!file.type) {
 				formData.append('file', new Blob([file], { type: 'application/octet-stream' }));
 			}
-			const token = Cookie.getToken();
+			const token = await Cookie.getToken();
+			if(!token) {
+				return redirectLogin();
+			}
 			await Answer.putAnswersId({ formData, answer,token });
 			setIsSubmit(true);
 		} catch (error) {
@@ -78,15 +81,10 @@ export const getServerSideProps = async ({req, res, params}: PageContext): Promi
 	};
 	
 	try {
-		const token = Cookie.getToken(req);
+		const token = await Cookie.getToken(req);
 		if(!token) {
-            return redirectRoot(res);
+			return redirectLogin();
 		}
-		
-		// const isUser = await checkUser({token});
-		// if(!isUser) {
-		// 	return redirectRoot(res);
-		// }
 
 		const {id} = params;
 		if(!id) {

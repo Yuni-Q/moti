@@ -13,6 +13,8 @@ export const StyledWrapper = styled.div`
     align-items: center;
     flex-direction: column;
     justify-content: space-between;
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
 `;
 
 export const StyeldForm = styled.form`
@@ -24,6 +26,8 @@ export const StyeldForm = styled.form`
     align-items: center;
     flex-direction: column;
     justify-content: space-between;
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
 `;
 
 export const StyldHeader = styled.div`

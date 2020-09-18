@@ -1,11 +1,14 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import Header from '../components/Header';
+import { StyeldForm, StyledBottomButton, StyledCarousel, StyledDotButton, StyledDotWrapper } from '../components/StyledComponent';
 import Mission from '../models/Mission';
+import User from '../models/User';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
-import Header from './Header';
-import { StyeldForm, StyledBottomButton, StyledCarousel, StyledDotButton, StyledDotWrapper } from './StyledComponent';
+import { redirectLogin } from '../utils/redirect';
+import { PageContext } from './_app';
 
 const StyledQuestionWrapper = styled.div`
 	margin: 16px 0 24px;
@@ -32,22 +35,32 @@ const StyledQuestionHeader = styled.div`
 
 
 interface Props {
-	missions: Mission[];
-	cnaRefresh: boolean;
-	onChageIsQuestion: (bol: boolean) => void;
-	onChangeMission: (onChangeMission: Mission[]) => void;
-	onChangeCanRefresh: (onChangeCanRefresh: boolean) => void;
+	initMissions: Mission[];
+	initCanRefresh: boolean;
 }
 
-const Question: React.FC<Props> = ({ missions, cnaRefresh, onChageIsQuestion, onChangeMission, onChangeCanRefresh }) => {
+const Question: React.FC<Props> = ({ initMissions, initCanRefresh }) => {
 	const router = useRouter();
-	const [slideIndex, setSlideIndex] = useState(0);
+    const [slideIndex, setSlideIndex] = useState(0);
+    const [missions, setMission] = useState(initMissions);
+	const [canRefresh, setCanRefresh] = useState(initCanRefresh);
+	
+	const onChangeMission = (newMissions: Mission[]) => {
+		setMission(newMissions);
+	}
+
+	const onChangeCanRefresh = (newCanRefresh: boolean) => {
+		setCanRefresh(newCanRefresh)
+	}
 	
 	const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		if (cnaRefresh) {
+		if (canRefresh) {
 			try {
-				const token = Cookie.getToken();
+				const token = await Cookie.getToken();
+				if(!token) {
+					return redirectLogin();
+				}
 				const { missions: newMissions, refresh } = await Mission.getMissionsRefresh({token});
 				onChangeCanRefresh(refresh);
 				onChangeMission(newMissions);
@@ -63,7 +76,7 @@ const Question: React.FC<Props> = ({ missions, cnaRefresh, onChageIsQuestion, on
 		}
 	};
 
-	const onClickLeftButton = () => onChageIsQuestion(false);
+	const onClickLeftButton = () => router.back();
 
 	const onChangeSlideIndex = (newSlideIndex: number) => {
 		setSlideIndex(newSlideIndex)
@@ -113,7 +126,7 @@ const Question: React.FC<Props> = ({ missions, cnaRefresh, onChageIsQuestion, on
 			</StyledCarousel>
 			<QuestionDot slideIndex={slideIndex} onChangeSlideIndex={onChangeSlideIndex} />
 			<StyledBottomButton width={201} type="submit">
-				질문 다시받기 {cnaRefresh ? '1' : '0'} / 1
+				질문 다시받기 {canRefresh ? '1' : '0'} / 1
 			</StyledBottomButton>
 		</StyeldForm>
 	);
@@ -144,3 +157,41 @@ const QuestionDot: React.FC<QuestionDotProps> = ({slideIndex, onChangeSlideIndex
 }
 
 export default Question;
+
+interface ServerSideProps {
+	props: {
+		initMissions: Mission[],
+		initCanRefresh: boolean,
+	}
+}
+
+export const getServerSideProps = async ({req, res}: PageContext): Promise<ServerSideProps | void> => {
+	const props = {
+		initMissions: [] as Mission[],
+		initCanRefresh: false,
+	};
+	try {
+		const token = await Cookie.getToken(req);
+		if(!token) {
+            return { props };
+		}
+
+		const user = await User.getUsersMy({token})
+		if(!user.id) {
+            return redirectLogin(res);
+		}
+
+		const {missions, refresh} = await Mission.getMissions({token});
+		props.initMissions = missions;
+		props.initCanRefresh = refresh;
+		
+		return {
+			props,
+		};
+	} catch (error) {
+		consoleError('error', error);
+		return {
+			props,
+		};
+	}
+};

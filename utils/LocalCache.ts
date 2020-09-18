@@ -1,6 +1,9 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable max-classes-per-file */
+
+import { consoleError } from "./log";
+
 // localStorage 사용
 export class LocalCache {
 	static get(k: string): any {
@@ -17,12 +20,12 @@ export class LocalCache {
 }
 
 export class LocalCacheWithTTL {
-	private static _db?: LocalDB;
+	private static db?: LocalDB;
 
 	// 싱글톤
 	private static DB() {
-		if (!this._db) this._db = new LocalDB('localCache', { ver: 6, tables: [{ name: 'entities', keyPath: 'key' }] });
-		return this._db;
+		if (!this.db) this.db = new LocalDB('localCache', { ver: 6, tables: [{ name: 'entities', keyPath: 'key' }] });
+		return this.db;
 	}
 
 	static async get(key: string): Promise<any> {
@@ -32,8 +35,8 @@ export class LocalCacheWithTTL {
 			if (val && val.ttl > new Date().getTime()) {
 				return val.value;
 			}
-		} catch (e) {
-			console.log('e', e);
+		} catch (error) {
+			consoleError('LocalCacheWithTTL-get-error', error);
 		}
 		return undefined;
 	}
@@ -43,8 +46,8 @@ export class LocalCacheWithTTL {
 			// 현재 시간에 캐시 시간 더하기
 			ttl += new Date().getTime();
 			return await this.DB().put('entities', { key, value, ttl });
-		} catch (e) {
-			console.log('e', e);
+		} catch (error) {
+			consoleError('LocalCacheWithTTL-set-error', error);
 		}
 	}
 }
@@ -82,29 +85,27 @@ export class LocalDB<T = LocalDBRow> {
 		if (window.indexedDB) {
 			const request: IDBOpenDBRequest = window.indexedDB.open(name, config.ver);
 			// 이벤트가 성공적으로 끝나면, 데이터베이스 열기 요청의 onsuccess 핸들러가 트리거 됩니다
-			request.onupgradeneeded = (e: any) => {
-				this.db = e.target.result;
+			request.onupgradeneeded = (event: any) => {
+				this.db = event.target.result;
 				config.tables.forEach((table) => {
 					try {
 						const param: IDBObjectStoreParameters = { keyPath: table.keyPath, autoIncrement: table.autoIncrement };
 						const tb: IDBObjectStore = this.db!.createObjectStore(table.name, param);
 						if (table.index) table.index.map((idx) => tb.createIndex(idx.name, idx.field, { unique: idx.unique }));
 					} catch (error) {
-						console.log('error',error);
+						consoleError('LocalDB-constructor-error', error);
 					}
 				});
 			};
 
-			// 첫번째 함수 실행
-			request.onsuccess = (e: any) => {
-				this.db = e.target.result;
+			request.onsuccess = (event: any) => {
+				this.db = event.target.result;
 				this.ready = true;
 				this.drainQueue();
 			};
 
-			// 첫번째 함수 실행
-			request.onerror = (e: any) => {
-				console.log('e', e);
+			request.onerror = (error: any) => {
+				consoleError('LocalDB-request-onerror', error);
 				this.db = undefined;
 				this.ready = true;
 				this.drainQueue();
@@ -117,8 +118,8 @@ export class LocalDB<T = LocalDBRow> {
 			this.queue.splice(0, 1).forEach((f) => {
 				try {
 					f();
-				} catch (e) {
-					console.log('e', e);
+				} catch (error) {
+					consoleError('LocalDB-drainQueue-onerror', error);
 				}
 			});
 		}
@@ -143,8 +144,8 @@ export class LocalDB<T = LocalDBRow> {
 		return new Promise<T>((resolved, rejected) => {
 			this.conn().then((db) => {
 				const tx = db.transaction(table, 'readwrite').objectStore(table).put(row);
-				tx.onsuccess = (e: any) => {
-					resolved(e.target.result);
+				tx.onsuccess = (event: any) => {
+					resolved(event.target.result);
 				};
 				tx.onerror = rejected;
 			});
@@ -157,8 +158,8 @@ export class LocalDB<T = LocalDBRow> {
 		return new Promise<T>((resolved, rejected) => {
 			this.conn().then((db) => {
 				const tx = db.transaction(table, 'readonly').objectStore(table).get(key);
-				tx.onsuccess = (e: any) => {
-					resolved(e.target.result);
+				tx.onsuccess = (event: any) => {
+					resolved(event.target.result);
 				};
 				tx.onerror = rejected;
 			});

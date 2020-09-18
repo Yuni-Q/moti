@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import User from '../models/User';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
+import { redirectLogin } from '../utils/redirect';
 import Header from './Header';
 import { StyeldForm, StyledBottomButton, StyledHr, StyledInput, StyledRow } from './StyledComponent';
 
@@ -25,7 +26,10 @@ const Profile: React.FC<Props> = ({ user, onChageUser, onChageIsEdit }) => {
 
 	const onClickDeleteUser = async () => {
 		try {
-			const token = Cookie.getToken();
+			const token = await Cookie.getToken();
+			if(!token) {
+				return redirectLogin();
+			}
 			await User.deleteUser({token});
 			router.push('/');
 		} catch (error) {
@@ -43,7 +47,10 @@ const Profile: React.FC<Props> = ({ user, onChageUser, onChageIsEdit }) => {
 			if(gender !== '남' && gender !== '여') {
 				return alert('성별은 남/여 중에 선택해주세요.');
 			}
-			const token = Cookie.getToken();
+			const token = await Cookie.getToken();
+			if(!token) {
+				return redirectLogin();
+			}
 			const body = {
 				name,
 				gender,

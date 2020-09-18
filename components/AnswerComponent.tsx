@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import Answer from '../models/Answer';
 import Parts from './Parts';
@@ -5,11 +6,11 @@ import { StyledBody, StyledCardFrame, StyledCardFrameWrapper } from './StyledCom
 
 interface Props {
 	answers: Answer[];
-	onChangeAnswers: (answers: Answer[]) => void
 }
 
-const AnswerComponent: React.FC<Props> = ({ answers, onChangeAnswers }) => {
-	const onClick = () => onChangeAnswers(answers);
+const AnswerComponent: React.FC<Props> = ({ answers }) => {
+	const router = useRouter();
+	const onClick = () => router.push(`/answers/list/${answers[0].id}`);
 	return (
 		<StyledBody className="justify-content-center">
 			<button type="button" onClick={onClick}>

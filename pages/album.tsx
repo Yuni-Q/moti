@@ -1,7 +1,7 @@
 import _ from 'lodash';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import AnswerDetail from '../components/AnswerDetail';
 import Header from '../components/Header';
 import Parts from '../components/Parts';
 import { StyledCardFrame, StyledCardFrameWrapper, StyledWrapper } from '../components/StyledComponent';
@@ -9,7 +9,7 @@ import Answer from '../models/Answer';
 import imgCardframe from '../static/assets/images/imgCardframe.png';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
-import { redirectRoot } from '../utils/redirect';
+import { redirectLogin, redirectRoot } from '../utils/redirect';
 import { PageContext } from './_app';
 
 
@@ -61,7 +61,6 @@ interface Props {
 
 const Album: React.FC<Props> = ({ initCards }) => {
 	const [cards, setAnswerList] = useState([...initCards] || [[]]);
-	const [answers, setAnswers] = useState([] as Answer[]);
 	useEffect(() => {
 		const checkPoint = window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300;
 		const getItem = async () => {
@@ -69,9 +68,9 @@ const Album: React.FC<Props> = ({ initCards }) => {
 				try {
 					const lastAnswerNo = cards[cards.length - 1][0]?.no;
 					if (!!lastAnswerNo && lastAnswerNo !== 1) {
-						const token = Cookie.getToken();
+						const token = await Cookie.getToken();
 						if(!token) {
-							return redirectRoot();
+							return redirectLogin();
 						}
 						const { id } = cards[cards.length - 1][cards[cards.length - 1].length - 1];
 						if(id) {
@@ -96,17 +95,10 @@ const Album: React.FC<Props> = ({ initCards }) => {
 		};
 	}, [cards]);
 
-	const onChangeAnswers = (newAnswers: Answer[]) => {
-		setAnswers(newAnswers);
-	}
-
-	if (answers.length > 0) {
-		return <AnswerDetail answers={answers} onChangeAnswers={onChangeAnswers} />;
-	}
 	return (
 		<StyledAlbum>
 			<Header left={{}}  title="앨범" />
-			<CardsComponent cards={cards} onChangeAnswers={onChangeAnswers} />
+			<CardsComponent cards={cards} />
 		</StyledAlbum>
 	);
 };
@@ -122,15 +114,10 @@ export const getServerSideProps = async ({req, res}: PageContext): Promise<Serve
 		initCards: [] as Answer[][],
 	};
 	try {
-		const token = Cookie.getToken(req);
+		const token = await Cookie.getToken(req);
 		if(!token) {
-            return redirectRoot(res);
+			return redirectLogin();
 		}
-		
-		// const isUser = await checkUser({token});
-		// if(!isUser) {
-		// 	return redirectRoot(res);
-		// }
 
 		const cardList = await Answer.getAnswersList({token})
 		props.initCards = cardList;
@@ -148,10 +135,10 @@ export default Album;
 
 interface CardsComponentProps {
 	cards: Answer[][];
-	onChangeAnswers: (answers: Answer[]) => void;
 }
 
-const CardsComponent: React.FC<CardsComponentProps> = ({cards, onChangeAnswers}) => {
+const CardsComponent: React.FC<CardsComponentProps> = ({cards}) => {
+	const router = useRouter();
 	return (
 		<StyledCardsWrapper>
 			{cards.map((answers) => {
@@ -160,7 +147,7 @@ const CardsComponent: React.FC<CardsComponentProps> = ({cards, onChangeAnswers})
 						key={answers[0].no}
 						type="button"
 						onClick={() => {
-							onChangeAnswers(answers);
+							router.push(`/answers/list/${answers[0].id}`);
 						}}
 					>
 						<StyledNo>No. {answers[0].no}</StyledNo>

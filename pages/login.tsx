@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { StyledImg, StyledWrapper } from './StyledComponent';
+import { StyledImg, StyledWrapper } from '../components/StyledComponent';
 
 const StyledAppleLoginButton = styled.div`
 	background-color: #fff;

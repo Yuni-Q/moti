@@ -1,7 +1,7 @@
-import API from "../utils/API";
+import MotiAPI from "../utils/MotiAPI";
 
 export default class User  {
-  protected static readonly api: API = new API();
+  protected static readonly api: MotiAPI = new MotiAPI('/api');
 
   id? :number;
 

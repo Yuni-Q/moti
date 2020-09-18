@@ -19,8 +19,22 @@ exports.log =  (...arg) => {
   console.log(prefix(), ...arg);
 };
 
-exports.consoleError = (...arg) => {
-  console.error(prefix(), ...arg);
+exports.consoleError = (alt, error) => {
+	if (typeof e === 'string') return e;
+
+	let msg = [];
+	if (e) {
+		if (e.text) msg.push(e.text.toString());
+		if (e.message) msg.push(e.message.toString());
+		if (e.resultMsg) msg.push(e.resultMsg.toString());
+		if (e.errorMessage) msg.push(e.errorMessage.toString());
+		if (e.errMsg) msg.push(e.errMsg.toString());
+	}
+
+	if (msg.length > 0) return msg.join('\n');
+
+	// return alt || '';
+	console.error(prefix(), alt, msg);
 };
 
 /* eslint-enable */

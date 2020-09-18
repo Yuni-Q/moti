@@ -1,84 +1,44 @@
-import React, { useState } from 'react';
-import AnswerDetail from '../components/AnswerDetail';
-import Login from '../components/Login';
+import React from 'react';
 import Main from '../components/Main';
 import Answer from '../models/Answer';
-import Mission from '../models/Mission';
 import User from '../models/User';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
+import { redirectLogin } from '../utils/redirect';
 import { PageContext } from './_app';
 
 interface Props {
-	user: User;
 	isOnboard: boolean;
-	initAnswers: Answer[];
-	initMissions: Mission[];
-	initCanRefresh: boolean;
+	answers: Answer[];
 	isTodayAnswer: boolean;
 }
 
-const App: React.FC<Props> = ({ user, isOnboard, initAnswers, initMissions, initCanRefresh, isTodayAnswer }) => {
-	const [answers, setAnswers] = useState([] as Answer[]);
-	const [missions, setMission] = useState(initMissions);
-	const [canRefresh, setCanRefresh] = useState(initCanRefresh);
-
-	const onChangeAnswers = (newAnswers: Answer[]) => {
-		setAnswers(newAnswers);	
-	}
-	
-	const onChangeMission = (newMissions: Mission[]) => {
-		setMission(newMissions);
-	}
-
-	const onChangeCanRefresh = (newCanRefresh: boolean) => {
-		setCanRefresh(newCanRefresh)
-	}
-
-	if (!user.id) {
-		return <Login />;
-	}
-	
-	if (answers.length > 0) {
-		return <AnswerDetail answers={answers} onChangeAnswers={onChangeAnswers} />;
-	}
-	
+const App: React.FC<Props> = ({ isOnboard, answers, isTodayAnswer }) => {	
 	return (
 		<Main
 			isOnboard={isOnboard}
-			answers={initAnswers}
-			missions={missions}
-			cnaRefresh={canRefresh}
+			answers={answers}
 			isTodayAnswer={isTodayAnswer}
-			onChangeAnswers={onChangeAnswers}
-			onChangeMission={onChangeMission}
-			onChangeCanRefresh={onChangeCanRefresh}
 		/>
 	);
 };
 
 interface ServerSideProps {
 	props: {
-		user: User,
-		initAnswers: Answer[],
-		initMissions: Mission[],
+		answers: Answer[],
 		isTodayAnswer: boolean,
 		isOnboard: boolean,
-		initCanRefresh: boolean,
 	}
 }
 
-export const getServerSideProps = async ({req}: PageContext): Promise<ServerSideProps | void> => {
+export const getServerSideProps = async ({req, res}: PageContext): Promise<ServerSideProps | void> => {
 	const props = {
-		user: {} as User,
-		initAnswers: [] as Answer[],
-		initMissions: [] as Mission[],
+		answers: [] as Answer[],
 		isTodayAnswer: false,
 		isOnboard: false,
-		initCanRefresh: false,
 	};
 	try {
-		const token = Cookie.getToken(req);
+		const token = await Cookie.getToken(req);
 		if(!token) {
             return { props };
 		}
@@ -86,23 +46,18 @@ export const getServerSideProps = async ({req}: PageContext): Promise<ServerSide
 		props.isOnboard = !!Cookie.getOnboard(req);
 		
 		const user = await User.getUsersMy({token})
-		if(!user) {
-			return { props };
+		if(!user.id) {
+            return redirectLogin(res);
 		}
-		props.user = user;
 		
 		const {today, answers} = await Answer.getAnswersWeek({token})
-		props.initAnswers = answers;
+		props.answers = answers;
 
 		const isTodayAnswer = answers.filter((answer) => {
 			return answer.date === today;
 		}).length > 0;
 		props.isTodayAnswer = isTodayAnswer;
 
-		const {missions, refresh} = await Mission.getMissions({token});
-		props.initMissions = missions;
-		props.initCanRefresh = refresh;
-		
 		return {
 			props,
 		};

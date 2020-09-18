@@ -1,42 +1,25 @@
-/* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable no-shadow */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable max-classes-per-file */
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import dayjs from 'dayjs';
 import QueryString from 'querystring';
 import { LocalCacheWithTTL } from './LocalCache';
+import MemoryCache from './MemoryCache';
 import QueueRunner from './QueueRunner';
 
 export type APIMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-export interface APIOption<EXTRA = {}> {
+export interface APIOption<EXTRA> {
 	timeout?: number;
 	headers?: { [key: string]: string } | { 'Content-Type': string };
 	raw?: boolean;
 	extra?: EXTRA;
 }
 
-export interface APIOptionWithCache<EXTRA = {}> extends APIOption<EXTRA> {
+export interface APIOptionWithCache<EXTRA> extends APIOption<EXTRA> {
 	cacheId?: string;
 	// 캐시 시간
 	cacheTTL?: number;
 	cacheType?: 'DB' | 'MEMORY';
 	cacheInvalidate?: boolean;
-}
-
-class MemoryCache {
-	private _cache: { [key: string]: { ttl: number; data: any } } = {};
-
-	public get(cacheKey: string) {
-		if (!cacheKey) return null;
-		if ((this._cache[cacheKey]?.ttl || 0) > Date.now()) return this._cache[cacheKey].data;
-		delete this._cache[cacheKey];
-	}
-
-	public set(cacheKey: string, data: any, ttl?: number) {
-		this._cache[cacheKey] = { data, ttl: Date.now() + (ttl || 60 * 1000) };
-	}
 }
 
 export interface APIGatewayResponse<T> {
@@ -51,10 +34,10 @@ export interface APIGatewayResponse<T> {
 	timestamp: number;
 }
 
-export default class API<EXTRA = {}> {
+export default class API<EXTRA> {
 	public static SERVER_TIME_GAP = 0;
 
-	public static HOSTNAME = 'https://moti.company/api';
+	public static HOSTNAME = '';
 
 	public static HEADERS: { [key: string]: any } = {};
 
@@ -80,34 +63,37 @@ export default class API<EXTRA = {}> {
 	}
 
 	// 메모리 캐시 저장소
-	private _cache: MemoryCache = new MemoryCache();
+	private cache: MemoryCache = new MemoryCache();
 
 	private async call<T>(method: APIMethod, url: string, data?: any, opt?: APIOptionWithCache<EXTRA>): Promise<T> {
 		opt = opt || {};
 		let cacheKey: string | undefined;
 		if (method === 'GET' && opt.cacheId) {
 			// API.getCache()를 통해 요청되었다면
-			cacheKey = `API.Cache:${  url}`;
+			cacheKey = `API.Cache:${url}`;
 			// QueryString
 			if (data && typeof data !== 'string') cacheKey += (url.match(/\?/) ? '&' : '?') + QueryString.stringify(data);
 
+			// 메모리 캐시에서 찾아봄
 			return QueueRunner(opt.cacheId, async (resolved, rejected) => {
-				// 메모리 캐시에서 찾아봄
 				if (!opt?.cacheInvalidate) {
-					const cached = this._cache.get(cacheKey!);
-					if (cached) return resolved(cached);
-
-					if (opt?.cacheType !== 'MEMORY') {
-						// 브라우저 IndexedDB에서 찾아봄
-						const cached = await LocalCacheWithTTL.get(cacheKey!);
-						if (cached) {
-							this._cache.set(cacheKey!, cached, opt?.cacheTTL);
-							return resolved(cached);
+					if(cacheKey) {
+						const cached = this.cache.get(cacheKey);
+						if (cached) return resolved(cached);
+	
+						if (opt?.cacheType !== 'MEMORY') {
+							// 브라우저 IndexedDB에서 찾아봄
+							const localCached = await LocalCacheWithTTL.get(cacheKey);
+							if (localCached) {
+								this.cache.set(cacheKey, localCached, opt?.cacheTTL);
+								return resolved(localCached);
+							}
 						}
 					}
+				
 				}
 
-				return this.request<T>(method, url, data, opt!, cacheKey).then(resolved).catch(rejected);
+				return this.request<T>(method, url, data, opt || {}, cacheKey).then(resolved).catch(rejected);
 			});
 		}
 
@@ -140,6 +126,7 @@ export default class API<EXTRA = {}> {
 				await this.options?.onResponse?.(result);
 				if (result) {
 					const timestamp = result?.data?.timestamp;
+					
 					// SERVER_TIME_GAP 설정
 					if (timestamp)
 						API.SERVER_TIME_GAP =
@@ -148,7 +135,7 @@ export default class API<EXTRA = {}> {
 							0;
 
 					if (result.status === 200 || result.status === 201) {
-						const data: T =
+						const returnData: T =
 							(typeof result?.data?.data !== 'undefined' ? result.data.data : undefined) ||
 							result?.data?.data ||
 							result?.data?.result ||
@@ -156,13 +143,12 @@ export default class API<EXTRA = {}> {
 
 						// 캐시키가 있다면
 						if (cacheKey) {
-							this._cache.set(cacheKey, data, opt?.cacheTTL);
+							this.cache.set(cacheKey, data, opt?.cacheTTL);
 							// 캐시 시간 설정
 							if (opt.cacheType !== 'MEMORY') LocalCacheWithTTL.set(cacheKey, data, opt.cacheTTL);
 						}
-						return Promise.resolve(data);
+						return Promise.resolve(returnData);
 					} if (result.status === 401 || result.status === 403) {
-						API.redirectToLoginPage();
 						return Promise.reject(result);
 					}
 				}
@@ -180,11 +166,8 @@ export default class API<EXTRA = {}> {
 					return Promise.reject(result);
 				}
 
-				if (result.response?.status === 401 || result.response?.status === 403) {
-					API.redirectToLoginPage();
-				}
-				const data = result && result.response ? result.response.data : null;
-				return Promise.reject(data ? data.statusMessage || data.message || data.error || data.errorMessage : null);
+				const errorData = result && result.response ? result.response.data : null;
+				return Promise.reject(errorData ? errorData.statusMessage || errorData.message || errorData.error || errorData.errorMessage : null);
 			});
 	}
 
@@ -199,7 +182,7 @@ export default class API<EXTRA = {}> {
 		opt?: APIOptionWithCache<EXTRA>,
 	): Promise<T> {
 		opt = opt || {};
-		opt.cacheId = `API:${  cacheId}`;
+		opt.cacheId = `API:${cacheId}`;
 		return this.call('GET', url, data, opt);
 	}
 
@@ -217,11 +200,5 @@ export default class API<EXTRA = {}> {
 
 	public static notSupported(): any {
 		throw new Error('지원하지 않는 기능입니다');
-	}
-
-	public static redirectToLoginPage() {
-		window.location.href = `/web/login?returnUrl=${encodeURIComponent(
-			window.location.href,
-		)}&__ts=${new Date().getTime()}`;
 	}
 }

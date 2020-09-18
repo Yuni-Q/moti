@@ -1,12 +1,23 @@
-import Cookies from "universal-cookie";
 import { IncomingMessage } from "http";
+import Cookies from "universal-cookie";
+import User from "../models/User";
 
 export default class Cookie {
     static cookies = new Cookies();
 
-    public static getToken(req?: IncomingMessage): string {
-        const cookies = req ? new Cookies(req.headers.cookie) : new Cookies();
-		return cookies.get('token');
+    public static async getToken(req?: IncomingMessage): Promise<string> {
+        try {
+            const cookies = req ? new Cookies(req.headers.cookie) : new Cookies();
+            const token = cookies.get('token');
+            const user = await User.getUsersMy({token})
+            if(!user.id) {
+                return ''
+            }
+            return cookies.get('token');
+        } catch(error) {
+            return ''
+        }
+        
     }
 
     public static setToken({req, token}: {req?: IncomingMessage; token: string}): void {

@@ -80,9 +80,9 @@ MyApp.getInitialProps = async (context) => {
 
 	const isServer = !!context.ctx.req;
 	if (isServer) {
-		log(isServer);
+		log('isServer', isServer);
 	} else {
-		log(isServer);
+		log('isNotServer', isServer);
 	}
 	
 	let pageProps = {} as PageContext;

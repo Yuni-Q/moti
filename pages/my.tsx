@@ -6,7 +6,7 @@ import User from '../models/User';
 import imgMypage from '../static/assets/images/imgMypage.png';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
-import { redirectRoot } from '../utils/redirect';
+import { redirectLogin, redirectRoot } from '../utils/redirect';
 import { PageContext } from './_app';
 
 interface Props {
@@ -73,9 +73,9 @@ export const getServerSideProps = async ({req, res}: PageContext): Promise<Serve
 		initUser: {} as User,
 	};
 	try {
-		const token = Cookie.getToken(req);
+		const token = await Cookie.getToken(req);
 		if(!token) {
-			return redirectRoot(res);
+			return redirectLogin();
 		}
 
 		const user = await User.getUsersMy({token})
