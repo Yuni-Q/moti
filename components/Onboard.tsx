@@ -4,15 +4,15 @@ import { StyldHeader, StyledDotButton, StyledImg, StyledWrapper } from './Styled
 
 const getImage = (step: number) => {
 	if (step === 1) {
-		return '/static/assets/images/onbording1.png';
+		return '/assets/images/onbording1.png';
 	}
 	if (step === 2) {
-		return '/static/assets/images/onbording2.png';
+		return '/assets/images/onbording2.png';
 	}
 	if (step === 3) {
-		return '/static/assets/images/onbording3.png';
+		return '/assets/images/onbording3.png';
 	}
-	return '/static/assets/images/onbording4.png';
+	return '/assets/images/onbording4.png';
 };
 
 const getTitle = (step: number) => {

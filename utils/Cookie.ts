@@ -21,7 +21,6 @@ export default class Cookie {
 
     public static setToken({req, token}: {req?: IncomingMessage; token: string}): void {
         const cookies = req ? new Cookies(req.headers.cookie) : new Cookies();
-        console.log(3333, req, token)
 		cookies.set('token', token);
     }
     

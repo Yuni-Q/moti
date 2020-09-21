@@ -26,7 +26,7 @@ dotenv.config();
 app.prepare().then(() => {
 	const server = express();
 	// next에서 자동으로 실행
-	// server.use('static ', express.static('./static'));
+	server.use(express.static('./static'));
 	server.use(handle);
 	server.use(morgan('dev'));
 	server.use(express.json());

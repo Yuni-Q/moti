@@ -228,7 +228,7 @@ const SignUpGender: React.FC<SignUpGenderProps> = ({ gender, onChangeGender, onC
 						</StlyedBlackMask>
 					)}
 					{/* '16px 25px 14px'  */}
-					<StyledImg className='my-4 mx-6' src="/static/assets/images/imgMale.svg" alt="imgMale" width="calc(100% - 48px)" />
+					<StyledImg className='my-4 mx-6' src="/assets/images/imgMale.svg" alt="imgMale" width="calc(100% - 48px)" />
 					<div className="text-center my-4">MAN</div>
 				</StyledGenderWrapper>
 				<StyledGenderWrapper className="ml-2 mr-4">
@@ -237,7 +237,7 @@ const SignUpGender: React.FC<SignUpGenderProps> = ({ gender, onChangeGender, onC
 							여
 						</StlyedBlackMask>
 					)}
-					<StyledImg className='my-4 mx-6' src="/static/assets/images/imgFemale.svg" alt="imgFemale" width="calc(100% - 48px)" />
+					<StyledImg className='my-4 mx-6' src="/assets/images/imgFemale.svg" alt="imgFemale" width="calc(100% - 48px)" />
 					<div className="text-center my-4">WOMAN</div>
 				</StyledGenderWrapper>
 			</StyledSignUpGender>

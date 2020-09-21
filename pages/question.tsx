@@ -105,8 +105,8 @@ const Question: React.FC<Props> = ({ initMissions, initCanRefresh }) => {
 					return (
 						<StyledQuestionWrapper key={mission.id}>
 							<StyledQuestionHeader>
-								{mission.isImage && <img width="24" height="24" src="/static/assets/images/icCameraNormal.png" alt="icCameraNormal" />}
-								{mission.isContent && <img width="24" height="24" src="/static/assets/images/icTextformNormal.png" alt="icTextformNormal" />}
+								{mission.isImage && <img width="24" height="24" src="/assets/images/icCameraNormal.png" alt="icCameraNormal" />}
+								{mission.isContent && <img width="24" height="24" src="/assets/images/icTextformNormal.png" alt="icTextformNormal" />}
 							</StyledQuestionHeader>
 							<div className="m-4">
 								<div>질문 {index + 1}</div>

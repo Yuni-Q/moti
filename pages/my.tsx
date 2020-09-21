@@ -3,7 +3,6 @@ import Header from '../components/Header';
 import Profile from '../components/Profile';
 import { StyledHr, StyledImg, StyledRow, StyledWrapper } from '../components/StyledComponent';
 import User from '../models/User';
-import imgMypage from '../static/assets/images/imgMypage.png';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
 import { redirectLogin, redirectRoot } from '../utils/redirect';
@@ -30,8 +29,8 @@ const My: React.FC<Props> = ({ initUser }) => {
 	}
 	return (
 		<StyledWrapper className="justify-content-start">
-			<Header left={{}} title="마이페이지" right={{imgUrl: '/static/assets/images/icRewriteNormal.png', onClick: () => onChageIsEdit(true), alt: 'icRewriteNormal'}} />
-			<StyledImg className="mt-8" src={imgMypage} alt="imgMypage" width="108" height="108" />
+			<Header left={{}} title="마이페이지" right={{imgUrl: '/assets/images/icRewriteNormal.png', onClick: () => onChageIsEdit(true), alt: 'icRewriteNormal'}} />
+			<StyledImg className="mt-8" src="/assets/images/imgMypage.png" alt="imgMypage" width="108" height="108" />
 			<div className="text-align-center mt-4">{user.name} 님</div>
 			<StyledHr />
 			<StyledRow>

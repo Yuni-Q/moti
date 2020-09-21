@@ -19,7 +19,7 @@ const Submit: React.FC = () => {
 					완료했습닌다.
 				</StyledSubTitle>
 				<div className="mt-3">새로운 파츠를 얻었어요. 확인해볼까요?</div>
-				<StyledImg className="my-7" width="108" height="108" src="/static/assets/images/imgMypage.png" alt="imgMypage" />
+				<StyledImg className="my-7" width="108" height="108" src="/assets/images/imgMypage.png" alt="imgMypage" />
 			</StyledBody>
 			<StyledBottomButton type="submit" width={168}>
 				확인하러 가기

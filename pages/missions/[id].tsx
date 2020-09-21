@@ -69,7 +69,7 @@ const MissionPage: React.FC<Props> = ({ mission }) => {
 			<Header left={{}} title="답변 하기" />
 			<StyledSubTitle>{mission.title}</StyledSubTitle>
 			<StyledCardFrameWrapper>
-				<StyledCardFrame src="/static/assets/images/imgCardframe.png" alt="imgCardframe" />
+				<StyledCardFrame src="/assets/images/imgCardframe.png" alt="imgCardframe" />
 				<ContentComponent imgSrc={file.type ? URL.createObjectURL(file) : ''} onChangeFile={onChangeFile} isContent={mission?.isContent} content={content} onChangeContent={onChangeContent} />
 			</StyledCardFrameWrapper>
 			<StyledBottomButton type="submit" width={240}>

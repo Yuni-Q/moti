@@ -25,7 +25,7 @@ const AnswerDetail: React.FC<Props> = ({ answers }) => {
 	}
 	return (
 		<StyledWrapper>
-			<Header left={{}}  title={title} right={{onClick: () => router.push('/album'), imgUrl: '/static/assets/images/normal.png', alt: 'normal'}} />
+			<Header left={{}}  title={title} right={{onClick: () => router.push('/album'), imgUrl: '/assets/images/normal.png', alt: 'normal'}} />
 			<AnswerDetailDot answers={answers} slideIndex={slideIndex} onChagneSlideIndex={onChagneSlideIndex} />
 			<AnswerCarosel answers={answers} slideIndex={slideIndex} onChagneSlideIndex={onChagneSlideIndex} />
 		</StyledWrapper>
@@ -101,13 +101,13 @@ const AnswerCarosel: React.FC<AnswerCaroselProps> = ({answers, slideIndex, onCha
 										className="mr-6"
 										width={24}
 										height={24}
-										src="/static/assets/images/icRewriteNormal.png"
+										src="/assets/images/icRewriteNormal.png"
 										alt="icRewriteNormal"
 									/>
 								</button>
 							</StyledSubTitle>
 							<StyledCardFrameWrapper>
-								<StyledCardFrame src="/static/assets/images/imgCardframe.png" alt="imgCardframe" />
+								<StyledCardFrame src="/assets/images/imgCardframe.png" alt="imgCardframe" />
 								<ContentComponent imgSrc={answer.imageUrl || ''}  isContent={answer.mission?.isContent} content={answer.content || ''} />
 							</StyledCardFrameWrapper>
 						</StyledCardsWrapper>

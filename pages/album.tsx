@@ -6,7 +6,6 @@ import Header from '../components/Header';
 import Parts from '../components/Parts';
 import { StyledCardFrame, StyledCardFrameWrapper, StyledWrapper } from '../components/StyledComponent';
 import Answer from '../models/Answer';
-import imgCardframe from '../static/assets/images/imgCardframe.png';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
 import { redirectLogin, redirectRoot } from '../utils/redirect';
@@ -153,7 +152,7 @@ const CardsComponent: React.FC<CardsComponentProps> = ({cards}) => {
 					>
 						<StyledNo>No. {answers[0].no}</StyledNo>
 						<StyledAlbumCardFrameWrapper>
-							<StyledCardFrame src={imgCardframe} alt="imgCardframe" />
+							<StyledCardFrame src="/assets/images/imgCardframe.png" alt="imgCardframe" />
 							<Parts answers={answers} />
 						</StyledAlbumCardFrameWrapper>
 					</StyledCardWrapperButton>

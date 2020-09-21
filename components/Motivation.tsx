@@ -13,7 +13,7 @@ const Motivation: React.FC = () => {
 			>
 				<StyledCardFrameWrapper>
 					<div className="mt-8">Motivation</div>
-					<StyledImg className="mt-8" src="/static/assets/images/imgQuestion.png" width="202" height="202" alt="imgQuestion" />
+					<StyledImg className="mt-8" src="/assets/images/imgQuestion.png" width="202" height="202" alt="imgQuestion" />
 					<div className="text-align-center my-8">
 						<div>
 							Today’s

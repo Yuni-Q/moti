@@ -31,7 +31,7 @@ const Error: React.FC<Props> = ({ errorMessage }) => {
 				<StyledImg
 					width={errorMessage ? "178" : "114"}
 					height={errorMessage ? "178" : "114"}
-					src={errorMessage ? '/static/assets/images/unknownError.png' : '/static/assets/images/internet.png'}
+					src={errorMessage ? '/assets/images/unknownError.png' : '/assets/images/internet.png'}
 					alt="error"
 				/>
 			</div>

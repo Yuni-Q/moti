@@ -15,7 +15,7 @@ const AnswerComponent: React.FC<Props> = ({ answers }) => {
 		<StyledBody className="justify-content-center">
 			<button type="button" onClick={onClick}>
 			<StyledCardFrameWrapper>
-				<StyledCardFrame src="/static/assets/images/imgCardframe.png" alt="imgCardframe" />
+				<StyledCardFrame src="/assets/images/imgCardframe.png" alt="imgCardframe" />
 				<Parts answers={answers} />
 				</StyledCardFrameWrapper>
 			</button>

@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import icArrowLeft from '../static/assets/images/icArrowLeft.png';
 import { StyldHeader, StyledLeftIcon, StyledTitle, StyledRightIcon } from "./StyledComponent";
 
 interface Props {
@@ -29,7 +28,7 @@ const Header: React.FC<Props> = ({title, left, right}) => {
 					<StyledLeftIcon
 						width={24}
 						height={24}
-						src={icArrowLeft}
+						src="/assets/images/icArrowLeft.png"
 						alt="icArrowLeft"
 					/>
 				</button>}

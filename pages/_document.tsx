@@ -27,7 +27,7 @@ export default class CustomDocument extends Document<Props> {
 			const page = context.renderPage((App) => (props) => sheet.collectStyles(<App {...props} />));
 			const styles = (
 				<>
-					<link href="/static/reset.css" rel="stylesheet" />
+					<link href="/reset.css" rel="stylesheet" />
 					{initialProps.styles}
 					{sheet.getStyleElement()}
 				</>
@@ -61,22 +61,24 @@ export default class CustomDocument extends Document<Props> {
 					<meta property="og:type" content="website" />
 					<meta property="og:url" content="http://localhost:8080/" />
 					<meta property="og:title" content="yuni-q" />
-					<meta property="og:image" content="/static/favicon.png" />
+					<meta property="og:image" content="/favicon.png" />
 					<meta property="og:description" content="yuni-q" />
 					<meta property="og:site_name" content="yuni-q" />
 					<meta property="og:locale" content="ko-KO" />
 					{Object.values(helmet).map((el) => el.toComponent())}
-					<link rel="manifest" href="/static/manifest.json" />
-					<link rel="shorcut icon" href="/static/favicon.png" />
+					<link rel="manifest" href="/manifest.json" />
+					<link rel="shorcut icon" href="/favicon.png" />
 					<meta name="theme-color" content="black" />
 
 					{/* CODELAB: Add iOS meta tags and icons */}
 					<meta name="apple-mobile-web-app-capable" content="yes" />
 					<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 					<meta name="apple-mobile-web-app-title" content="MOTI" />
-					<link rel="apple-touch-icon" href="/static/favicon.png" />
+					<link rel="apple-touch-icon" href="/favicon.png" />
+
 				</Head>
 				<body {...bodyAttrs}>
+					<script src="/regist.js" />
 					<Main />
 					{process.env.NODE_ENV === 'production' && (
 						<script src="https://polyfill.io/v3/polyfill.min.js?features=es6,es7,es8,es9,NodeList.prototype.forEach&flags=gated" />

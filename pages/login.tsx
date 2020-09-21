@@ -28,7 +28,7 @@ const Login: React.FC = () => {
 	return (
 		<StyledWrapper>
 			<StyledImg
-				src="/static/assets/images/motiLogo.png"
+				src="/assets/images/motiLogo.png"
 				alt="motiLogo"
 				width="50%"
 				className="mt-26"

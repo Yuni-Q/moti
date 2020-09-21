@@ -19,7 +19,7 @@ const FileInput: React.FC<Props> = ({ mission, setFile }) => {
 			<Header left={{}} title="질문 선택" />
 			<StyledSubTitle>{mission.title}</StyledSubTitle>
 			<div>
-				<StyledImg src="/static/assets/images/imgCam.png" alt="imgCam" width="202" height="202" />
+				<StyledImg src="/assets/images/imgCam.png" alt="imgCam" width="202" height="202" />
 			</div>
 			<StyledFileInputButton>
 				<label htmlFor="file">이미지 업로드</label>

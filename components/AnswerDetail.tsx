@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Answer from '../models/Answer';
-import icRewriteNormal from '../static/assets/images/icRewriteNormal.png';
 import ContentComponent from './ContentComponent';
 import Header from './Header';
 import { StyledCardFrame, StyledCardFrameWrapper, StyledCarousel, StyledDotButton, StyledDotWrapper, StyledRightIcon, StyledSubTitle, StyledWrapper } from './StyledComponent';
@@ -23,7 +22,7 @@ const AnswerDetail: React.FC<Props> = ({ answers, onChangeAnswers }) => {
 	}
 	return (
 		<StyledWrapper>
-			<Header left={{onClick: () => onChangeAnswers([])}}  title={title} right={{onClick: () => router.push('/album'), imgUrl: '/static/assets/images/normal.png', alt: 'normal'}} />
+			<Header left={{onClick: () => onChangeAnswers([])}}  title={title} right={{onClick: () => router.push('/album'), imgUrl: '/assets/images/normal.png', alt: 'normal'}} />
 			<AnswerDetailDot answers={answers} slideIndex={slideIndex} onChagneSlideIndex={onChagneSlideIndex} />
 			<AnswerCarosel answers={answers} slideIndex={slideIndex} onChagneSlideIndex={onChagneSlideIndex} />
 		</StyledWrapper>
@@ -98,13 +97,13 @@ const AnswerCarosel: React.FC<AnswerCaroselProps> = ({answers, slideIndex, onCha
 										className="mr-6"
 										width={24}
 										height={24}
-										src={icRewriteNormal}
+										src="/assets/images/icRewriteNormal.png"
 										alt="icRewriteNormal"
 									/>
 								</button>
 							</StyledSubTitle>
 							<StyledCardFrameWrapper>
-								<StyledCardFrame src="/static/assets/images/imgCardframe.png" alt="imgCardframe" />
+								<StyledCardFrame src="/assets/images/imgCardframe.png" alt="imgCardframe" />
 								<ContentComponent imgSrc={answer.imageUrl || ''}  isContent={answer.mission?.isContent} content={answer.content || ''} />
 							</StyledCardFrameWrapper>
 						</StyledCardsWrapper>

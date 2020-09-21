@@ -40,7 +40,7 @@ const Main: NextPage<Props> = ({ answers, isTodayAnswer }) => {
 			<StyledFooter>
 				<div>
 					<button type="button" onClick={onClickFooterLeftButton}>
-						<StyledImg src="/static/assets/images/normal.png" width="24" height="24" alt="normal" />
+						<StyledImg src="/assets/images/normal.png" width="24" height="24" alt="normal" />
 					</button>
 				</div>
 				<div className="h3">
@@ -48,7 +48,7 @@ const Main: NextPage<Props> = ({ answers, isTodayAnswer }) => {
 				</div>
 				<div>
 					<button type="button" onClick={onClickFooterRightButton}>
-						<StyledImg src="/static/assets/images/icProfileToucharea.png" width="24" height="24" alt="icProfileToucharea" />
+						<StyledImg src="/assets/images/icProfileToucharea.png" width="24" height="24" alt="icProfileToucharea" />
 					</button>
 				</div>
 			</StyledFooter>

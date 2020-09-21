@@ -59,7 +59,7 @@ const AnswerPage: React.FC<Props> = ({ answer }) => {
 			<Header left={{}} title='답변 수정하기' />
 			<StyledSubTitle>{answer.mission?.title}</StyledSubTitle>
 			<StyledCardFrameWrapper>
-				<StyledCardFrame src="/static/assets/images/imgCardframe.png" alt="imgCardframe" />
+				<StyledCardFrame src="/assets/images/imgCardframe.png" alt="imgCardframe" />
 				<ContentComponent imgSrc={file.type?  URL.createObjectURL(file) : file.name}  onChangeFile={onChangeFile} isContent={answer.mission?.isContent} content={content} onChangeContent={onChangeContent} />
 			</StyledCardFrameWrapper>
 			<StyledBottomButton type="submit" width={240}>

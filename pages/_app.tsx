@@ -20,19 +20,6 @@ interface Props {
 }
 
 class MyApp extends App<Props> {
-	componentDidMount(): void {
-		if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
-			navigator.serviceWorker
-				.register('/service-worker.js')
-				.then((result) => {
-					log('service worker registration successful', result);
-				})
-				.catch((err) => {
-					log('service worker registration failed', err.message);
-				});
-		}
-	}
-
 	render(): JSX.Element {
 		const { Component, pageProps = {} } = this.props;
 
@@ -54,7 +41,7 @@ MyApp.getInitialProps = async (context) => {
 	} else {
 		log('isNotServer', isServer);
 	}
-	
+
 	let pageProps = {} as PageContext;
 	if (context.Component.getInitialProps) {
 		const { ctx } = context;
