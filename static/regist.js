@@ -109,7 +109,6 @@ function unsubscribe () {
     }
     swRegist.pushManager.getSubscription()
     .then(function(subscription) {
-      console.log(999,subscription )
       isSubscribed = !(subscription === null);    
       if (isSubscribed) {
         console.log('User is subscribed.');
@@ -122,9 +121,7 @@ function unsubscribe () {
     })
   }
 
-    if (
-        // process.env.NODE_ENV === 'production' && 
-        'serviceWorker' in navigator) {
+    if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
         navigator.serviceWorker.register('service-worker.js').then((regist) => {
             console.log('Service Worker Registred');
             swRegist = regist;
@@ -137,7 +134,7 @@ function unsubscribe () {
                     console.log('Service Worker state changed: ', this.state);
                 })
             })
-            initPush();
+            // initPush();
         })
         .catch((err) => {
             console.log('service worker registration failed', err.message);
