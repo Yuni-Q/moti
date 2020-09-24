@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -70,12 +71,6 @@ const Question: React.FC<Props> = ({ initMissions, initCanRefresh }) => {
 		}
 	}
 
-	const onClickAnswrButton = (id?: number) => {
-		if(id) {
-			router.push(`/missions/${id}`);
-		}
-	};
-
 	const onClickLeftButton = () => router.back();
 
 	const onChangeSlideIndex = (newSlideIndex: number) => {
@@ -112,14 +107,17 @@ const Question: React.FC<Props> = ({ initMissions, initCanRefresh }) => {
 								<div>질문 {index + 1}</div>
 								<div className="h3 mt-4">{mission.title}</div>
 							</div>
-							<StyledBottomButton
-								className="text-center mb-8"
-								width={240}
-								type="button"
-								onClick={() => onClickAnswrButton(mission.id)}
-							>
-								답변하기
-							</StyledBottomButton>
+							<Link href="/missions/[id]" as={`/missions/${mission.id}`}>
+								<a>
+									<StyledBottomButton
+										className="text-center mb-8"
+										width={240}
+										type="button"
+									>
+										답변하기
+									</StyledBottomButton>
+								</a>
+							</Link>
 						</StyledQuestionWrapper>
 					);
 				})}
@@ -145,6 +143,7 @@ const QuestionDot: React.FC<QuestionDotProps> = ({slideIndex, onChangeSlideIndex
 				return (
 					<StyledDotButton
 						key={num}
+						type="button"
 						active={num === slideIndex}
 						onClick={() => onChangeSlideIndex(num)}
 					>

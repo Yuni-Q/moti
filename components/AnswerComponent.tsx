@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import React from 'react';
 import Answer from '../models/Answer';
 import Parts from './Parts';
@@ -9,16 +9,17 @@ interface Props {
 }
 
 const AnswerComponent: React.FC<Props> = ({ answers }) => {
-	const router = useRouter();
-	const onClick = () => router.push(`/answers/list/${answers[0].id}`);
 	return (
 		<StyledBody className="justify-content-center">
-			<button type="button" onClick={onClick}>
-			<StyledCardFrameWrapper>
-				<StyledCardFrame src="/assets/images/imgCardframe.png" alt="imgCardframe" />
-				<Parts answers={answers} />
+			<Link href="/answers/list/[id]" as={`/answers/list/${answers[0].id}`}>
+				<a>
+				<StyledCardFrameWrapper>
+					<StyledCardFrame src="/assets/images/imgCardframe.png" alt="imgCardframe" />
+					<Parts answers={answers} />
 				</StyledCardFrameWrapper>
-			</button>
+				</a>
+			
+			</Link>
 		</StyledBody>
 	);
 };

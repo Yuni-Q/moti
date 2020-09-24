@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Header from '../components/Header';
@@ -10,11 +10,11 @@ import { redirectLogin, redirectRoot } from '../utils/redirect';
 import { PageContext } from './_app';
 
 const StyledSignUpButton = styled.button`
-		width: 240px;
-					height: 40px;
-					color: rgb(173, 181, 189);
-					border-radius: 30px;
-					margin: 24px 0 0;
+	width: 240px;
+	height: 40px;
+	color: rgb(173, 181, 189);
+	border-radius: 30px;
+	margin: 24px 0 0;
 `;
 
 interface Props {
@@ -380,12 +380,6 @@ interface SignUpCompleteProps {
 }
 
 const SignUpComplete: React.FC<SignUpCompleteProps> = ({ name }) => {
-	const router = useRouter();
-	
-	const onClick = () => {
-		router.push('/')
-	}
-	
 	return (
 		<>
 			<StyledComplete>
@@ -396,14 +390,17 @@ const SignUpComplete: React.FC<SignUpCompleteProps> = ({ name }) => {
 				축하합니다!
 				<br />
 			</StyledComplete>
-			<StyledBottomButton
-				className="mb-37 text-center"
-				width={240}
-				type="button"
-				onClick={onClick}
-			>
-				시작하기
-			</StyledBottomButton>
+			<Link href="/">
+				<a>
+					<StyledBottomButton
+						className="mb-37 text-center"
+						width={240}
+						type="button"
+					>
+						시작하기
+					</StyledBottomButton>
+				</a>
+			</Link>
 		</>
 	)
 }

@@ -1,6 +1,7 @@
 import { ServerResponse } from 'http';
 import { NextComponentType, NextPageContext } from 'next';
 import App from 'next/app';
+import Head from 'next/head';
 import Router from 'next/router';
 import React from 'react';
 import GlobalStyle from '../components/GlobalStyle';
@@ -25,6 +26,9 @@ class MyApp extends App<Props> {
 
 		return (
 			<>
+				<Head>
+					<title>yuni-q</title>
+				</Head>
 				<GlobalStyle />
 				<Component {...pageProps} />
 			</>

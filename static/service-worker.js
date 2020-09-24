@@ -70,7 +70,17 @@ self.addEventListener('fetch', (event) => {
 	event.respondWith(
 		fetch(event.request).then(response => {
 			return response || fetch(event.request);
-		})
+		}),
+		fetch(event.request).catch((error) => {
+			console.error(`Serving Offline ${error}`);
+			return caches
+				.open('MASH-UP-offline')
+				.then((cache) => {
+					return cache.match('/');
+				})
+				.catch((error2) => console.log('실패', error2));
+		}),
+		
 	);
 });
 
@@ -100,4 +110,9 @@ self.addEventListener('notificationclick', function (event) {
         // eslint-disable-next-line no-undef
         clients.openWindow('/') 
     );
+});
+
+
+self.addEventListener('activate', (event) => {
+	event.waitUntil(self.clients.claim());
 });

@@ -1,16 +1,11 @@
-import { useRouter } from 'next/router';
-import React, { useCallback } from 'react';
+import Link from 'next/link';
+import React from 'react';
 import Header from './Header';
-import { StyeldForm, StyledBody, StyledBottomButton, StyledImg, StyledSubTitle } from './StyledComponent';
+import { StyledBody, StyledBottomButton, StyledImg, StyledSubTitle, StyledWrapper } from './StyledComponent';
 
 const Submit: React.FC = () => {
-	const router = useRouter();
-	const onSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		router.push('/');
-	}, [router])
 	return (
-		<StyeldForm onSubmit={onSubmit}>
+		<StyledWrapper>
 			<Header title="미션 완료" />
 			<StyledBody>
 				<StyledSubTitle>
@@ -21,10 +16,14 @@ const Submit: React.FC = () => {
 				<div className="mt-3">새로운 파츠를 얻었어요. 확인해볼까요?</div>
 				<StyledImg className="my-7" width="108" height="108" src="/assets/images/imgMypage.png" alt="imgMypage" />
 			</StyledBody>
-			<StyledBottomButton type="submit" width={168}>
-				확인하러 가기
-				</StyledBottomButton>
-		</StyeldForm>
+			<Link href="/" >
+				<a>
+					<StyledBottomButton type="button" width={168}>
+						확인하러 가기
+					</StyledBottomButton>
+				</a>
+			</Link>
+		</StyledWrapper>
 	);
 };
 

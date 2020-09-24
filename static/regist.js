@@ -121,7 +121,7 @@ function unsubscribe () {
     })
   }
 
-    if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('service-worker.js').then((regist) => {
             console.log('Service Worker Registred');
             swRegist = regist;

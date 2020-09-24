@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { NextPage } from 'next';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import React, { useState } from 'react';
 import Answer from '../models/Answer';
 import Cookie from '../utils/Cookie';
@@ -16,16 +16,12 @@ interface Props {
 }
 
 const Main: NextPage<Props> = ({ answers, isTodayAnswer }) => {
-	const router = useRouter();
 	const [step, setStep] = useState(1);
 	const [errorMessage] = useState('');
 
 	const onChageStep = (newStep: number) => {
 		setStep(newStep)
 	}
-
-	const onClickFooterLeftButton = () => router.push('/album')
-	const onClickFooterRightButton = () => router.push('/my')
 
 	if (!Cookie.getOnboard() && step <= 4) {
 		return <Onboard step={step} onChageStep={onChageStep} />;
@@ -39,17 +35,21 @@ const Main: NextPage<Props> = ({ answers, isTodayAnswer }) => {
 			{!!isTodayAnswer && <AnswerComponent answers={answers} />}
 			<StyledFooter>
 				<div>
-					<button type="button" onClick={onClickFooterLeftButton}>
-						<StyledImg src="/assets/images/normal.png" width="24" height="24" alt="normal" />
-					</button>
+					<Link href="/album">
+						<a>
+							<StyledImg src="/assets/images/normal.png" width="24" height="24" alt="normal" />
+						</a>
+					</Link>
 				</div>
 				<div className="h3">
 					<span>{dayjs().format('YYYY. MM. DD')}</span>
 				</div>
 				<div>
-					<button type="button" onClick={onClickFooterRightButton}>
-						<StyledImg src="/assets/images/icProfileToucharea.png" width="24" height="24" alt="icProfileToucharea" />
-					</button>
+					<Link href="/my">
+						<a>
+							<StyledImg src="/assets/images/icProfileToucharea.png" width="24" height="24" alt="icProfileToucharea" />
+						</a>
+					</Link>
 				</div>
 			</StyledFooter>
 		</StyledWrapper>
@@ -70,6 +70,7 @@ const MainDot: React.FC<MainDotProps> = ({answers}) => {
 					<div className="my-4 mx-4" key={num}>
 						<div className="text-center">{num}th</div>
 						<StyledDotButton
+							type="button"
 							key={num}
 							active={!!answers[index]}
 						/>

@@ -55,6 +55,7 @@ export default class CustomDocument extends Document<Props> {
 			<Html lang="en" dir="ltr" {...htmlAttrs}>
 				<Head>
 					{this.props.styles}
+					{/* <title>MOTI</title> */}
 					<meta charSet="utf-8" />
 					<meta httpEquiv="x-ua-compatible" content="ie=edge" />
 					<meta name="description" content="yuni-q" />
@@ -78,10 +79,12 @@ export default class CustomDocument extends Document<Props> {
 
 				</Head>
 				<body {...bodyAttrs}>
-					<script src="/regist.js" />
 					<Main />
 					{process.env.NODE_ENV === 'production' && (
+						<>
+						<script src="/regist.js" />
 						<script src="https://polyfill.io/v3/polyfill.min.js?features=es6,es7,es8,es9,NodeList.prototype.forEach&flags=gated" />
+						</>
 					)}
 					<NextScript />
 				</body>

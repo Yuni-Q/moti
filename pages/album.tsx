@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Header from '../components/Header';
@@ -22,7 +22,7 @@ const StyledCardsWrapper = styled.div`
 	flex-wrap: wrap;
 `;
 
-const StyledCardWrapperButton = styled.button`
+const StyledCardWrapperA = styled.a`
 	width: 34%;
 	flex-shrink: 0;
 	flex-grow: 1;
@@ -138,24 +138,21 @@ interface CardsComponentProps {
 }
 
 const CardsComponent: React.FC<CardsComponentProps> = ({cards}) => {
-	const router = useRouter();
 	return (
 		<StyledCardsWrapper>
 			{cards.map((answers) => {
 				return (
-					<StyledCardWrapperButton
-						key={answers[0].no}
-						type="button"
-						onClick={() => {
-							router.push(`/answers/list/${answers[0].id}`);
-						}}
-					>
-						<StyledNo>No. {answers[0].no}</StyledNo>
-						<StyledAlbumCardFrameWrapper>
-							<StyledCardFrame src="/assets/images/imgCardframe.png" alt="imgCardframe" />
-							<Parts answers={answers} />
-						</StyledAlbumCardFrameWrapper>
-					</StyledCardWrapperButton>
+					<Link key={answers[0].no}  href="/answers/list/[id]" as={`/answers/list/${answers[0].id}`} >
+						<StyledCardWrapperA>
+							<button type="button">
+								<StyledNo>No. {answers[0].no}</StyledNo>
+								<StyledAlbumCardFrameWrapper>
+									<StyledCardFrame src="/assets/images/imgCardframe.png" alt="imgCardframe" />
+									<Parts answers={answers} />
+								</StyledAlbumCardFrameWrapper>
+							</button>
+						</StyledCardWrapperA>
+					</Link>
 				);
 			})}
 		</StyledCardsWrapper>

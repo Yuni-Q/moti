@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -74,8 +75,6 @@ interface AnswerCaroselProps {
 export default AnswerDetail;
 
 const AnswerCarosel: React.FC<AnswerCaroselProps> = ({answers, slideIndex, onChagneSlideIndex}) => {
-	const router = useRouter();
-
 	const defaultControlsConfig= {
 		nextButtonStyle: { display: 'none' },
 		prevButtonStyle: { display: 'none' },
@@ -96,15 +95,17 @@ const AnswerCarosel: React.FC<AnswerCaroselProps> = ({answers, slideIndex, onCha
 						<StyledCardsWrapper key={answer.id} >
 							<StyledSubTitle className="mx-13">
 								<div>{answer?.mission?.title}</div>
-								<button type="button" onClick={() => router.push(`/answers/${answer.id}`)}>
-									<StyledRightIcon
-										className="mr-6"
-										width={24}
-										height={24}
-										src="/assets/images/icRewriteNormal.png"
-										alt="icRewriteNormal"
-									/>
-								</button>
+								<Link href="/answers/[id]" as={`/answers/${answer.id}`}>
+									<a>
+										<StyledRightIcon
+											className="mr-6"
+											width={24}
+											height={24}
+											src="/assets/images/icRewriteNormal.png"
+											alt="icRewriteNormal"
+										/>
+									</a>
+								</Link>
 							</StyledSubTitle>
 							<StyledCardFrameWrapper>
 								<StyledCardFrame src="/assets/images/imgCardframe.png" alt="imgCardframe" />
