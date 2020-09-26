@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import ContentComponent from '../../../components/ContentComponent';
 import Header from '../../../components/Header';
-import { StyledCardFrame, StyledCardFrameWrapper, StyledCarousel, StyledDotButton, StyledDotWrapper, StyledRightIcon, StyledSubTitle, StyledWrapper } from '../../../components/StyledComponent';
+import { StyledCardFrame, StyledCardFrameWrapper, StyledCarousel, StyledDotButton, StyledDotWrapper, StyledRightIcon, StyledSubTitle, StyledWrapper } from '../../../components/style/StyledComponent';
 import Answer from '../../../models/Answer';
 import Cookie from '../../../utils/Cookie';
 import { consoleError } from '../../../utils/log';

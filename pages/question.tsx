@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Header from '../components/Header';
-import { StyeldForm, StyledBottomButton, StyledCarousel, StyledDotButton, StyledDotWrapper } from '../components/StyledComponent';
+import { StyeldForm, StyledBottomButton, StyledCarousel, StyledDotButton, StyledDotWrapper } from '../components/style/StyledComponent';
 import Mission from '../models/Mission';
 import User from '../models/User';
 import Cookie from '../utils/Cookie';

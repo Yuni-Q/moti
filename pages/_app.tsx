@@ -4,7 +4,7 @@ import App from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
 import React from 'react';
-import GlobalStyle from '../components/GlobalStyle';
+import GlobalStyle from '../components/style/GlobalStyle';
 import { log } from '../utils/log';
 
 Router.events.on('routeChangeStart', () => {

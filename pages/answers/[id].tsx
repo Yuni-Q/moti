@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import ContentComponent from '../../components/ContentComponent';
 import Header from '../../components/Header';
-import { StyeldForm, StyledBottomButton, StyledCardFrame, StyledCardFrameWrapper, StyledSubTitle } from '../../components/StyledComponent';
+import { StyeldForm, StyledBottomButton, StyledCardFrame, StyledCardFrameWrapper, StyledSubTitle } from '../../components/style/StyledComponent';
 import Submit from '../../components/Submit';
 import Answer from '../../models/Answer';
 import Cookie from '../../utils/Cookie';

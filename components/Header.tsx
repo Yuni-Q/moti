@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import { StyldHeader, StyledLeftIcon, StyledTitle, StyledRightIcon } from "./StyledComponent";
+import { StyldHeader, StyledLeftIcon, StyledTitle, StyledRightIcon } from "./style/StyledComponent";
 
 interface Props {
     left?: {

@@ -5,7 +5,7 @@ import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
 import { redirectLogin } from '../utils/redirect';
 import Header from './Header';
-import { StyeldForm, StyledBottomButton, StyledHr, StyledInput, StyledRow } from './StyledComponent';
+import { StyeldForm, StyledBottomButton, StyledHr, StyledInput, StyledRow } from './style/StyledComponent';
 
 interface Props {
 	user: User;

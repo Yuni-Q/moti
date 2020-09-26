@@ -1,6 +1,6 @@
 import React from 'react';
 import Answer from '../models/Answer';
-import { StyledPart } from './StyledComponent';
+import { StyledPart } from './style/StyledComponent';
 
 
 interface Props {

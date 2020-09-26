@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import { StyledBody, StyledCardFrameWrapper, StyledImg } from './StyledComponent';
+import { StyledBody, StyledCardFrameWrapper, StyledImg } from './style/StyledComponent';
 
 const Motivation: React.FC = () => {
 

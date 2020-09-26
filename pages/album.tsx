@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Header from '../components/Header';
 import Parts from '../components/Parts';
-import { StyledCardFrame, StyledCardFrameWrapper, StyledWrapper } from '../components/StyledComponent';
+import { StyledCardFrame, StyledCardFrameWrapper, StyledWrapper } from '../components/style/StyledComponent';
 import Answer from '../models/Answer';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';

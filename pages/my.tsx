@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import Profile from '../components/Profile';
-import { StyledHr, StyledImg, StyledRow, StyledWrapper } from '../components/StyledComponent';
+import { StyledHr, StyledImg, StyledRow, StyledWrapper } from '../components/style/StyledComponent';
 import User from '../models/User';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';

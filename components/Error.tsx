@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import { StyledBody, StyledBottomButton, StyledImg } from './StyledComponent';
+import { StyledBody, StyledBottomButton, StyledImg } from './style/StyledComponent';
 
 const getText = (errorMessage?: string) => {
 	if(errorMessage) {

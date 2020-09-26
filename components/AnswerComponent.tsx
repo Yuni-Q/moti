@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 import Answer from '../models/Answer';
 import Parts from './Parts';
-import { StyledBody, StyledCardFrame, StyledCardFrameWrapper } from './StyledComponent';
+import { StyledBody, StyledCardFrame, StyledCardFrameWrapper } from './style/StyledComponent';
 
 interface Props {
 	answers: Answer[];

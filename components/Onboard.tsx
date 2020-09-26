@@ -1,6 +1,6 @@
 import React from 'react';
 import Cookie from '../utils/Cookie';
-import { StyldHeader, StyledDotButton, StyledImg, StyledWrapper } from './StyledComponent';
+import { StyldHeader, StyledDotButton, StyledImg, StyledWrapper } from './style/StyledComponent';
 
 const getImage = (step: number) => {
 	if (step === 1) {

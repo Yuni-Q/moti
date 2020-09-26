@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyldContentComponent, StyledFileInputImage, StyledTextAreaWrapper } from "./StyledComponent";
+import { StyldContentComponent, StyledFileInputImage, StyledTextAreaWrapper } from "./style/StyledComponent";
 
 interface ContentComponentProps {
     imgSrc: string;

@@ -1,7 +1,7 @@
 import React from 'react';
 import Mission from '../models/Mission';
 import Header from './Header';
-import { StyledWrapper, StyledFileInputButton, StyledImg, StyledSubTitle } from './StyledComponent';
+import { StyledWrapper, StyledFileInputButton, StyledImg, StyledSubTitle } from './style/StyledComponent';
 
 interface Props {
 	mission: Mission;

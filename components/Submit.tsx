@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import Header from './Header';
-import { StyledBody, StyledBottomButton, StyledImg, StyledSubTitle, StyledWrapper } from './StyledComponent';
+import { StyledBody, StyledBottomButton, StyledImg, StyledSubTitle, StyledWrapper } from './style/StyledComponent';
 
 const Submit: React.FC = () => {
 	return (

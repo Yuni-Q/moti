@@ -8,7 +8,7 @@ import AnswerComponent from './AnswerComponent';
 import Error from './Error';
 import Motivation from './Motivation';
 import Onboard from './Onboard';
-import { StyledDotButton, StyledDotWrapper, StyledFooter, StyledImg, StyledWrapper } from './StyledComponent';
+import { StyledDotButton, StyledDotWrapper, StyledFooter, StyledImg, StyledWrapper } from './style/StyledComponent';
 
 interface Props {
 	answers: Answer[];

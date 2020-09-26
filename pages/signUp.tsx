@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Header from '../components/Header';
-import { StyledBody, StyledBottomButton, StyledImg, StyledSubTitle, StyledWrapper } from '../components/StyledComponent';
+import { StyledBody, StyledBottomButton, StyledImg, StyledSubTitle, StyledWrapper } from '../components/style/StyledComponent';
 import User from '../models/User';
 import Cookie from '../utils/Cookie';
 import { consoleError } from '../utils/log';
