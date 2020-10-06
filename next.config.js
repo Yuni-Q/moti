@@ -1,20 +1,16 @@
 /* eslint-disable */
-const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
 /* eslint-enable */
 
 module.exports = {
 	compress: true,
 	distDir: 'build',
-	webpack(config) {
+	webpack(config, { webpack }) {
 		const prod = process.env.NODE_ENV === 'production';
 		const { module = {}, plugins = [] } = config;
-		// if (prod) {
-		// }
-		return {
+		const newConfig = {
 			...config,
 			mode: prod ? 'production' : 'development',
-			devtool: prod ? 'hidden-source-map' : 'eval',
 			output: {
 				...config.output,
 				publicPath: '/_next/',
@@ -48,6 +44,10 @@ module.exports = {
 				}),
 				new Dotenv({ silent: true }),
 			],
-		};
+		}
+		if (prod) {
+			newConfig.devtool = 'hidden-source-map';
+		}
+		return newConfig;
 	},
 };
