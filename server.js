@@ -10,9 +10,9 @@ const { log } = require('./utils/log');
 const router = require('./routes');
 const { default: Axios } = require('axios');
 
-setInterval(function() {
-	Axios.get('https://yuni-q.herokuapp.com/')
-}, 300000);
+// setInterval(function() {
+// 	Axios.get('https://yuni-q.herokuapp.com/')
+// }, 300000);
 
 const port = process.env.PORT || 8080;
 
