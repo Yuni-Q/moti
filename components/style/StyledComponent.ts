@@ -9,6 +9,7 @@ export const StyledWrapper = styled.div`
     width: 100vw;
     max-width: 100vw;
     height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -22,6 +23,7 @@ export const StyeldForm = styled.form`
     max-width: 100vw;
     min-height: 100vh;
     height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     flex-direction: column;
