@@ -4,16 +4,27 @@ import App from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
 import React from 'react';
+import Loading from '../components/Loading';
 import GlobalStyle from '../components/style/GlobalStyle';
 import { log } from '../utils/log';
 
-Router.events.on('routeChangeStart', () => {
+
+Router.events.on('routeChangeStart', (url: string) => {
 	log('routeChangeStart');
+	log(`Loading: ${url}`)
+});
+
+Router.events.on('beforeHistoryChange', () => {
+	log('beforeHistoryChange');
 });
 
 Router.events.on('routeChangeComplete', () => {
 	log('routeChangeComplete');
 });
+
+Router.events.on('routeChangeError', () => {
+	log('routeChangeError');
+})
 
 interface Props {
 	Component: NextComponentType<NextPageContext>;
@@ -23,13 +34,13 @@ interface Props {
 class MyApp extends App<Props> {
 	render(): JSX.Element {
 		const { Component, pageProps = {} } = this.props;
-
 		return (
 			<>
 				<Head>
 					<title>yuni-q</title>
 				</Head>
 				<GlobalStyle />
+				<Loading />
 				<Component {...pageProps} />
 			</>
 		);

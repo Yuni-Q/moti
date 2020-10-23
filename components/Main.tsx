@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { NextPage } from 'next';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Answer from '../models/Answer';
 import Cookie from '../utils/Cookie';
 import AnswerComponent from './AnswerComponent';
@@ -16,16 +16,23 @@ interface Props {
 }
 
 const Main: NextPage<Props> = ({ answers, isTodayAnswer }) => {
-	const [step, setStep] = useState(1);
+	const [step, setStep] = useState(5);
 	const [errorMessage] = useState('');
+
+	useEffect(() => {
+		if(!Cookie.getOnboard()) {
+			setStep(1);
+		}
+	}, [])
 
 	const onChageStep = (newStep: number) => {
 		setStep(newStep)
 	}
 
-	if (!Cookie.getOnboard() && step <= 4) {
+	if (step <= 4) {
 		return <Onboard step={step} onChageStep={onChageStep} />;
 	}
+	
 	
 	return (
 		<StyledWrapper>
