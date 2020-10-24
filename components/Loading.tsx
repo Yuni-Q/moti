@@ -1,5 +1,21 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import Spinner from './Spinner';
+
+const StyledDiv = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  background: fixed;
+`;
 
 const Loading = () =>  {
   const router = useRouter();
@@ -21,9 +37,14 @@ const Loading = () =>  {
       }
   })
   if(loading) {
-    return <div style={{zIndex:100, position: 'fixed', top: 0, left:0, color: 'red'}}>Loading....</div>
+    return(
+    <StyledDiv>
+      <Spinner />
+    </StyledDiv>
+    ) 
+    
   }
-  return <div style={{zIndex:100, position: 'fixed', top: 0, left:0, color: 'red'}}>done</div>
+  return null;
 }
 
 export default Loading;
