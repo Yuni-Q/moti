@@ -11,7 +11,7 @@
 		"export": "npm run build && next export",
 		"type-check": "tsc",
 		"lint": "concurrently \"npm run lint:ts\" \"npm run lint:style\"",
-		"lint:es": "eslint \"./pages/**/*.{ts,tsx,js,jsx}\" --fix",
+		"lint:es": "eslint --ext .ts --ext .tsx . --fix --quiet",
 		"lint:style": "stylelint \"./**/*.{scss,css}\" --fix",
 		"prettier": "prettier --write --config ./.prettierrc './**/*.{ts,tsx}'",
 		"make:token": "web-push generate-vapid-keys"
