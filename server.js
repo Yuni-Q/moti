@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 const { parse } = require('url');
 const { resolve } = require('path');
 const { log } = require('./utils/log');
-const router = require('./routes');
+const routes = require('next-routes');
 const { default: Axios } = require('axios');
 
 // setInterval(function() {
@@ -19,7 +19,7 @@ const port = process.env.PORT || 8080;
 const dev = process.env.NODE_ENV !== 'production';
 
 const app = next({ dev });
-const handle = router.getRequestHandler(app);
+const handle = routes().getRequestHandler(app);
 
 dotenv.config();
 
