@@ -1,3 +1,5 @@
+import { css } from "styled-components";
+
 export const W000 = '#fff';
 
 export const CG100 = '#F8F9FA';
@@ -44,7 +46,7 @@ export const borderSeparateColor = CG200;
 export const warningColor = O500;
 export const errorColor = R500;
 
-const Color = `
+const Color = css`
 	a, .link {
 		text-decoration: none;
 		color: ${B600};

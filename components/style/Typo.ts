@@ -1,6 +1,7 @@
+import { css } from 'styled-components';
 import { frameMaxWidthXsmall, frameMaxWidthSmall } from './Layout';
 
-const Typo = `
+const Typo = css`
 	h1,
 	.h1,
 	h2,

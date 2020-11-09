@@ -1,19 +1,22 @@
-export const BoxModel = (sizePrefix = ''): string => {
-	return `
+import { css, FlattenSimpleInterpolation } from "styled-components";
+import { CG200 } from "./Color";
+
+export const BoxModel = (sizePrefix = ''): FlattenSimpleInterpolation => {
+	return css`
     .border${sizePrefix} {
-      border: 1px solid $CG200 !important;
+      border: 1px solid ${CG200} !important;
     }
     .border-top${sizePrefix} {
-      border-top: 1px solid $CG200 !important;
+      border-top: 1px solid ${CG200} !important;
     }
     .border-right${sizePrefix} {
-      border-right: 1px solid $CG200 !important;
+      border-right: 1px solid ${CG200} !important;
     }
     .border-bottom${sizePrefix} {
-      border-bottom: 1px solid $CG200 !important;
+      border-bottom: 1px solid ${CG200} !important;
     }
     .border-left${sizePrefix} {
-      border-left: 1px solid $CG200 !important;
+      border-left: 1px solid ${CG200} !important;
     }
 
     .border${sizePrefix}-0 {
@@ -206,7 +209,7 @@ export const MarginAndPadding = (sizePrefix = ''): string => {
 	const arr = Array(40).fill(1);
 	return arr.reduce((previousValue, _, currentIndex) => {
 		const index = currentIndex - 1;
-		return `
+		return css`
       ${previousValue}
       
       .m${sizePrefix}-${index} {
@@ -259,7 +262,7 @@ export const MarginAndPadding = (sizePrefix = ''): string => {
 	}, '');
 };
 
-export const Half = `
+export const Half = css`
   .m-half {
     margin: 4px;
   }
