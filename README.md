@@ -1,66 +1,91 @@
-# TypeScript Next.js example
+# MOTI
 
-This is a really simple project that show the usage of Next.js with TypeScript.
+<p>
+  <img src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
+</p>
 
-## Deploy your own
+# Next.js Project
 
-Deploy the example using [ZEIT Now](https://zeit.co/now):
+### [WEB](https://yuni-q.herokuapp.com/)
+### [iOS APP](https://apps.apple.com/kr/app/moti/id1496912171)
 
-[![Deploy with ZEIT Now](https://zeit.co/button)](https://zeit.co/new/project?template=https://github.com/zeit/next.js/tree/canary/examples/with-typescript)
+[![moti](https://img.youtube.com/vi/m91rLvwMmXo/0.jpg)](https://www.youtube.com/watch?v=m91rLvwMmXo)
 
-## How to use it?
+## 매일매일 미션을 수행하며 카드를 수집해 보자
 
-### Using `create-next-app`
+### 소개글
 
-Execute [`create-next-app`](https://github.com/zeit/next.js/tree/canary/packages/create-next-app) with [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) or [npx](https://github.com/zkat/npx#readme) to bootstrap the example:
+- "Make Own True Identity"
+- [소개페이지](https://his-0203.github.io/)
 
-```bash
-npx create-next-app --example with-typescript with-typescript-app
-# or
-yarn create next-app --example with-typescript with-typescript-app
+#### 매일 하루에 한 번 받을 질문에 답하면서 자신을 기록해보세요.
+
+- 질문에 답을 하고 기록하는 과정에서
+- 당신이 무엇을 좋아하는지
+- 당신이 어떤 추억을 가지고 있었는지
+- 앞으로 당신이 어떤 삶을 살고 싶은지
+- 알아가 보세요.
+
+#### 단순히 기록에서 그치지 않고 당신이 기록한 일주일은 한 장의 꿈을 담은 카드로 완성됩니다.
+
+#### 꾸준히 하루하루를 기록하면서 카드를 수집해보세요.
+
+### MOTI 사용법
+
+1. 하루에 받는 질문은 총 3개! 그중 마음에 드는 질문을 선택하세요(마음에 드는 질문이 없다면 3번까지 새로 질문을 받아볼 수 있습니다)
+2. 사진과 글을 이용해서 질문에 간단한 답을 하면 끝!
+3. 답변을 완료한 날은 카드 그림의 한 부분이 채워집니다.
+4. 일주일 동안 꾸준한 기록을 통해 완성된 카드를 수집해보세요!
+5. 앨범을 통해서 기록된 내용을 되돌아볼 수 있습니다.
+
+### 주요 기능
+
+- 로그인 회원가입
+  - 구글 로그인
+- 매일 새로운 미션 3가지 제공
+  - 미션 재발급 기능(제한적으로 제공)
+- 세트별로 새로운 카드 세트 제공
+- 답변작성
+  - 당일 답변 수정
+  - 세트 답변 조회
+  - 특정날짜 답변 조회
+
+### Quick Start
+
+- node : v12.18.1
+- npm : 6.14.8
+
+- 의존성 설치
+
+- 개발 서버 시작
+
+```sh
+  npm run dev
 ```
 
-### Download manually
+- 배포
 
-Download the example:
-
-```bash
-curl https://codeload.github.com/zeit/next.js/tar.gz/canary | tar -xz --strip=2 next.js-canary/examples/with-typescript
-cd with-typescript
+```sh
+  npm run build
+  npm run start
 ```
 
-Install it and run:
+## Author
 
-```bash
-npm install
-npm run dev
-# or
-yarn
-yarn dev
-```
+👤 **Yuni-Q**
 
-Deploy it to the cloud with [now](https://zeit.co/now) ([download](https://zeit.co/download)):
+<img src="https://avatars0.githubusercontent.com/u/18049757?s=460&v=4" width=80/>
 
-```bash
-now
-```
+Github: [@Yuni-Q](https://github.com/Yuni-Q)
 
-## The idea behind the example
+## 🤝 Contributing
 
-This example shows how to integrate the TypeScript type system into Next.js. Since TypeScript is supported out of the box with Next.js, all we have to do is to install TypeScript.
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/mash-up-kr/Ahobsu-Node-Backend/issues).
 
-```
-npm install --save-dev typescript
-```
+## Show your support
 
-To enable TypeScript's features, we install the type declaratons for React and Node.
+Give a ⭐️ if this project helped you!
 
-```
-npm install --save-dev @types/react @types/react-dom @types/node
-```
+---
 
-When we run `next dev` the next time, Next.js will start looking for any `.ts` or `.tsx` files in our project and builds it. It even automatically creates a `tsconfig.json` file for our project with the recommended settings.
-
-Next.js has built-in TypeScript declarations, so we'll get autocompletion for Next.js' modules straight away.
-
-A `type-check` script is also added to `package.json`, which runs TypeScript's `tsc` CLI in `noEmit` mode to run type-checking separately. You can then include this, for example, in your `test` scripts.
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
