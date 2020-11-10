@@ -1,6 +1,7 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 import webpush from 'web-push';
 
-export default async (req: any, res: any): Promise<void> => {
+export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     if (req.method === 'POST') {
         try {
             const sub = req.body;

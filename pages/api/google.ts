@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { google } from 'googleapis';
-import { IncomingMessage, ServerResponse } from 'http';
+import { NextApiRequest, NextApiResponse } from 'next';
 import url from 'url';
 import { consoleError } from '../../utils/log';
 
-export default async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
+export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         const HOST = process.env.NODE_ENV === "production" ? 'https://yuni-q.herokuapp.com' :'http://localhost:8080'
         const oauth2Client = new google.auth.OAuth2(
