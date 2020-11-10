@@ -39,7 +39,7 @@ export default class CustomDocument extends Document<Props> {
 				helmet: Helmet.renderStatic(),
 			};
 		} catch (error) {
-			consoleError(error);
+			consoleError('CustomDocument Error', error);
 			throw new Error('CustomDocument Error')
 		} finally {
 			sheet.seal();
