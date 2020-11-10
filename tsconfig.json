@@ -19,5 +19,5 @@
 		"target": "esnext"
 	},
 	"exclude": ["node_modules"],
-	"include": ["**/*.ts", "**/*.tsx", "sagas/user.ts", "utils/log.js", "utils/poduce.js"]
+	"include": ["**/*.ts", "**/*.tsx"]
 }

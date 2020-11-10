@@ -1,8 +1,8 @@
 {
   "watch": [
-    "server.js",
+    "server.ts",
     "nodemon.json"
   ],
-  "exec": "node server.js",
+  "exec": "node -r esm -r ts-node/register server.ts",
   "ext": "js json jsx ts tsx"
 }

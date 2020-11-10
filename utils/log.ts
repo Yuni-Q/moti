@@ -14,13 +14,13 @@ const prefix = () => {
 };
 
 /* eslint-disable */
-exports.log =  (...arg) => {
+export const log =  (...arg: any) => {
   
   console.log(prefix(), ...arg);
 };
 
-exports.consoleError = (alt, error) => {
-	if (typeof e === 'string') return e;
+export const consoleError = (alt: any, error: any) => {
+	if (typeof error === 'string') return error;
 
 	let msg = [];
 	if (error) {
@@ -38,6 +38,4 @@ exports.consoleError = (alt, error) => {
 	console.error(prefix(), alt, msg);
 };
 
-/* eslint-enable */
-
-// export default log;
+export default log;
