@@ -6,13 +6,10 @@ import morgan from 'morgan';
 import next from 'next';
 import { resolve } from 'path';
 import { parse } from 'url';
-import { log } from './utils/log';
 
 // setInterval(function() {
 // 	Axios.get('https://yuni-q.herokuapp.com/')
 // }, 300000);
-
-const port = process.env.PORT || 8080;
 
 const dev = process.env.NODE_ENV !== 'production';
 
@@ -21,7 +18,8 @@ const handle = app.getRequestHandler();
 
 dotenv.config();
 
-app.prepare().then(() => {
+const nextServer = async () => {
+	await app.prepare();	
 	const server = express();
 	// next에서 자동으로 실행
 	server.use(express.static('./static'));
@@ -38,7 +36,8 @@ app.prepare().then(() => {
 		const parsedUrl = parse(req.url as string, true);
 		return handle(req, res, parsedUrl);
 	})
-	server.listen(port, () => {
-		log(`> Ready on http://localhost:${port}`);
-	});
-});
+
+	return server;
+}
+
+export default nextServer
