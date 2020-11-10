@@ -9,6 +9,8 @@ const { resolve } = require('path');
 const { log } = require('./utils/log');
 const routes = require('next-routes');
 const { default: Axios } = require('axios');
+const proxy = require("express-http-proxy");
+
 
 // setInterval(function() {
 // 	Axios.get('https://yuni-q.herokuapp.com/')
@@ -35,6 +37,7 @@ app.prepare().then(() => {
 	server.get('/service-worker.js', function (req, res) {
 		app.serveStatic(req, res, resolve('./static/service-worker.js'));
 	});
+	server.use("/api", proxy('https://moti.company'))
 	server.get('*', (req, res) => {
 		const parsedUrl = parse(req.url, true);
 		return handle(req, res, parsedUrl);
