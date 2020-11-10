@@ -28,11 +28,6 @@
 		"react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
 		"prettier/prettier": 0,
 		"react/jsx-props-no-spreading": "off",
-		"import/extensions": [
-			"error",
-			"ignorePackages",
-			{ "js": "never", "jsx": "never", "ts": "never", "tsx": "never", "json": "never", "d.ts": "never" }
-		],
 		"no-param-reassign": 0,
 		"react/prop-types": 0,
 		"indent": 0,
@@ -42,12 +37,5 @@
 		"no-alert": 0,
 		"no-empty-function": 0
 
-	},
-	"settings": {
-		"import/resolver": {
-			"node": {
-				"extensions": [".js", ".jsx", ".ts", ".tsx"]
-			}
-		}
 	}
 }
