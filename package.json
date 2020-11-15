@@ -57,6 +57,7 @@
 		"@types/express": "^4.17.8",
 		"@types/express-http-proxy": "^1.6.1",
 		"@types/jest": "^26.0.15",
+		"@types/jest-plugin-context": "^2.9.4",
 		"@types/lodash": "^4.14.165",
 		"@types/morgan": "^1.9.2",
 		"@types/node": "^12.19.3",
