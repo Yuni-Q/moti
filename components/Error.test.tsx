@@ -15,9 +15,10 @@ describe("Error", () => {
 				expect(container).toHaveTextContent("알 수 없는 오류가 발생했습니다.")
 		})
 		it('click 재접속 button', () => {
+			const reload = jest.fn();
 			(useRouter as jest.Mock).mockImplementation(() => {
 				return {
-					reload: () => null,
+					reload
 				}
 			});
 			const { getAllByText } = render((
@@ -25,6 +26,7 @@ describe("Error", () => {
 				))
 				const buttons = getAllByText('재접속');
 				fireEvent.click(buttons[0]);
+				expect(reload).toBeCalled();
 		})
 	})
 	context('without errorMessage', () => {
