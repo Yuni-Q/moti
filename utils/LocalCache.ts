@@ -172,7 +172,7 @@ export class LocalDB<T = LocalDBRow> {
 		return new Promise((resolved, rejected) => {
 			this.conn().then((db) => {
 				const tx = db.transaction(table, 'readwrite').objectStore(table).delete(key);
-				tx.onsuccess = () => resolved();
+				tx.onsuccess = () => resolved(true);
 				tx.onerror = rejected;
 			});
 		});
