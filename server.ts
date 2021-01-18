@@ -1,7 +1,7 @@
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import express from 'express';
-import proxy from "express-http-proxy";
+// import proxy from "express-http-proxy";
 import morgan from 'morgan';
 import next from 'next';
 import { resolve } from 'path';
@@ -31,7 +31,7 @@ const nextServer = async () => {
 	server.get('/service-worker.js', (req: any, res: any) => {
 		app.serveStatic(req, res, resolve('./static/service-worker.js'));
 	});
-	server.use("/api", proxy('https://moti.company'))
+	// server.use("/api", proxy('https://moti.company'))
 	server.get('*', (req: any, res: any) => {
 		const parsedUrl = parse(req.url as string, true);
 		return handle(req, res, parsedUrl);
