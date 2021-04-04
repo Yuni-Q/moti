@@ -1,6 +1,9 @@
 * {
 	box-sizing: border-box;
 }
+canvas{
+	display: none;
+}
 
 html,
 body,

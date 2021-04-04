@@ -14,17 +14,17 @@ const prefix = () => {
 };
 
 /* eslint-disable */
-export const log =  (...arg: any) => {
-  
-  console.log(prefix(), ...arg);
+export const log = (...arg: any) => {
+	console.log(prefix(), ...arg);
 };
 
 export const consoleError = (alt: any, error: any) => {
-	if (typeof error === 'string') return error;
+	if (typeof error === 'string') return console.error(prefix(), alt, error);
 
 	let msg = [];
 	if (error) {
-		if (error && error.response && error.response.data && typeof error.response.data.message === 'string') msg.push(error.response.data.message.toString());
+		if (error && error.response && error.response.data && typeof error.response.data.message === 'string')
+			msg.push(error.response.data.message.toString());
 		if (error.text) msg.push(error.text.toString());
 		if (error.message) msg.push(error.message.toString());
 		if (error.resultMsg) msg.push(error.resultMsg.toString());
