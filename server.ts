@@ -19,7 +19,7 @@ const handle = app.getRequestHandler();
 dotenv.config();
 
 const nextServer = async () => {
-	await app.prepare();	
+	await app.prepare();
 	const server = express();
 	// next에서 자동으로 실행
 	server.use(express.static('./static'));
@@ -35,9 +35,9 @@ const nextServer = async () => {
 	server.get('*', (req: any, res: any) => {
 		const parsedUrl = parse(req.url as string, true);
 		return handle(req, res, parsedUrl);
-	})
+	});
 
 	return server;
-}
+};
 
-export default nextServer
+export default nextServer;
