@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "nodemon server.local.ts",
 		"build": "ANALYZE=false NODE_ENV=production next build",
-		"start": "ANALYZE=false NODE_ENV=production node ./server.local.js",
+		"start": "ANALYZE=false NODE_ENV=production ts-node ./server.local.ts",
 		"predeloy": "git pull && npm install && npm run build",
 		"deploy": "NODE_ENV=production pm2 start ts-node -- -P tsconfig.server.json ./server.local.ts",
 		"export": "npm run build && next export",
