@@ -1,7 +1,9 @@
 {   
-  "ignore": [
-    "node_modules",
-    "./dist/**/*",
-		"./build/**/*"
-  ]
+  "exec": "ts-node -P tsconfig.server.json server.local.ts",
+  "watch": [
+    "server.ts",
+    "server.local.ts",
+    "nodemon.json"
+  ],
+  "ext": "js json jsx ts tsx"
 }
